@@ -2,7 +2,9 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
-import NavBar from '../components/navbar/NavBar'
+import NavBar from '@/components/navbar/NavBar'
+
+import Providers from '@/providers/Providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,11 +19,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        {/* 放置 Navbar */}
-        <NavBar home />
-        {children}
+        <Providers attribute="class" enableSystem>
+          <NavBar home />
+          {children}
+        </Providers>
       </body>
     </html>
   )
