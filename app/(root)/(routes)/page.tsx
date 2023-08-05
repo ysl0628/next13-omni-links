@@ -9,7 +9,7 @@ export default function Home() {
       <div className="h-[95%] w-full pt-[3rem] flex flex-col items-center relative bg-[#F7F8F9]">
         <main className="flex h-full absolute items-center justify-between p-24">
           <Descriptions />
-          <div className="hidden md:block left-[28rem] relative">
+          <div className="hidden lg:block lg:left-[12rem] xl:left-[15rem] relative">
             <Image alt="cover" src={cover} className="object-cover" priority />
           </div>
         </main>
@@ -22,7 +22,6 @@ export default function Home() {
         after:rounded-tl-[100%] after:rounded-br-[100%] 
         after:rounded-tr-[50%] after:rounded-bl-[50%] after:w-[55%] after:h-full after:bg-[#F7F8F9] after:-translate-x-[4%] after:translate-y-[35%] after:-z-[1]"
         ></div>
-        {/* </div> */}
       </div>
     </section>
   )
