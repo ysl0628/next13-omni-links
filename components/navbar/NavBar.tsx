@@ -10,7 +10,7 @@ const NavBar = ({ home }: { home?: boolean }) => {
   return (
     <div
       className={`fixed w-full 
-      ${home ? 'bg-[#F7F8F9]' : 'bg-white shadow-sm'} 
+      ${home ? 'bg-grey-50' : 'bg-white shadow-sm'} 
       z-10`}
     >
       <div className={`py-4 ${home ? '' : 'border-b-[1px]'} `}>

@@ -19,7 +19,7 @@ const Descriptions = () => {
       </p>
       <div className="flex flex-col md:flex-row gap-4">
         <Button label="開始我的 LinkOrchard" onClick={() => {}} />
-        <Button label="聯絡我們" text onClick={() => {}} />
+        <Button label="聯絡我們" variant="text" onClick={() => {}} />
       </div>
       <p className="text-[#8896AB] text-sm">
         Trusted by brands all around the world

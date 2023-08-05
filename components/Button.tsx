@@ -7,27 +7,57 @@ interface ButtonProps {
   label: string
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
   disabled?: boolean
-  text?: boolean
-  outline?: boolean
   fullWidth?: boolean
   small?: boolean
   icon?: IconType
+  className?: string
+  variant?: 'text' | 'outline' | 'default'
+  size?: 'small' | 'medium' | 'large'
+  color?:
+    | 'primary'
+    | 'secondary'
+    | 'danger'
+    | 'success'
+    | 'warning'
+    | 'info'
+    | 'light'
+    | 'dark'
+    | 'link'
 }
 
 const Button: React.FC<ButtonProps> = ({
   label,
   onClick,
   disabled,
-  text,
-  outline,
   small,
   fullWidth,
-  icon: Icon
+  className,
+  icon: Icon,
+  color = 'primary',
+  size = 'medium',
+  variant = 'default'
 }) => {
   const buttonType = {
-    text: 'text-[#556987] border-none',
+    text: 'text-grey-500 border-none',
     outline: 'bg-white border-black text-black',
-    default: 'bg-[#22C55E] border-[#22C55E] text-white'
+    default: ''
+  }
+  const buttonSize = {
+    small: 'px-2 py-1 text-sm font-light border-[1px]',
+    medium: 'px-4 py-2 text-md font-semibold border-2',
+    large: 'px-6 py-3 text-lg font-semibold border-2'
+  }
+
+  const colors = {
+    primary: 'bg-primary-500 border-primary-500 text-white',
+    secondary: 'bg-secondary-500 border-secondary-500 text-white',
+    danger: 'bg-danger-500 border-danger-500 text-white',
+    success: 'bg-success-500 border-success-500 text-white',
+    warning: 'bg-warning-500 border-warning-500 text-white',
+    info: 'bg-info-500 border-info-500 text-white',
+    light: 'bg-light-500 border-light-500 text-black',
+    dark: 'bg-dark-500 border-dark-500 text-white',
+    link: 'bg-transparent border-transparent text-grey-500'
   }
 
   return (
@@ -42,18 +72,10 @@ const Button: React.FC<ButtonProps> = ({
         hover:opacity-80
         transition
         ${fullWidth ? 'w-full' : 'w-auto'}
-        ${
-          small
-            ? 'px-2 py-1 text-sm font-light border-[1px]'
-            : 'px-4 py-2 text-md font-semibold border-2'
-        }
-        ${
-          text
-            ? buttonType.text
-            : outline
-            ? buttonType.outline
-            : buttonType.default
-        }
+        ${buttonSize[size]}
+        ${buttonType[variant]}
+        ${variant === 'default' ? colors[color] : ''}
+        ${className ? className : ''}
         `}
     >
       {Icon && (
