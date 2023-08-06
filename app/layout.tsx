@@ -28,8 +28,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers attribute="class" enableSystem>
           <NavBar home />
-          {children}
-          {auth}
+          <section className="h-screen flex justify-center pt-16 ">
+            {children}
+            {auth}
+          </section>
         </Providers>
       </body>
     </html>

@@ -1,16 +1,22 @@
+'use client'
 import React from 'react'
 
 import Logo from './Logo'
 import Container from '../Container'
 import NavButtons from './NavButtons'
 import UserButtons from './UserButtons'
+import { usePathname } from 'next/navigation'
 // import ThemeSwitcher from '../ThemeSwitcher'
 
 const NavBar = ({ home }: { home?: boolean }) => {
+  const path = usePathname()
+  const showUserButtons = path === '/'
   return (
     <div
       className={`fixed w-full 
       ${home ? 'bg-grey-50' : 'bg-white shadow-sm'} 
+      min-h-[4.75rem]
+
       z-10`}
     >
       <div className={`py-4 ${home ? '' : 'border-b-[1px]'} `}>
@@ -19,7 +25,7 @@ const NavBar = ({ home }: { home?: boolean }) => {
             <Logo />
             <NavButtons />
             {/* <ThemeSwitcher /> */}
-            <UserButtons />
+            {showUserButtons && <UserButtons />}
           </div>
         </Container>
       </div>
