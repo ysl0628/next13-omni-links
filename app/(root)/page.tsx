@@ -1,12 +1,13 @@
 import Image from 'next/image'
 
-import Descriptions from '../../../components/Descriptions'
 import cover from '@/public/images/cover.png'
+import NavBar from '@/components/navbar/NavBar'
+import Descriptions from '@/components/Descriptions'
 
 export default function Home() {
   return (
     <section className="h-screen overflow-hidden flex flex-col">
-      <div className="h-[95%] w-full pt-[3rem] flex flex-col items-center relative bg-grey-50">
+      <div className="h-[95%] w-full pt-[4.5rem] flex flex-col items-center relative bg-grey-50">
         <main className="flex h-full absolute items-center justify-between p-24">
           <Descriptions />
           <div className="hidden lg:block lg:left-[12rem] xl:left-[15rem] relative">
