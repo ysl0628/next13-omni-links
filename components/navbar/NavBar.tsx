@@ -1,31 +1,33 @@
 'use client'
+
 import React from 'react'
 
 import Logo from './Logo'
 import Container from '../Container'
-import NavButtons from './NavButtons'
+import NavLinks from './NavLinks'
 import UserButtons from './UserButtons'
 import { usePathname } from 'next/navigation'
 // import ThemeSwitcher from '../ThemeSwitcher'
 
-const NavBar = ({ home }: { home?: boolean }) => {
+const NavBar = () => {
   const path = usePathname()
-  const showUserButtons = path === '/'
+  const isAdmin = path.includes('/admin')
+
   return (
     <div
       className={`fixed w-full 
-      ${home ? 'bg-grey-50' : 'bg-white shadow-sm'} 
-      min-h-[4.75rem]
+      ${isAdmin ? 'bg-white shadow-sm' : 'bg-grey-50'} 
+      min-h-[4.5rem]
 
       z-10`}
     >
-      <div className={`py-4 ${home ? '' : 'border-b-[1px]'} `}>
+      <div className={`py-4 ${isAdmin ? 'border-b-[1px]' : ''} `}>
         <Container>
           <div className="flex items-center w-full flex-grow justify-between gap-3 md:gap:0">
             <Logo />
-            <NavButtons />
+            <NavLinks />
             {/* <ThemeSwitcher /> */}
-            {showUserButtons && <UserButtons />}
+            <UserButtons />
           </div>
         </Container>
       </div>
