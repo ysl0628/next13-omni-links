@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: rgb(0, 0, 0);
+  background: rgb(255, 255, 255);
+}
+
+[class='dark'],
+[class='dark'] body {
+  color: rgb(255, 255, 255);
+  background: rgb(0, 0, 0);
+}
