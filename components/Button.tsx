@@ -44,8 +44,8 @@ const Button: React.FC<ButtonProps> = ({
   }
   const buttonSize = {
     small: 'px-2 py-1 text-sm font-light border-[1px]',
-    medium: 'px-4 py-2 text-md font-semibold border-2',
-    large: 'px-6 py-3 text-lg font-semibold border-2'
+    medium: 'px-4 py-1.5 text-md font-semibold border-2',
+    large: 'px-6 py-2 text-lg font-semibold border-2'
   }
 
   const colors = {
