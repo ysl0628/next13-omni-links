@@ -1,5 +1,5 @@
 import DialogWrapper from '@/components/dialog/Dialog'
-import SignUpClient from '@/components/admin/SignUpClient'
+import SignUpClient from '@/components/auth/SignUpClient'
 
 export default function SignUpModal() {
   return (

@@ -1,4 +1,4 @@
-import LoginClient from '@/components/admin/LoginClient'
+import LoginClient from '@/components/auth/LoginClient'
 import DialogWrapper from '@/components/dialog/Dialog'
 
 export default function LoginModal() {

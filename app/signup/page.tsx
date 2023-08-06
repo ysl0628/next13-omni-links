@@ -1,5 +1,5 @@
 import Container from '@/components/Container'
-import SignUpClient from '@/components/admin/SignUpClient'
+import SignUpClient from '@/components/auth/SignUpClient'
 
 export default function SignUpPage() {
   return (
