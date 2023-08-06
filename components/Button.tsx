@@ -56,7 +56,7 @@ const Button: React.FC<ButtonProps> = ({
     warning: 'bg-warning-500 border-warning-500 text-white',
     info: 'bg-info-500 border-info-500 text-white',
     light: 'bg-light-500 border-light-500 text-black',
-    dark: 'bg-dark-500 border-dark-500 text-white',
+    dark: 'bg-grey-800 border-grey-800 text-white',
     link: 'bg-transparent border-transparent text-grey-500'
   }
 
