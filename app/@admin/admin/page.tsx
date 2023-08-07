@@ -1,7 +1,7 @@
-import React from 'react'
+import AdminClient from '@/components/admin/AdminClient'
 
 const AdminPage = () => {
-  return <div>AdminPage</div>
+  return <AdminClient />
 }
 
 export default AdminPage

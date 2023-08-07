@@ -10,5 +10,9 @@ export const metadata: Metadata = {
 }
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
-  return <section className="w-full flex pt-2.5 bg-grey-50">{children}</section>
+  return (
+    <section className="w-full h-full flex pt-2.5 bg-grey-50 overflow-auto">
+      {children}
+    </section>
+  )
 }
