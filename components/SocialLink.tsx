@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 import { IconType } from 'react-icons'
-
-import { iconType } from './linkMapping'
+import { iconType } from '@/constants/linkMapping'
 
 export interface SocialLinkProps {
   label?: string
