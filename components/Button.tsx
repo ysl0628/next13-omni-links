@@ -10,6 +10,7 @@ interface ButtonProps {
   fullWidth?: boolean
   small?: boolean
   icon?: IconType
+  rounded?: 'small' | 'medium' | 'large' | 'full'
   className?: string
   variant?: 'text' | 'outline' | 'default'
   size?: 'small' | 'medium' | 'large'
@@ -33,13 +34,14 @@ const Button: React.FC<ButtonProps> = ({
   fullWidth,
   className,
   icon: Icon,
+  rounded = 'large',
   color = 'primary',
   size = 'medium',
   variant = 'default'
 }) => {
   const buttonType = {
     text: 'text-grey-500 border-none',
-    outline: 'bg-white border-black text-black',
+    outline: 'bg-white',
     default: ''
   }
   const buttonSize = {
@@ -60,22 +62,48 @@ const Button: React.FC<ButtonProps> = ({
     link: 'bg-transparent border-transparent text-grey-500'
   }
 
+  const colorsOutline = {
+    primary:
+      'hover:bg-primary-200 hover:text-primary-700 border-primary-500 text-primary-500',
+    secondary:
+      'hover:bg-secondary-200 hover:text-secondary-700 border-secondary-500 text-secondary-500',
+    danger:
+      'hover:bg-danger-200 hover:text-danger-700 border-danger-500 text-danger-500',
+    success:
+      'hover:bg-success-200 hover:text-success-700 border-success-500 text-success-500',
+    warning:
+      'hover:bg-warning-200 hover:text-warning-700 border-warning-500 text-warning-500',
+    info: 'hover:bg-info-200 hover:text-info-700 border-info-500 text-info-500',
+    light:
+      'hover:bg-light-200 hover:text-light-700 border-light-500 text-light-500',
+    dark: 'hover:bg-grey-700 hover:text-grey-200 border-grey-800 text-grey-800',
+    link: 'hover:bg-grey-200 hover:text-grey-700 border-transparent text-grey-500'
+  }
+
+  const buttonRounded = {
+    small: 'rounded-sm',
+    medium: 'rounded-md',
+    large: 'rounded-lg',
+    full: 'rounded-full'
+  }
+
   return (
     <button
       disabled={disabled}
       onClick={onClick}
       className={`
         relative
+         ${className ? className : ''}
         disabled:opacity-70
         disabled:cursor-not-allowed
-        rounded-lg
         hover:opacity-80
         transition
         ${fullWidth ? 'w-full' : 'w-auto'}
         ${buttonSize[size]}
         ${buttonType[variant]}
         ${variant === 'default' ? colors[color] : ''}
-        ${className ? className : ''}
+        ${variant === 'outline' ? colorsOutline[color] : ''}
+        ${buttonRounded[rounded]}
         `}
     >
       {Icon && label && (
