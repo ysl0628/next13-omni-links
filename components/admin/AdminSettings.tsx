@@ -1,7 +1,9 @@
+'use client'
+
 import Avatar from '../Avatar'
 import Button from '../Button'
 import Divider from '../Divider'
-import GroupTabs from '../ButtonGroup'
+import ButtonGroup from '../ButtonGroup'
 import LabelInput from '../input/LabelInput'
 
 const themeList = [
@@ -55,7 +57,7 @@ const AdminSettings = () => {
             textarea
             placeholder="請輸入用簡介"
           />
-          <GroupTabs title="主題色" list={themeList} />
+          <ButtonGroup title="主題色" list={themeList} />
         </div>
       </div>
       <div className="px-6 py-4 flex justify-end">

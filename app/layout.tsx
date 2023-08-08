@@ -33,7 +33,6 @@ export default function RootLayout({ children, auth, admin }: RootLayoutProps) {
           <main className="h-screen flex justify-center pt-16 ">
             {children}
             {auth}
-            {admin}
           </main>
         </Providers>
       </body>
