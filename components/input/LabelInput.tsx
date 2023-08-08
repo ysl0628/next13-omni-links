@@ -5,7 +5,8 @@ import { BiDollar } from 'react-icons/bi'
 
 interface LabelInputProps {
   id: string
-  label: string
+  small?: boolean
+  label?: string
   placeholder?: string
   type?: string
   max?: number
@@ -20,6 +21,7 @@ interface LabelInputProps {
 const LabelInput: React.FC<LabelInputProps> = ({
   id,
   label,
+  small,
   placeholder,
   type = 'text',
   max = 80,
@@ -44,18 +46,20 @@ const LabelInput: React.FC<LabelInputProps> = ({
           "
         />
       )}
-      <label
-        className={`
+      {label && (
+        <label
+          className={`
           text-md
           text-gray-600
           ${formatPrice ? 'left-9' : 'left-4'}
 
         `}
-        // ${errors[id] ? 'text-rose-500' : 'text-zinc-400'}
-      >
-        {label}
-        {required && <span className="text-rose-500">*</span>}
-      </label>
+          // ${errors[id] ? 'text-rose-500' : 'text-zinc-400'}
+        >
+          {label}
+          {required && <span className="text-rose-500">*</span>}
+        </label>
+      )}
 
       {textarea ? (
         <textarea
@@ -86,7 +90,7 @@ const LabelInput: React.FC<LabelInputProps> = ({
           type={type}
           className={`
           w-full
-          h-12
+          ${small ? 'h-8' : 'h-12'}
           p-4
           font-light 
           bg-white 
