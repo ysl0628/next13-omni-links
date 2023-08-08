@@ -12,3 +12,37 @@ body {
   color: rgb(255, 255, 255);
   background: rgb(0, 0, 0);
 }
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 0px;
+  background: rgba(100, 100, 100, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 0px;
+  border-radius: 2em;
+  background: rgba(100, 100, 100, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 100, 100, 0.3);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: rgba(100, 100, 100, 0.8);
+}
+
+.thick-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
