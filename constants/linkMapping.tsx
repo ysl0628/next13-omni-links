@@ -82,3 +82,46 @@ export const iconType: Record<string, IconTypeProps | null> = {
     style: 'bg-grey-500 text-white border-grey-500'
   }
 }
+
+export const linkList: Record<string, string>[] = [
+  {
+    id: 'facebook',
+    label: 'Facebook'
+  },
+  {
+    id: 'twitter',
+    label: 'Twitter'
+  },
+  {
+    id: 'instagram',
+    label: 'Instagram'
+  },
+  {
+    id: 'linkedin',
+    label: 'LinkedIn'
+  },
+  {
+    id: 'github',
+    label: 'Github'
+  },
+  {
+    id: 'youtube',
+    label: 'Youtube'
+  },
+  {
+    id: 'spotify',
+    label: 'Spotify'
+  },
+  {
+    id: 'discord',
+    label: 'Discord'
+  },
+  {
+    id: 'tiktok',
+    label: 'Tiktok'
+  },
+  {
+    id: 'email',
+    label: 'Email'
+  }
+]
