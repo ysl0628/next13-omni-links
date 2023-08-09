@@ -83,7 +83,7 @@ export const iconType: Record<string, IconTypeProps | null> = {
   }
 }
 
-export const linkList: Record<string, string>[] = [
+export const linkList: { id: string; label: string }[] = [
   {
     id: 'facebook',
     label: 'Facebook'
