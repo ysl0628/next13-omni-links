@@ -1,32 +1,45 @@
 'use client'
 
+import { FormikProps, getIn } from 'formik'
 // import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
 import { BiDollar } from 'react-icons/bi'
 
-interface InputProps {
+interface Values {
+  [x: string]: any
+}
+interface InputProps<T extends Values> {
   id: string
+  name: string
+  formik: FormikProps<T>
   label: string
   type?: string
   disabled?: boolean
   formatPrice?: boolean
   required?: boolean
   className?: string
+
   // register: UseFormRegister<FieldValues>
   // errors: FieldErrors
 }
 
-const Input: React.FC<InputProps> = ({
-  id,
-  label,
-  type = 'text',
-  disabled,
-  formatPrice,
-  className,
-  // register,
-  required
-  // errors
-}) => {
+const Input: React.FC<InputProps<Values>> = (
+  {
+    id,
+    label,
+    type = 'text',
+    disabled,
+    formatPrice,
+    className,
+    formik,
+    name,
+    required
+  } // errors
+) => {
   // 使用 peer 來達到 placeholder 及 label 的轉換效果
+
+  const value = getIn(formik.values, name)
+  const error = getIn(formik.errors, name)
+
   return (
     <div className={`w-full relative ${className ? className : ''}`}>
       {formatPrice && (
@@ -43,8 +56,10 @@ const Input: React.FC<InputProps> = ({
       <input
         title="input"
         id={id}
+        name={name}
         disabled={disabled}
-        // {...register(id, { required })}
+        onChange={formik.handleChange}
+        value={value}
         placeholder=" "
         type={type}
         className={`
@@ -61,10 +76,11 @@ const Input: React.FC<InputProps> = ({
           disabled:opacity-70
           disabled:cursor-not-allowed
           ${formatPrice ? 'pl-9' : 'pl-4'}
+          ${Boolean(error) ? 'border-rose-500' : 'border-neutral-300'}
+          ${Boolean(error) ? 'focus:border-rose-500' : 'focus:border-black'}
         `}
       />
-      {/* ${errors[id] ? 'border-rose-500' : 'border-neutral-300'}$
-      {errors[id] ? 'focus:border-rose-500' : 'focus:border-black'} */}
+
       <label
         className={`
           absolute 
@@ -85,12 +101,16 @@ const Input: React.FC<InputProps> = ({
           peer-focus:-translate-y-6
           peer-focus:bg-white
           peer-focus:px-1
-      
+          ${Boolean(error) ? 'text-rose-500' : 'text-zinc-400'}
         `}
       >
-        {/* ${errors[id] ? 'text-rose-500' : 'text-zinc-400'} */}
         {label}
+        {required && <span className="text-rose-500">*</span>}
       </label>
+
+      {error && (
+        <span className="absolute text-rose-500 bottom-5">{error}</span>
+      )}
     </div>
   )
 }

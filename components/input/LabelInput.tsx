@@ -1,10 +1,16 @@
 'use client'
 
+import { FormikProps, getIn } from 'formik'
 // import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
 import { BiDollar } from 'react-icons/bi'
 
-interface LabelInputProps {
+interface Values {
+  [x: string]: any
+}
+interface LabelInputProps<T extends Values> {
   id: string
+  name: string
+  formik: FormikProps<T>
   small?: boolean
   label?: string
   placeholder?: string
@@ -14,13 +20,13 @@ interface LabelInputProps {
   disabled?: boolean
   formatPrice?: boolean
   required?: boolean
-  //   register: UseFormRegister<FieldValues>
-  //   errors: FieldErrors
 }
 
-const LabelInput: React.FC<LabelInputProps> = ({
+const LabelInput: React.FC<LabelInputProps<Values>> = ({
   id,
   label,
+  formik,
+  name,
   small,
   placeholder,
   type = 'text',
@@ -28,10 +34,11 @@ const LabelInput: React.FC<LabelInputProps> = ({
   textarea,
   disabled,
   formatPrice,
-  //   register,
   required
-  //   errors
 }) => {
+  const value = getIn(formik.values, name)
+  const error = getIn(formik.errors, name)
+
   // 使用 peer 來達到 placeholder 及 label 的轉換效果
   return (
     <div className="w-full flex flex-col gap-2 relative">
@@ -52,9 +59,8 @@ const LabelInput: React.FC<LabelInputProps> = ({
           text-md
           text-gray-600
           ${formatPrice ? 'left-9' : 'left-4'}
-
+          ${Boolean(error) ? 'text-rose-500' : 'text-zinc-400'}
         `}
-          // ${errors[id] ? 'text-rose-500' : 'text-zinc-400'}
         >
           {label}
           {required && <span className="text-rose-500">*</span>}
@@ -66,7 +72,8 @@ const LabelInput: React.FC<LabelInputProps> = ({
           id={id}
           disabled={disabled}
           maxLength={textarea ? max : 80}
-          // {...register(id, { required })}
+          value={value}
+          onChange={formik.handleChange}
           placeholder={placeholder || ' '}
           className={`
           w-full
@@ -85,7 +92,8 @@ const LabelInput: React.FC<LabelInputProps> = ({
         <input
           id={id}
           disabled={disabled}
-          // {...register(id, { required })}
+          value={value}
+          onChange={formik.handleChange}
           placeholder={placeholder || ' '}
           type={type}
           className={`
@@ -100,10 +108,13 @@ const LabelInput: React.FC<LabelInputProps> = ({
           disabled:opacity-70
           disabled:cursor-not-allowed
           ${formatPrice ? 'pl-9' : 'pl-4'}
+           ${Boolean(error) ? 'border-rose-500' : 'border-neutral-300'}
+          ${Boolean(error) ? 'focus:border-rose-500' : 'focus:border-black'}
         `}
-          //  ${errors[id] ? 'border-rose-500' : 'border-neutral-300'}
-          //  ${errors[id] ? 'focus:border-rose-500' : 'focus:border-black'}
         />
+      )}
+      {error && (
+        <span className="absolute text-rose-500 bottom-5">{error}</span>
       )}
     </div>
   )

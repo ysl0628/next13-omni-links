@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import Link from 'next/link'
+import { useFormik } from 'formik'
 
 import Button from '@/components/Button'
 import Input from '@/components/input/Input'
@@ -8,15 +9,39 @@ import Input from '@/components/input/Input'
 import { AiFillGithub } from 'react-icons/ai'
 import { BiLogoGoogle, BiLogoFacebook } from 'react-icons/bi'
 
+interface FormikValues {
+  email: string
+  password: string
+}
+
 const LoginClient = () => {
+  const formik = useFormik({
+    initialValues: {},
+    onSubmit: (values) => {
+      console.log(values)
+    }
+  })
+
   return (
     <>
       <div className="flex justify-center items-center my-14 mb-16">
         <h1 className="text-grey-600 text-3xl font-semibold">Log In</h1>
       </div>
       <div className="flex flex-col gap-6">
-        <Input id="email" label="Email" className="" />
-        <Input id="password" label="Password" className="" />
+        <Input
+          formik={formik}
+          id="email"
+          name="email"
+          label="Email"
+          className=""
+        />
+        <Input
+          formik={formik}
+          id="password"
+          name="password"
+          label="Password"
+          className=""
+        />
         <Button label="Log In" onClick={() => {}} className="w-full" />
         <div className="text-md text-center text-gray-300 font-light">
           Connect With

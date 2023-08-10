@@ -6,6 +6,7 @@ import { FiTrash } from 'react-icons/fi'
 import { MdClose, MdCheck, MdEdit } from 'react-icons/md'
 import Selector from '../input/Selector'
 import LabelInput from '../input/LabelInput'
+import { useFormik } from 'formik'
 
 interface EditLinkItemProps {
   item?: {
@@ -21,6 +22,13 @@ interface EditLinkItemProps {
 const EditLinkItem = ({ item, isCustom, onClose }: EditLinkItemProps) => {
   const [selected, setSelected] = useState(linkList[0].label)
 
+  const formik = useFormik({
+    initialValues: {},
+    onSubmit: (values) => {
+      console.log(values)
+    }
+  })
+
   return (
     <div className="flex w-full justify-between items-center gap-8 shadow-lg p-4 rounded-xl">
       <div className="flex flex-col gap-2 w-full">
@@ -29,11 +37,19 @@ const EditLinkItem = ({ item, isCustom, onClose }: EditLinkItemProps) => {
 
           {isCustom ? (
             <div className="flex-auto">
-              <LabelInput id="link" small placeholder="請輸入連結名稱" />
+              <LabelInput
+                id="title"
+                formik={formik}
+                name="title"
+                small
+                placeholder="請輸入連結名稱"
+              />
             </div>
           ) : (
             <div className="border-2 rounded-lg w-1/3">
               <Selector
+                formik={formik}
+                name="type"
                 options={linkList}
                 selected={selected}
                 onChange={setSelected}
@@ -44,7 +60,13 @@ const EditLinkItem = ({ item, isCustom, onClose }: EditLinkItemProps) => {
         <div className="flex items-center gap-2">
           <div className="w-12 ">連結</div>
           <div className="flex-auto ">
-            <LabelInput id="link" small placeholder="請輸入連結網址" />
+            <LabelInput
+              id="url"
+              formik={formik}
+              name="url"
+              small
+              placeholder="請輸入連結網址"
+            />
           </div>
         </div>
       </div>
