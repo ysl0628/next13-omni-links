@@ -40,6 +40,9 @@ model Account {
   id_token          String? @db.String
   session_state     String? @db.String
 
+  // 這裡的 onDelete: Cascade 會將 User 刪除時，一併刪除 Account
+  // relation 的 fields 是指 Account 的 userId，references 是指 User 的 id
+  // 代表 Account 的 userId 會參照 User 的 id
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
