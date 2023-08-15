@@ -27,18 +27,20 @@ model User {
 }
 
 model Account {
-  id                String  @id @default(auto()) @map("_id") @db.ObjectId
-  type              String
-  userId            String  @db.ObjectId // This creates a foreign key in the Account table pointing to User
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.String
-  access_token      String? @db.String
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.String
-  session_state     String? @db.String
+  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
+  type               String
+  userId             String  @db.ObjectId // This creates a foreign key in the Account table pointing to User
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.String
+  access_token       String? @db.String
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.String
+  session_state      String? @db.String
+  oauth_token        String? @db.String
+  oauth_token_secret String? @db.String
 
   // 這裡的 onDelete: Cascade 會將 User 刪除時，一併刪除 Account
   // relation 的 fields 是指 Account 的 userId，references 是指 User 的 id
