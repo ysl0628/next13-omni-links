@@ -10,7 +10,7 @@ const UserButtons = () => {
   const router = useRouter()
   const path = usePathname()
   const showUserButtons = path === '/'
-  const isLogin = true
+  const isLogin = false
 
   return (
     <div className="flex flex-[0_0_auto] min-w-0 items-center gap-4">

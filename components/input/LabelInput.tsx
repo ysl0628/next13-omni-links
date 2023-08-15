@@ -8,7 +8,6 @@ interface Values {
   [x: string]: any
 }
 interface LabelInputProps<T extends Values> {
-  id: string
   name: string
   formik: FormikProps<T>
   small?: boolean
@@ -23,7 +22,6 @@ interface LabelInputProps<T extends Values> {
 }
 
 const LabelInput: React.FC<LabelInputProps<Values>> = ({
-  id,
   label,
   formik,
   name,
@@ -69,7 +67,7 @@ const LabelInput: React.FC<LabelInputProps<Values>> = ({
 
       {textarea ? (
         <textarea
-          id={id}
+          name={name}
           disabled={disabled}
           maxLength={textarea ? max : 80}
           value={value}
@@ -90,7 +88,7 @@ const LabelInput: React.FC<LabelInputProps<Values>> = ({
         />
       ) : (
         <input
-          id={id}
+          name={name}
           disabled={disabled}
           value={value}
           onChange={formik.handleChange}

@@ -38,7 +38,6 @@ const EditLinkItem = ({ item, isCustom, onClose }: EditLinkItemProps) => {
           {isCustom ? (
             <div className="flex-auto">
               <LabelInput
-                id="title"
                 formik={formik}
                 name="title"
                 small
@@ -61,7 +60,6 @@ const EditLinkItem = ({ item, isCustom, onClose }: EditLinkItemProps) => {
           <div className="w-12 ">連結</div>
           <div className="flex-auto ">
             <LabelInput
-              id="url"
               formik={formik}
               name="url"
               small

@@ -8,7 +8,6 @@ interface Values {
   [x: string]: any
 }
 interface InputProps<T extends Values> {
-  id: string
   name: string
   formik: FormikProps<T>
   label: string
@@ -24,7 +23,6 @@ interface InputProps<T extends Values> {
 
 const Input: React.FC<InputProps<Values>> = (
   {
-    id,
     label,
     type = 'text',
     disabled,
@@ -55,7 +53,6 @@ const Input: React.FC<InputProps<Values>> = (
       )}
       <input
         title="input"
-        id={id}
         name={name}
         disabled={disabled}
         onChange={formik.handleChange}

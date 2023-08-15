@@ -1,4 +1,5 @@
 'use client'
+import { useFormik } from 'formik'
 
 import Avatar from '../Avatar'
 import Button from '../Button'
@@ -22,6 +23,13 @@ const themeList = [
 ]
 
 const AdminSettings = () => {
+  const formik = useFormik({
+    initialValues: {},
+    onSubmit: (values) => {
+      console.log(values)
+    }
+  })
+
   return (
     <div className="w-full min-w-[25rem] flex md:min-w-[40rem] flex-col py-4 gap-3 bg-white rounded shadow-md md:mx-16 my-12">
       <div className="text-3xl font-semibold px-6 p-2 text-grey-600 divide-y">
@@ -50,9 +58,15 @@ const AdminSettings = () => {
       </div>
       <div className="px-6 py-4 flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <LabelInput id="username" label="用戶名" placeholder="請輸入用戶名" />
           <LabelInput
-            id="description"
+            formik={formik}
+            name="username"
+            label="用戶名"
+            placeholder="請輸入用戶名"
+          />
+          <LabelInput
+            formik={formik}
+            name="description"
             label="簡介"
             textarea
             placeholder="請輸入用簡介"

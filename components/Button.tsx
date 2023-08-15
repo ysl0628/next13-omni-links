@@ -3,9 +3,9 @@
 import React from 'react'
 import { IconType } from 'react-icons'
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
   disabled?: boolean
   fullWidth?: boolean
   small?: boolean
@@ -37,7 +37,8 @@ const Button: React.FC<ButtonProps> = ({
   rounded = 'large',
   color = 'primary',
   size = 'medium',
-  variant = 'default'
+  variant = 'default',
+  ...props
 }) => {
   const buttonType = {
     text: 'text-grey-500 border-none',
@@ -105,6 +106,7 @@ const Button: React.FC<ButtonProps> = ({
         ${variant === 'outline' ? colorsOutline[color] : ''}
         ${buttonRounded[rounded]}
         `}
+      {...props}
     >
       {Icon && label && (
         <Icon size={small ? 16 : 24} className="absolute left-4 top-3" />
