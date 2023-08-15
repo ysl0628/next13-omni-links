@@ -1,6 +1,9 @@
 'use client'
 import React from 'react'
+import axios from 'axios'
 import Link from 'next/link'
+import toast from 'react-hot-toast/headless'
+import { useRouter } from 'next/navigation'
 import { useFormik } from 'formik'
 
 import Button from '@/components/Button'
@@ -10,10 +13,23 @@ import { AiFillGithub } from 'react-icons/ai'
 import { BiLogoGoogle, BiLogoFacebook } from 'react-icons/bi'
 
 const SignUpClient = () => {
+  const router = useRouter()
+  const [isLoading, setIsLoading] = React.useState(false)
   const formik = useFormik({
     initialValues: {},
     onSubmit: (values) => {
-      console.log(values)
+      setIsLoading(true)
+      axios
+        .post('/api/register', values)
+        .then(() => {
+          router.push('/admin')
+        })
+        .catch((err) => {
+          toast.error('註冊失敗')
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
     }
   })
 
@@ -23,28 +39,28 @@ const SignUpClient = () => {
         <h1 className="text-grey-600 text-3xl font-semibold">Sign Up</h1>
       </div>
       <div className="flex flex-col gap-6">
-        <Input
-          formik={formik}
-          id="username"
-          name="username"
-          label="Username"
-          className=""
-        />
-        <Input
-          formik={formik}
-          id="email"
-          name="email"
-          label="Email"
-          className=""
-        />
-        <Input
-          formik={formik}
-          id="password"
-          name="password"
-          label="Password"
-          className=""
-        />
-        <Button label="Sign Up" onClick={() => {}} className="w-full" />
+        <form className="contents" onSubmit={formik.handleSubmit}>
+          <Input
+            formik={formik}
+            name="username"
+            label="Username"
+            className=""
+          />
+          <Input formik={formik} name="email" label="Email" className="" />
+          <Input
+            formik={formik}
+            name="password"
+            label="Password"
+            type="password"
+            className=""
+          />
+          <Button
+            label="Sign Up"
+            type="submit"
+            disabled={isLoading}
+            className="w-full"
+          />
+        </form>
         <div className="text-md text-center text-gray-300 font-light">
           Connect With
         </div>
