@@ -1,15 +1,19 @@
 'use client'
 
-import React from 'react'
-
 import Logo from './Logo'
 import Container from '../Container'
 import NavLinks from './NavLinks'
 import UserButtons from './UserButtons'
 import { usePathname } from 'next/navigation'
+import { User } from '@prisma/client'
 // import ThemeSwitcher from '../ThemeSwitcher'
 
-const NavBar = () => {
+interface NavBarProps {
+  // 這個型別是從 prisma schema 定義的，可以直接當作 type 來使用
+  currentUser?: User | null
+}
+
+const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
   const path = usePathname()
   const isAdmin = path.includes('/admin')
 
@@ -25,9 +29,9 @@ const NavBar = () => {
         <Container>
           <div className="flex items-center w-full flex-grow justify-between gap-3 md:gap:0">
             <Logo />
-            <NavLinks />
+            <NavLinks currentUser={currentUser} />
             {/* <ThemeSwitcher /> */}
-            <UserButtons />
+            <UserButtons currentUser={currentUser} />
           </div>
         </Container>
       </div>

@@ -1,12 +1,14 @@
+import { User } from '@prisma/client'
 import Link from 'next/link'
-import React from 'react'
 
-const NavLinks = () => {
-  const isLogin = true
+interface NavLinksProps {
+  currentUser?: User | null
+}
 
+const NavLinks: React.FC<NavLinksProps> = ({ currentUser }) => {
   return (
     <div className="flex justify-center items-center gap-16 py-2">
-      {isLogin && (
+      {currentUser && (
         <>
           <Link className="text-grey-500" href="/admin">
             基本設定

@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google'
 import NavBar from '@/components/navbar/NavBar'
 
 import Providers from '@/providers/Providers'
+import { getCurrentUser } from '@/actions/getCurrentUser'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,12 +25,17 @@ interface RootLayoutProps {
   admin: React.ReactNode
 }
 
-export default function RootLayout({ children, auth, admin }: RootLayoutProps) {
+export default async function RootLayout({
+  children,
+  auth,
+  admin
+}: RootLayoutProps) {
+  const currentUser = await getCurrentUser()
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <Providers attribute="class" enableSystem>
-          <NavBar />
+          <NavBar currentUser={currentUser} />
           <main className="h-screen flex justify-center pt-16 ">
             {children}
             {auth}
