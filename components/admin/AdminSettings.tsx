@@ -7,6 +7,8 @@ import Divider from '../Divider'
 import ButtonGroup from '../ButtonGroup'
 import LabelInput from '../input/LabelInput'
 
+import { SafeUser } from '@/types/safe'
+
 const themeList = [
   {
     name: '基礎色',
@@ -22,7 +24,11 @@ const themeList = [
   }
 ]
 
-const AdminSettings = () => {
+interface AdminSettingsProps {
+  currentUser?: SafeUser | null
+}
+
+const AdminSettings: React.FC<AdminSettingsProps> = ({ currentUser }) => {
   const formik = useFormik({
     initialValues: {},
     onSubmit: (values) => {
@@ -30,14 +36,16 @@ const AdminSettings = () => {
     }
   })
 
+  const avatarImage = currentUser?.customImage || currentUser?.image
+
   return (
-    <div className="w-full min-w-[25rem] flex md:min-w-[40rem] flex-col py-4 gap-3 bg-white rounded shadow-md md:mx-16 my-12">
+    <>
       <div className="text-3xl font-semibold px-6 p-2 text-grey-600 divide-y">
         基本設定
       </div>
       <Divider />
       <div className="px-6 pt-6 pb-4 w-full flex justify-between flex-grow items-center md:flex-row flex-col gap-12">
-        <Avatar size={150} />
+        <Avatar size={150} src={avatarImage} />
         <div className="flex justify-between items-center flex-auto gap-6">
           <Button
             label="上傳圖片"
@@ -82,7 +90,7 @@ const AdminSettings = () => {
           onClick={() => {}}
         />
       </div>
-    </div>
+    </>
   )
 }
 

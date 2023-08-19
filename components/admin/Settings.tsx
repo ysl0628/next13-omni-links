@@ -39,7 +39,7 @@ const Settings = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
   return (
-    <div className="w-full min-w-[25rem] flex md:min-w-[40rem] flex-col py-4 gap-3 bg-white rounded shadow-md md:mx-16 my-12">
+    <>
       <div className="text-3xl font-semibold px-6 p-2 text-grey-600 divide-y">
         連結設定
       </div>
@@ -120,7 +120,7 @@ const Settings = () => {
           onClick={() => {}}
         />
       </div>
-    </div>
+    </>
   )
 }
 
