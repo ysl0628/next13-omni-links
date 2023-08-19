@@ -1,9 +1,12 @@
 'use client'
 
-import React from 'react'
-import Button from './Button'
+import { useRouter } from 'next/navigation'
+
+import Button from '../Button'
 
 const Descriptions = () => {
+  const router = useRouter()
+
   return (
     <div className="flex flex-col md:max-w-[32rem] max-w-full justify-start gap-[46px]">
       <div className="rounded-[36px] text-xs self-start bg-[#22C55E] text-white px-2 py-0.5">
@@ -18,8 +21,15 @@ const Descriptions = () => {
         在這裡種下你的連結，收穫豐富的人脈與機會。
       </p>
       <div className="flex flex-col md:flex-row gap-4">
-        <Button label="開始我的 LinkOrchard" onClick={() => {}} />
-        <Button label="聯絡我們" variant="text" onClick={() => {}} />
+        <Button
+          label="開始我的 LinkOrchard"
+          onClick={() => router.push('/admin')}
+        />
+        <Button
+          label="聯絡我們"
+          variant="text"
+          onClick={() => router.push('/contact-us')}
+        />
       </div>
       <p className="text-[#8896AB] text-sm">
         Trusted by brands all around the world

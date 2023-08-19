@@ -2,6 +2,7 @@
 import React from 'react'
 import axios from 'axios'
 import Link from 'next/link'
+import { signIn } from 'next-auth/react'
 import toast from 'react-hot-toast/headless'
 import { useRouter } from 'next/navigation'
 import { useFormik } from 'formik'
@@ -11,6 +12,7 @@ import Input from '@/components/input/Input'
 
 import { AiFillGithub } from 'react-icons/ai'
 import { BiLogoGoogle, BiLogoFacebook } from 'react-icons/bi'
+import { CALLBACK_URL } from '@/constants/common'
 
 const SignUpClient = () => {
   const router = useRouter()
@@ -32,6 +34,21 @@ const SignUpClient = () => {
         })
     }
   })
+
+  const handleSocialSignUp = (socialType: string) => {
+    signIn(socialType, {
+      callbackUrl: CALLBACK_URL
+    }).then((callback) => {
+      if (callback?.ok) {
+        toast.success('登入成功')
+        router.push('/admin')
+      }
+
+      if (callback?.error) {
+        toast.error('登入失敗')
+      }
+    })
+  }
 
   return (
     <>
@@ -67,19 +84,19 @@ const SignUpClient = () => {
         <div className="flex flex-col gap-2 md:flex-row md:gap-4 justify-center">
           <Button
             icon={BiLogoGoogle}
-            onClick={() => {}}
+            onClick={() => handleSocialSignUp('google')}
             className="w-full"
             color="warning"
           />
           <Button
             icon={BiLogoFacebook}
-            onClick={() => {}}
+            onClick={() => handleSocialSignUp('facebook')}
             className="w-full"
             color="info"
           />
           <Button
             icon={AiFillGithub}
-            onClick={() => {}}
+            onClick={() => handleSocialSignUp('github')}
             className="w-full"
             color="dark"
           />
