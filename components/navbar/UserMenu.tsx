@@ -42,10 +42,8 @@ const UserMenu: React.FC<UserMenuProps> = ({ avatarImage, username }) => {
             <Popover.Panel className="absolute z-10 mt-3 w-60 min-w-[10rem] -translate-x-3/4 transform px-4">
               <div className="overflow-hidden w-full flex flex-col rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                 <div className="relative bg-white p-4 w-full flex flex-col gap-2">
-                  <div className="-my-1 rounded-lg py-2 transition duration-150 ease-in-out cursor-default">
-                    <p className="text-md font-medium text-secondary-600">
-                      @{username}
-                    </p>
+                  <div className="-my-1 rounded-lg py-2 cursor-default text-md font-medium text-secondary-600">
+                    @{username}
                   </div>
                   <Divider />
                   <div className="flex flex-col gap-5 pt-2">
