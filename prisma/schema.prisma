@@ -12,13 +12,16 @@ datasource db {
 
 model User {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  username       String    @unique
+  name           String?
+  username       String?
   email          String?   @unique
   emailVerified  DateTime?
-  hashedPassword String
+  hashedPassword String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
-  image          String? // Optional based on your needs
+  image          String?
+  customImage    String?
+  title          String?
   description    String?
   themeColor     String?
 
