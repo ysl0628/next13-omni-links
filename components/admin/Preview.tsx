@@ -1,12 +1,18 @@
 'use client'
 
 import React from 'react'
+import { SafeUser } from '@/types/safe'
 import Avatar from '../Avatar'
 import SocialLink from './social-link/SocialLink'
 
 //https:lowbite.com/docs/components/device-mockups/
+interface PreviewProps {
+  currentUser?: SafeUser | null
+}
 
-const Preview = () => {
+const Preview: React.FC<PreviewProps> = ({ currentUser }) => {
+  const avatarImage = currentUser?.customImage || currentUser?.image
+
   return (
     <div className="hidden md:block self-center mx-16 my-12 relative border-gray-800 dark:border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-[rgba(24,_24,_7,_0.3)_50px_50px_50px_10px] ">
       <div className="h-[32px] w-[3px] bg-gray-800 dark:bg-gray-800 absolute -left-[17px] top-[72px] rounded-l-lg"></div>
@@ -15,7 +21,7 @@ const Preview = () => {
       <div className="h-[64px] w-[3px] bg-gray-800 dark:bg-gray-800 absolute -right-[17px] top-[142px] rounded-r-lg"></div>
       <div className="rounded-[2rem] overflow-auto w-[272px] h-[572px] bg-white dark:bg-gray-800">
         <div className="flex flex-col gap-4 justify-center items-center my-12 mx-6">
-          <Avatar size={90} />
+          <Avatar size={90} src={avatarImage} />
           <div className="text-lg font-semibold text-gray-700 dark:text-gray-100">
             username
           </div>

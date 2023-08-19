@@ -1,26 +1,27 @@
 'use client'
 
 import React from 'react'
-import { User } from '@prisma/client'
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 import Button from '../Button'
-import Avatar from '../Avatar'
+import UserMenu from './UserMenu'
+import { SafeUser } from '@/types/safe'
 
 interface UserButtonsProps {
-  currentUser?: User | null
+  isAdmin: boolean
+  currentUser?: SafeUser | null
 }
 
-const UserButtons: React.FC<UserButtonsProps> = ({ currentUser }) => {
+const UserButtons: React.FC<UserButtonsProps> = ({ currentUser, isAdmin }) => {
   const router = useRouter()
-  const path = usePathname()
-  const showUserButtons = path === '/'
+  const avatarImage = currentUser?.image
+  const username = currentUser?.username || currentUser?.name
 
   return (
     <div className="flex flex-[0_0_auto] min-w-0 items-center gap-4">
       {currentUser ? (
         <>
-          <Button label="發佈" onClick={() => {}} />
+          {isAdmin ? <Button label="發佈" onClick={() => {}} /> : null}
           <div
             // onClick={toggleOpen}
             className="
@@ -28,15 +29,14 @@ const UserButtons: React.FC<UserButtonsProps> = ({ currentUser }) => {
           border-neutral-200 
           flex 
           flex-row 
-          items-center 
           rounded-full 
+          items-center 
           cursor-pointer 
-          hover:shadow-md 
           transition
           "
           >
             <div className="hidden md:block">
-              <Avatar />
+              <UserMenu avatarImage={avatarImage} username={username} />
             </div>
           </div>
         </>

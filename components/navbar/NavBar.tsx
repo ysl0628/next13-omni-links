@@ -5,12 +5,13 @@ import Container from '../Container'
 import NavLinks from './NavLinks'
 import UserButtons from './UserButtons'
 import { usePathname } from 'next/navigation'
-import { User } from '@prisma/client'
+
+import { SafeUser } from '@/types/safe'
 // import ThemeSwitcher from '../ThemeSwitcher'
 
 interface NavBarProps {
   // 這個型別是從 prisma schema 定義的，可以直接當作 type 來使用
-  currentUser?: User | null
+  currentUser?: SafeUser | null
 }
 
 const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
@@ -29,9 +30,9 @@ const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
         <Container>
           <div className="flex items-center w-full flex-grow justify-between gap-3 md:gap:0">
             <Logo />
-            <NavLinks currentUser={currentUser} />
+            {currentUser && isAdmin && <NavLinks />}
             {/* <ThemeSwitcher /> */}
-            <UserButtons currentUser={currentUser} />
+            <UserButtons currentUser={currentUser} isAdmin={isAdmin} />
           </div>
         </Container>
       </div>
