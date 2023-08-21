@@ -19,6 +19,9 @@ interface LabelInputProps<T extends Values> {
   disabled?: boolean
   formatPrice?: boolean
   required?: boolean
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void
 }
 
 const LabelInput: React.FC<LabelInputProps<Values>> = ({
@@ -32,7 +35,8 @@ const LabelInput: React.FC<LabelInputProps<Values>> = ({
   textarea,
   disabled,
   formatPrice,
-  required
+  required,
+  onChange
 }) => {
   const value = getIn(formik.values, name)
   const error = getIn(formik.errors, name)
@@ -71,7 +75,7 @@ const LabelInput: React.FC<LabelInputProps<Values>> = ({
           disabled={disabled}
           maxLength={textarea ? max : 80}
           value={value}
-          onChange={formik.handleChange}
+          onChange={onChange || formik.handleChange}
           placeholder={placeholder || ' '}
           className={`
           w-full
@@ -84,14 +88,17 @@ const LabelInput: React.FC<LabelInputProps<Values>> = ({
           outline-none
           disabled:opacity-70
           disabled:cursor-not-allowed
-          ${formatPrice ? 'pl-9' : 'pl-4'}`}
+          ${formatPrice ? 'pl-9' : 'pl-4'}
+          ${Boolean(error) ? 'border-rose-500' : ''}
+          ${Boolean(error) ? 'focus:border-rose-500' : 'focus:border-gray-500'}
+          `}
         />
       ) : (
         <input
           name={name}
           disabled={disabled}
           value={value}
-          onChange={formik.handleChange}
+          onChange={onChange || formik.handleChange}
           placeholder={placeholder || ' '}
           type={type}
           className={`
@@ -106,8 +113,8 @@ const LabelInput: React.FC<LabelInputProps<Values>> = ({
           disabled:opacity-70
           disabled:cursor-not-allowed
           ${formatPrice ? 'pl-9' : 'pl-4'}
-           ${Boolean(error) ? 'border-rose-500' : 'border-neutral-300'}
-          ${Boolean(error) ? 'focus:border-rose-500' : 'focus:border-black'}
+          ${Boolean(error) ? 'border-rose-500' : ''}
+          ${Boolean(error) ? 'focus:border-rose-500' : 'focus:border-gray-500'}
         `}
         />
       )}
