@@ -41,7 +41,7 @@ const Preview: React.FC<PreviewProps> = ({ currentUser }) => {
             <SocialLink type="discord" url={'123'} />
             <SocialLink type="tiktok" url={'123'} />
             <SocialLink type="email" url={'123'} />
-            <SocialLink type="custom" url={'123'} />
+            <SocialLink type="website" url={'123'} />
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { iconType } from '@/constants/linkMapping'
+import { socialType } from '@/constants/linkMapping'
 import { IconTypeProps } from '@/types/common'
 import Link from 'next/link'
 import React from 'react'
@@ -15,7 +15,7 @@ import { IconType } from 'react-icons'
 //   BiLogoYoutube
 // } from 'react-icons/bi'
 // import { FaEnvelope } from 'react-icons/fa'
-// import { iconType } from '@/constants/linkMapping'
+// import { socialType } from '@/constants/linkMapping'
 
 export interface SocialLinkProps {
   label?: string
@@ -32,9 +32,9 @@ const SocialLink = ({
   icon,
   customStyle
 }: SocialLinkProps) => {
-  const Icon = icon || iconType[type]?.icon
-  const style = customStyle || iconType[type]?.style
-  const socialLabel = iconType[type]?.label
+  const Icon = icon || socialType[type]?.icon
+  const style = customStyle || socialType[type]?.style
+  const socialLabel = socialType[type]?.label
   const combinedStyle = `px-4 py-1.5 flex gap-2 justify-center items-center w-full text-sm font-medium border-2 rounded ${style} hover:shadow-md`
 
   return (
@@ -51,7 +51,7 @@ const SocialLink = ({
   )
 }
 
-// export const iconType: Record<string, IconTypeProps | null> = {
+// export const socialType: Record<string, IconTypeProps | null> = {
 //   facebook: {
 //     label: 'Facebook',
 //     icon: BiLogoFacebookCircle,

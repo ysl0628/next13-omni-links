@@ -1,6 +1,5 @@
 import { linkList } from '@/constants/linkMapping'
-import { Listbox, Transition } from '@headlessui/react'
-import React, { Fragment, useState } from 'react'
+import React, { useState } from 'react'
 
 import { FiTrash } from 'react-icons/fi'
 import { MdClose, MdCheck, MdEdit } from 'react-icons/md'
@@ -15,11 +14,11 @@ interface EditLinkItemProps {
     url: string
     type: string
   }
-  isCustom?: boolean
+  isWebsite?: boolean
   onClose?: () => void
 }
 
-const EditLinkItem = ({ item, isCustom, onClose }: EditLinkItemProps) => {
+const EditLinkItem = ({ item, isWebsite, onClose }: EditLinkItemProps) => {
   const [selected, setSelected] = useState(linkList[0].label)
 
   const formik = useFormik({
@@ -33,9 +32,9 @@ const EditLinkItem = ({ item, isCustom, onClose }: EditLinkItemProps) => {
     <div className="flex w-full justify-between items-center gap-8 shadow-lg p-4 rounded-xl">
       <div className="flex flex-col gap-2 w-full">
         <div className="flex items-center gap-2">
-          <div className="w-12">{isCustom ? '名稱' : '類型'}</div>
+          <div className="w-12">{isWebsite ? '名稱' : '類型'}</div>
 
-          {isCustom ? (
+          {isWebsite ? (
             <div className="flex-auto">
               <LabelInput
                 formik={formik}

@@ -10,6 +10,7 @@ import {
   BiLogoTwitter,
   BiLogoYoutube
 } from 'react-icons/bi'
+import { BsLine } from 'react-icons/bs'
 import { FaEnvelope } from 'react-icons/fa'
 
 // export const linkMapping = {
@@ -24,7 +25,7 @@ import { FaEnvelope } from 'react-icons/fa'
 //   )
 // }
 
-export const iconType: Record<string, IconTypeProps | null> = {
+export const socialType: Record<string, IconTypeProps | null> = {
   facebook: {
     label: 'Facebook',
     icon: BiLogoFacebookCircle,
@@ -71,12 +72,17 @@ export const iconType: Record<string, IconTypeProps | null> = {
     icon: BiLogoTiktok,
     style: 'bg-black text-white border-black'
   },
+  line: {
+    label: 'Line',
+    icon: BsLine,
+    style: 'bg-green-600 text-white border-green-600'
+  },
   email: {
     label: 'Email',
     icon: FaEnvelope,
     style: 'bg-gray-600 text-white border-gray-600'
   },
-  custom: {
+  website: {
     label: null,
     icon: null,
     style: 'bg-grey-500 text-white border-grey-500'
@@ -119,6 +125,10 @@ export const linkList: { id: string; label: string }[] = [
   {
     id: 'tiktok',
     label: 'Tiktok'
+  },
+  {
+    id: 'line',
+    label: 'Line'
   },
   {
     id: 'email',

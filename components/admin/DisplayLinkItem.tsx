@@ -1,7 +1,7 @@
 'use client'
 
 import { FiTrash } from 'react-icons/fi'
-import { MdClose, MdCheck, MdEdit } from 'react-icons/md'
+import { MdEdit } from 'react-icons/md'
 
 interface DisplayLinkItemProps {
   item: {
@@ -10,14 +10,14 @@ interface DisplayLinkItemProps {
     url: string
     type: string
   }
-  isCustom?: boolean
+  isWebsite?: boolean
   onClose?: () => void
   onEditMode: () => void
 }
 
 const DisplayLinkItem = ({
   item,
-  isCustom,
+  isWebsite,
   onClose,
   onEditMode
 }: DisplayLinkItemProps) => {
@@ -25,7 +25,7 @@ const DisplayLinkItem = ({
     <div className="flex w-full justify-between items-center gap-8 shadow-lg p-4 rounded-xl">
       <div className="flex flex-col gap-2 w-full">
         <div className="flex items-center gap-2">
-          <div className="w-12">{isCustom ? '名稱' : '類型'}</div>
+          <div className="w-12">{isWebsite ? '名稱' : '類型'}</div>
 
           <div className="py-1.5 text-grey-500">{item.title}</div>
         </div>

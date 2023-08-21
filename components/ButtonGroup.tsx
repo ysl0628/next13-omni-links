@@ -18,7 +18,7 @@ export default function Example({ title, list }: Props) {
         value={selected}
         onChange={setSelected}
       >
-        <RadioGroup.Label className="text-md text-gray-600">
+        <RadioGroup.Label className="text-md text-zinc-400">
           {title}
         </RadioGroup.Label>
         <div className="flex shadow-lg divide-x-2 rounded-full ">
