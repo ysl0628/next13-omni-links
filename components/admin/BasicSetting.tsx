@@ -24,11 +24,11 @@ const themeList = [
   }
 ]
 
-interface AdminSettingsProps {
+interface BasicSettingProps {
   currentUser?: SafeUser | null
 }
 
-const AdminSettings: React.FC<AdminSettingsProps> = ({ currentUser }) => {
+const BasicSetting: React.FC<BasicSettingProps> = ({ currentUser }) => {
   const formik = useFormik({
     initialValues: {},
     onSubmit: (values) => {
@@ -68,9 +68,10 @@ const AdminSettings: React.FC<AdminSettingsProps> = ({ currentUser }) => {
         <div className="flex flex-col gap-2">
           <LabelInput
             formik={formik}
-            name="username"
-            label="用戶名"
-            placeholder="請輸入用戶名"
+            name="title"
+            label="標題"
+            placeholder="請輸入標題"
+            onChange={() => {}}
           />
           <LabelInput
             formik={formik}
@@ -84,7 +85,7 @@ const AdminSettings: React.FC<AdminSettingsProps> = ({ currentUser }) => {
       </div>
       <div className="px-6 py-4 flex justify-end">
         <Button
-          label="預覽"
+          label="儲存"
           size="large"
           className="w-full md:w-1/4"
           onClick={() => {}}
@@ -94,4 +95,4 @@ const AdminSettings: React.FC<AdminSettingsProps> = ({ currentUser }) => {
   )
 }
 
-export default AdminSettings
+export default BasicSetting

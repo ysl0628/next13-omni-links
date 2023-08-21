@@ -24,7 +24,7 @@ const SignUpClient = () => {
       axios
         .post('/api/register', values)
         .then(() => {
-          router.push('/admin')
+          router.push('/setting/basic')
         })
         .catch((err) => {
           toast.error('註冊失敗')
@@ -41,7 +41,6 @@ const SignUpClient = () => {
     }).then((callback) => {
       if (callback?.ok) {
         toast.success('登入成功')
-        router.push('/admin')
       }
 
       if (callback?.error) {

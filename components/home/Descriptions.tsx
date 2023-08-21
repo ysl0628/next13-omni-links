@@ -23,7 +23,7 @@ const Descriptions = () => {
       <div className="flex flex-col md:flex-row gap-4">
         <Button
           label="開始我的 LinkOrchard"
-          onClick={() => router.push('/admin')}
+          onClick={() => router.push('/setting/basic')}
         />
         <Button
           label="聯絡我們"

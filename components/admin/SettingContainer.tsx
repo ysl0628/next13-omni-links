@@ -1,7 +1,6 @@
 import React from 'react'
 import { getCurrentUser } from '@/actions/getCurrentUser'
 
-import Divider from '../Divider'
 import Preview from './Preview'
 import Container from '../Container'
 import EmptyState from '../EmptyState'

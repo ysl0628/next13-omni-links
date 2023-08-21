@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 import { Transition } from '@headlessui/react'
 
 import Button from '../Button'
@@ -9,21 +9,6 @@ import EditLinkItem from './EditLinkItem'
 
 import { MdDragIndicator } from 'react-icons/md'
 import DisplayLinkItem from './DisplayLinkItem'
-
-const themeList = [
-  {
-    name: '基礎色',
-    id: 'basic'
-  },
-  {
-    name: '藍綠色',
-    id: 'blue-green'
-  },
-  {
-    name: '紅橘色',
-    id: 'red-orange'
-  }
-]
 
 const dummyItems = [
   {
@@ -34,8 +19,8 @@ const dummyItems = [
   }
 ]
 
-const Settings = () => {
-  const [linkType, setLinkType] = useState<'' | 'custom' | 'social'>('')
+const LinksSetting = () => {
+  const [linkType, setLinkType] = useState<'' | 'website' | 'social'>('')
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
   return (
@@ -65,7 +50,7 @@ const Settings = () => {
             className="w-full"
           />
           <Button
-            onClick={() => setLinkType('custom')}
+            onClick={() => setLinkType('website')}
             label="新增自訂連結"
             color="secondary"
             rounded="full"
@@ -86,7 +71,7 @@ const Settings = () => {
           className="flex w-full"
         >
           <EditLinkItem
-            isCustom={linkType === 'custom'}
+            isWebsite={linkType === 'website'}
             onClose={() => setLinkType('')}
           />
         </Transition>
@@ -98,14 +83,14 @@ const Settings = () => {
               <EditLinkItem
                 key={item.id}
                 item={item}
-                isCustom={item.type === 'custom'}
+                isWebsite={item.type === 'custom'}
                 onClose={() => setIsEditing(false)}
               />
             ) : (
               <DisplayLinkItem
                 key={item.id}
                 item={item}
-                isCustom={item.type === 'custom'}
+                isWebsite={item.type === 'custom'}
                 onEditMode={() => setIsEditing(true)}
               />
             )
@@ -124,4 +109,4 @@ const Settings = () => {
   )
 }
 
-export default Settings
+export default LinksSetting

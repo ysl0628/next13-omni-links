@@ -50,7 +50,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ avatarImage, username }) => {
                     <MenuItem
                       label="開始我的 Link Orchard"
                       onClick={() => {
-                        router.push('/admin')
+                        router.push('/setting/basic')
                         close()
                       }}
                     />
