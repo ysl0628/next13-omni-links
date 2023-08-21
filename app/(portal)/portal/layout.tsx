@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import StoreInitializer from '@/components/admin/StoreInitializer'
+import StoreInitializer from '@/components/portal/StoreInitializer'
 import { getCurrentUser } from '@/actions/getCurrentUser'
 import { getLinks } from '@/actions/getLinks'
 

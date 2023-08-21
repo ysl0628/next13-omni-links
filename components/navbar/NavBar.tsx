@@ -16,7 +16,7 @@ interface NavBarProps {
 
 const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
   const path = usePathname()
-  const isAdmin = path.includes('/setting')
+  const isAdmin = path.includes('/portal')
 
   return (
     <div

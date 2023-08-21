@@ -5,7 +5,7 @@ import Preview from './Preview'
 import Container from '../Container'
 import EmptyState from '../EmptyState'
 
-const AdminContainer = async ({
+const PortalContainer = async ({
   mainComponent: MainComponent
 }: {
   mainComponent: React.ElementType
@@ -26,4 +26,4 @@ const AdminContainer = async ({
   )
 }
 
-export default AdminContainer
+export default PortalContainer

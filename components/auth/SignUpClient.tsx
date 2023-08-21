@@ -24,7 +24,7 @@ const SignUpClient = () => {
       axios
         .post('/api/register', values)
         .then(() => {
-          router.push('/setting/basic')
+          router.push('/portal/basic')
         })
         .catch((err) => {
           toast.error('註冊失敗')
