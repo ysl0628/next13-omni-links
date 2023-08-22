@@ -1,17 +1,16 @@
 'use client'
 
 import React from 'react'
-import { SafeUser } from '@/types/safe'
 import Avatar from '../Avatar'
 import SocialLink from './social-link/SocialLink'
 
-//https:lowbite.com/docs/components/device-mockups/
-interface PreviewProps {
-  currentUser?: SafeUser | null
-}
+import useSetting from '@/hooks/useSetting'
 
-const Preview: React.FC<PreviewProps> = ({ currentUser }) => {
-  const avatarImage = currentUser?.customImage || currentUser?.image
+//https:lowbite.com/docs/components/device-mockups/
+
+const Preview = () => {
+  const { admin } = useSetting((state) => state)
+  const avatarImage = admin?.customImage
 
   return (
     <div className="hidden md:block self-center mx-16 my-12 relative border-gray-800 dark:border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-[rgba(24,_24,_7,_0.3)_50px_50px_50px_10px] ">

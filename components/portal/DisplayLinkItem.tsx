@@ -1,7 +1,10 @@
 'use client'
+import axios from 'axios'
+import useSetting from '@/hooks/useSetting'
 
 import { FiTrash } from 'react-icons/fi'
 import { MdEdit } from 'react-icons/md'
+import toast from 'react-hot-toast'
 
 interface DisplayLinkItemProps {
   item: {
@@ -11,16 +14,24 @@ interface DisplayLinkItemProps {
     type: string
   }
   isWebsite?: boolean
-  onClose?: () => void
   onEditMode: () => void
 }
 
 const DisplayLinkItem = ({
   item,
   isWebsite,
-  onClose,
   onEditMode
 }: DisplayLinkItemProps) => {
+  const { user } = useSetting((state) => state)
+
+  const handleDeleteLink = async () => {
+    try {
+      await axios.delete(`/api/user/${user?.id}/links/${item?.id}`)
+      toast.success('刪除成功')
+    } catch (error) {
+      toast.error('刪除失敗')
+    }
+  }
   return (
     <div className="flex w-full justify-between items-center gap-8 shadow-lg p-4 rounded-xl">
       <div className="flex flex-col gap-2 w-full">
@@ -36,15 +47,19 @@ const DisplayLinkItem = ({
       </div>
 
       <div className="flex flex-col gap-3">
-        <div className="bg-grey-400 rounded-full p-1.5 hover:bg-slate-800 cursor-pointer">
+        <div
+          className="bg-grey-400 rounded-full p-1.5 hover:bg-slate-800 cursor-pointer"
+          onClick={handleDeleteLink}
+        >
           <FiTrash className="h-5 w-5 text-white" />
         </div>
         <div
           className={
             'bg-secondary-500 rounded-full p-1.5 hover:opacity-80 cursor-pointer'
           }
+          onClick={onEditMode}
         >
-          <MdEdit className="h-5 w-5 text-white" onClick={onEditMode} />
+          <MdEdit className="h-5 w-5 text-white" />
         </div>
       </div>
     </div>
