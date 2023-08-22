@@ -1,24 +1,31 @@
 'use client'
 
 import useSetting from '@/hooks/useSetting'
-import { GetAdminType, LinkType } from '@/types/common'
+import { AdminType, GetAdminType, LinkType, ThemeColorType } from '@/types'
+import { SafeUser } from '@/types/safe'
 import { useRef } from 'react'
 
 interface StoreInitializerProps {
-  adminSetting: GetAdminType
+  user: SafeUser | null
+  adminSetting: AdminType
   linkSetting: LinkType[] | null
 }
 
 const StoreInitializer = ({
+  user,
   adminSetting,
   linkSetting
 }: StoreInitializerProps) => {
-  const { updateAdmin, updateLinks } = useSetting((state) => state)
+  const { update } = useSetting((state) => state)
+
+  // 如果 adminSetting.themeColor 是 null，就給他預設值
+  if (!adminSetting.themeColor) {
+    adminSetting.themeColor = 'basic'
+  }
 
   const initialized = useRef(false)
   if (!initialized.current) {
-    updateAdmin(adminSetting)
-    updateLinks(linkSetting)
+    update({ admin: adminSetting, links: linkSetting, user })
     initialized.current = true
   }
   return null

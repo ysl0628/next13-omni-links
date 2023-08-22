@@ -1,5 +1,4 @@
 import { socialType } from '@/constants/linkMapping'
-import { IconTypeProps } from '@/types/common'
 import Link from 'next/link'
 import React from 'react'
 import { IconType } from 'react-icons'

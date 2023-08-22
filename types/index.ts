@@ -8,17 +8,20 @@ export interface IconTypeProps {
 }
 
 export interface LinkType {
+  id: string
   type: keyof typeof socialType
   title: string
   url: string
   order?: number
 }
 
+export type ThemeColorType = 'basic' | 'blue-green' | 'red-orange' | null
+
 export interface AdminType {
   customImage?: string | null
   title?: string | null
   description?: string | null
-  themeColor?: 'basic' | 'blue-green' | 'red-orange' | null
+  themeColor?: ThemeColorType
 }
 
 export interface GetAdminType {

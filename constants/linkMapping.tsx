@@ -1,4 +1,4 @@
-import { IconTypeProps } from '@/types/common'
+import { IconTypeProps } from '@/types'
 import {
   BiLogoDiscordAlt,
   BiLogoFacebookCircle,
