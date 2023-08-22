@@ -1,12 +1,15 @@
-import { linkList } from '@/constants/linkMapping'
 import React, { useState } from 'react'
-
-import { FiTrash } from 'react-icons/fi'
-import { MdClose, MdCheck, MdEdit } from 'react-icons/md'
-import Selector from '../input/Selector'
-import LabelInput from '../input/LabelInput'
 import { useFormik } from 'formik'
 
+import Selector from '../input/Selector'
+import LabelInput from '../input/LabelInput'
+
+import useSetting from '@/hooks/useSetting'
+import { linkList } from '@/constants/linkMapping'
+
+import { MdClose, MdCheck } from 'react-icons/md'
+import axios from 'axios'
+import { toast } from 'react-hot-toast'
 interface EditLinkItemProps {
   item?: {
     id: string
@@ -14,19 +17,69 @@ interface EditLinkItemProps {
     url: string
     type: string
   }
+  index?: number
+  lastItemOrder: number
   isWebsite?: boolean
   onClose?: () => void
 }
 
-const EditLinkItem = ({ item, isWebsite, onClose }: EditLinkItemProps) => {
+interface FormValues {
+  id?: string
+  title?: string
+  url?: string
+  type?: string
+  order?: number
+}
+
+const EditLinkItem = ({
+  item,
+  index,
+  isWebsite,
+  lastItemOrder,
+  onClose
+}: EditLinkItemProps) => {
+  const { user } = useSetting((state) => state)
   const [selected, setSelected] = useState(linkList[0].label)
 
-  const formik = useFormik({
-    initialValues: {},
+  const formik = useFormik<FormValues>({
+    initialValues: {
+      id: item?.id || '',
+      title: item?.title || '',
+      url: item?.url || '',
+      type: item?.type || '',
+      order: item ? index : lastItemOrder + 1
+    },
     onSubmit: (values) => {
-      console.log(values)
+      const result = {
+        ...values,
+        type: isWebsite ? 'website' : selected,
+        title: values.title || selected
+      }
+
+      if (item) {
+        handleUpdateLink(result)
+      }
+      handleAddLink(result)
     }
   })
+
+  const handleAddLink = async (values: FormValues) => {
+    try {
+      await axios.post(`/api/user/${user?.id}/links`, values)
+      toast.success('新增成功')
+    } catch (error) {
+      toast.error('新增失敗')
+    }
+  }
+
+  const handleUpdateLink = async (values: FormValues) => {
+    try {
+      await axios.put(`/api/user/${user?.id}/links/${values.id}`, values)
+      toast.success('更新成功')
+    } catch (error) {
+      toast.error('更新失敗')
+    }
+  }
 
   return (
     <div className="flex w-full justify-between items-center gap-8 shadow-lg p-4 rounded-xl">
