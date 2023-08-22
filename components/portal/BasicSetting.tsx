@@ -6,8 +6,10 @@ import Button from '../Button'
 import Divider from '../Divider'
 import ButtonGroup from '../ButtonGroup'
 import LabelInput from '../input/LabelInput'
+import ImageUpload from '../input/ImageUpload'
 
 import { SafeUser } from '@/types/safe'
+import useSetting from '@/hooks/useSetting'
 
 const themeList = [
   {
@@ -28,15 +30,36 @@ interface BasicSettingProps {
   currentUser?: SafeUser | null
 }
 
-const BasicSetting: React.FC<BasicSettingProps> = ({ currentUser }) => {
-  const formik = useFormik({
-    initialValues: {},
+interface FormValues {
+  customImage?: string | null
+  title?: string | null
+  description?: string | null
+  themeColor?: 'basic' | 'blue-green' | 'red-orange' | null
+}
+
+const BasicSetting: React.FC<BasicSettingProps> = () => {
+  const { update, admin } = useSetting((state) => state)
+
+  const formik = useFormik<FormValues>({
+    initialValues: { ...admin },
     onSubmit: (values) => {
       console.log(values)
     }
   })
 
-  const avatarImage = currentUser?.customImage || currentUser?.image
+  const avatarImage = formik.values.customImage || admin?.customImage
+
+  const handlePreview = () => {
+    update({ admin: formik.values })
+  }
+
+  const handleUpload = (url: string) => {
+    formik.setFieldValue('customImage', url)
+  }
+
+  const handleResetImg = () => {
+    formik.setFieldValue('customImage', admin.customImage)
+  }
 
   return (
     <>
@@ -47,20 +70,20 @@ const BasicSetting: React.FC<BasicSettingProps> = ({ currentUser }) => {
       <div className="px-6 pt-6 pb-4 w-full flex justify-between flex-grow items-center md:flex-row flex-col gap-12">
         <Avatar size={150} src={avatarImage} />
         <div className="flex justify-between items-center flex-auto gap-6">
-          <Button
+          <ImageUpload
             label="上傳圖片"
             rounded="full"
             size="large"
             className="w-full"
-            onClick={() => {}}
+            onChange={(url) => handleUpload(url)}
           />
           <Button
-            label="移除圖片"
+            label="重置圖片"
             variant="outline"
             className="w-full"
             size="large"
             rounded="full"
-            onClick={() => {}}
+            onClick={handleResetImg}
           />
         </div>
       </div>
@@ -71,7 +94,6 @@ const BasicSetting: React.FC<BasicSettingProps> = ({ currentUser }) => {
             name="title"
             label="標題"
             placeholder="請輸入標題"
-            onChange={() => {}}
           />
           <LabelInput
             formik={formik}
@@ -80,10 +102,22 @@ const BasicSetting: React.FC<BasicSettingProps> = ({ currentUser }) => {
             textarea
             placeholder="請輸入用簡介"
           />
-          <ButtonGroup title="主題色" list={themeList} />
+          <ButtonGroup
+            title="主題色"
+            name="themeColor"
+            list={themeList}
+            formik={formik}
+          />
         </div>
       </div>
-      <div className="px-6 py-4 flex justify-end">
+      <div className="px-6 py-4 flex gap-4 justify-end">
+        <Button
+          label="預覽"
+          color="secondary"
+          size="large"
+          className="w-full md:w-1/4"
+          onClick={handlePreview}
+        />
         <Button
           label="儲存"
           size="large"
