@@ -74,7 +74,7 @@ const LabelInput: React.FC<LabelInputProps<Values>> = ({
           name={name}
           disabled={disabled}
           maxLength={textarea ? max : 80}
-          value={value}
+          value={value || ''}
           onChange={onChange || formik.handleChange}
           placeholder={placeholder || ' '}
           className={`
@@ -97,7 +97,7 @@ const LabelInput: React.FC<LabelInputProps<Values>> = ({
         <input
           name={name}
           disabled={disabled}
-          value={value}
+          value={value || ''}
           onChange={onChange || formik.handleChange}
           placeholder={placeholder || ' '}
           type={type}
