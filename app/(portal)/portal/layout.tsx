@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 }
 
 const isValidThemeColor = (color: any): color is ThemeColorType =>
-  ['basic', 'blue-green', 'red-orange'].includes(color)
+  ['basic', 'blue-rose', 'lime'].includes(color)
 
 export default async function SettingLayout({ children }: SettingLayoutProps) {
   const currentUser = await getCurrentUser()
@@ -25,6 +25,7 @@ export default async function SettingLayout({ children }: SettingLayoutProps) {
     ? currentUser?.themeColor
     : 'basic'
   const adminSetting = {
+    username: currentUser?.username,
     customImage: currentUser?.customImage || currentUser?.image,
     title: currentUser?.title,
     description: currentUser?.description,

@@ -17,12 +17,12 @@ const themeList = [
     id: 'basic'
   },
   {
-    name: '藍綠色',
-    id: 'blue-green'
+    name: '藍紅色',
+    id: 'blue-rose'
   },
   {
-    name: '紅橘色',
-    id: 'red-orange'
+    name: '萊姆色',
+    id: 'lime'
   }
 ]
 
@@ -34,7 +34,7 @@ interface FormValues {
   customImage?: string | null
   title?: string | null
   description?: string | null
-  themeColor?: 'basic' | 'blue-green' | 'red-orange' | null
+  themeColor?: 'basic' | 'blue-rose' | 'lime' | null
 }
 
 const BasicSetting: React.FC<BasicSettingProps> = () => {

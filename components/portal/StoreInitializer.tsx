@@ -1,7 +1,7 @@
 'use client'
 
 import useSetting from '@/hooks/useSetting'
-import { AdminType, GetAdminType, LinkType, ThemeColorType } from '@/types'
+import { AdminType, LinkType } from '@/types'
 import { SafeUser } from '@/types/safe'
 import { useRef } from 'react'
 
