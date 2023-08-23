@@ -58,6 +58,51 @@ export const authOptions: AuthOptions = {
       }
     })
   ],
+  callbacks: {
+    async signIn({ user, account }) {
+      // 設定登入時將user的name 設為 prisma 的username
+      const exists = await prisma.user.findUnique({
+        where: {
+          email: user.email as string
+        }
+      })
+
+      if (account?.type === 'oauth' && !exists) {
+        const defaultUsername = user?.email?.split('@')[0]
+
+        try {
+          const newUser = await prisma.user.create({
+            data: {
+              username: defaultUsername,
+              name: user.name,
+              email: user.email,
+              emailVerified: null,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              image: user.image
+            }
+          })
+
+          await prisma.account.create({
+            data: {
+              type: account.type,
+              userId: newUser.id,
+              provider: account.provider,
+              providerAccountId: account.providerAccountId,
+              access_token: account.access_token,
+              token_type: account.token_type,
+              scope: account.scope,
+              expires_at: account.expires_at
+            }
+          })
+        } catch (error) {
+          console.log('error', error)
+        }
+        return true
+      }
+      return true
+    }
+  },
   pages: {
     signIn: '/'
   },

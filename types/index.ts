@@ -15,9 +15,10 @@ export interface LinkType {
   order?: number
 }
 
-export type ThemeColorType = 'basic' | 'blue-green' | 'red-orange' | null
+export type ThemeColorType = 'basic' | 'blue-rose' | 'lime' | null
 
 export interface AdminType {
+  username?: string | null
   customImage?: string | null
   title?: string | null
   description?: string | null

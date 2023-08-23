@@ -18,6 +18,7 @@ interface SettingStore {
 const useSetting = create<SettingStore>((set) => ({
   user: null,
   admin: {
+    username: '',
     customImage: null,
     title: null,
     description: null,
@@ -28,6 +29,7 @@ const useSetting = create<SettingStore>((set) => ({
     set(
       produce((state) => {
         if (partial.admin) {
+          state.admin.username = partial.admin.username ?? state.admin.username
           state.admin.customImage =
             partial.admin.customImage ?? state.admin.customImage
           state.admin.title = partial.admin.title ?? state.admin.title
@@ -38,6 +40,9 @@ const useSetting = create<SettingStore>((set) => ({
         }
         if (partial.links !== undefined) {
           state.links = partial.links
+        }
+        if (partial.user !== undefined) {
+          state.user = partial.user
         }
       })
     )
