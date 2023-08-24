@@ -10,5 +10,5 @@ export default function UserLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <section>{children}</section>
+  return <section className="w-full h-full">{children}</section>
 }

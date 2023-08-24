@@ -6,11 +6,18 @@ import SocialLink from './social-link/SocialLink'
 
 import useSetting from '@/hooks/useSetting'
 import { bgColors } from '@/constants/themeColors'
+import { shallow } from 'zustand/shallow'
 
 //https:lowbite.com/docs/components/device-mockups/
 
 const Preview = () => {
-  const admin = useSetting((state) => state.admin)
+  const { admin, links } = useSetting(
+    (state) => ({
+      admin: state.admin,
+      links: state.links
+    }),
+    shallow
+  )
   const avatarImage = admin?.customImage
   const themeColor = admin?.themeColor || 'basic'
 
@@ -34,7 +41,15 @@ const Preview = () => {
             {admin?.description || '這是我的簡介'}
           </div>
           <div className="flex flex-col w-full gap-2">
-            <SocialLink type="facebook" url={'123'} />
+            {(links || []).map((link) => (
+              <SocialLink
+                key={link.id}
+                type={link.type.id}
+                url={link.url}
+                label={link.title}
+              />
+            ))}
+            {/* <SocialLink type="facebook" url={'123'} />
             <SocialLink type="youtube" url={'123'} />
             <SocialLink type="instagram" url={'123'} />
             <SocialLink type="twitter" label="111" url={'123'} />
@@ -45,7 +60,7 @@ const Preview = () => {
             <SocialLink type="discord" url={'123'} />
             <SocialLink type="tiktok" url={'123'} />
             <SocialLink type="email" url={'123'} />
-            <SocialLink type="website" url={'123'} />
+            <SocialLink type="website" url={'123'} /> */}
           </div>
         </div>
       </div>
