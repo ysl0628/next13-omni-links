@@ -55,7 +55,7 @@ model Account {
 
 model Link {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  type      String
+  type      LinkType
   title     String
   url       String
   order     Int
@@ -64,4 +64,9 @@ model Link {
   updatedAt DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type LinkType {
+  id    String
+  label String
 }

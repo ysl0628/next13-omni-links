@@ -91,6 +91,10 @@ export const socialType: Record<string, IconTypeProps | null> = {
 
 export const linkList: { id: string; label: string }[] = [
   {
+    id: 'default',
+    label: '請選擇'
+  },
+  {
     id: 'facebook',
     label: 'Facebook'
   },

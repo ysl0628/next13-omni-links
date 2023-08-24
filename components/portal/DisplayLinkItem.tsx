@@ -5,13 +5,14 @@ import useSetting from '@/hooks/useSetting'
 import { FiTrash } from 'react-icons/fi'
 import { MdEdit } from 'react-icons/md'
 import toast from 'react-hot-toast'
+import { LinkType } from '@prisma/client'
 
 interface DisplayLinkItemProps {
   item: {
     id: string
     title: string
     url: string
-    type: string
+    type: LinkType
   }
   isWebsite?: boolean
   onEditMode: () => void
@@ -38,11 +39,15 @@ const DisplayLinkItem = ({
         <div className="flex items-center gap-2">
           <div className="w-12">{isWebsite ? '名稱' : '類型'}</div>
 
-          <div className="py-1.5 text-grey-500">{item.title}</div>
+          <div className="py-1.5 text-grey-500">
+            {isWebsite ? item.title : item.type.label}
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-12 ">連結</div>
-          <div className="py-1.5 text-grey-500 text-ellipsis">{item.url}</div>
+          <div className="py-1.5 text-grey-500 text-clip whitespace-nowrap ">
+            {item.url}
+          </div>
         </div>
       </div>
 
