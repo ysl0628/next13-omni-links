@@ -1,21 +1,22 @@
+import axios, { AxiosResponse } from 'axios'
+import { toast } from 'react-hot-toast'
 import React, { useState } from 'react'
 import { useFormik } from 'formik'
 
 import Selector from '../input/Selector'
 import LabelInput from '../input/LabelInput'
 
+import { Link, LinkType } from '@prisma/client'
 import useSetting from '@/hooks/useSetting'
 import { linkList } from '@/constants/linkMapping'
 
 import { MdClose, MdCheck } from 'react-icons/md'
-import axios from 'axios'
-import { toast } from 'react-hot-toast'
 interface EditLinkItemProps {
   item?: {
     id: string
     title: string
     url: string
-    type: string
+    type: LinkType
   }
   index?: number
   lastItemOrder: number
@@ -27,9 +28,11 @@ interface FormValues {
   id?: string
   title?: string
   url?: string
-  type?: string
+  type?: LinkType
   order?: number
 }
+
+const websiteOption = { id: 'website', label: 'Website' }
 
 const EditLinkItem = ({
   item,
@@ -38,22 +41,22 @@ const EditLinkItem = ({
   lastItemOrder,
   onClose
 }: EditLinkItemProps) => {
-  const { user } = useSetting((state) => state)
-  const [selected, setSelected] = useState(linkList[0].label)
+  const user = useSetting((state) => state.user)
+  const addLink = useSetting((state) => state.addLink)
 
   const formik = useFormik<FormValues>({
     initialValues: {
       id: item?.id || '',
       title: item?.title || '',
       url: item?.url || '',
-      type: item?.type || '',
+      type: item?.type || { id: 'default', label: '請選擇' },
       order: item ? index : lastItemOrder + 1
     },
     onSubmit: (values) => {
       const result = {
         ...values,
-        type: isWebsite ? 'website' : selected,
-        title: values.title || selected
+        type: isWebsite ? websiteOption : values.type,
+        title: values.title || values.type?.label
       }
 
       if (item) {
@@ -65,74 +68,94 @@ const EditLinkItem = ({
 
   const handleAddLink = async (values: FormValues) => {
     try {
-      await axios.post(`/api/user/${user?.id}/links`, values)
+      const result = {
+        url: values.url,
+        type: values.type,
+        title: values.title,
+        order: values.order
+      }
+      const { data: res } = await axios.post<Link>(
+        `/api/user/${user?.id}/links`,
+        result
+      )
+      addLink(res)
+
       toast.success('新增成功')
     } catch (error) {
       toast.error('新增失敗')
+      console.log(error)
     }
   }
 
   const handleUpdateLink = async (values: FormValues) => {
+    const result = {
+      url: values.url,
+      type: values.type,
+      title: values.title,
+      order: values.order
+    }
     try {
-      await axios.put(`/api/user/${user?.id}/links/${values.id}`, values)
+      await axios.put(`/api/user/${user?.id}/links/${values.id}`, result)
       toast.success('更新成功')
     } catch (error) {
       toast.error('更新失敗')
     }
   }
 
+  const handleSubmit = () => {
+    formik.handleSubmit()
+    onClose && onClose()
+  }
+
   return (
     <div className="flex w-full justify-between items-center gap-8 shadow-lg p-4 rounded-xl">
-      <div className="flex flex-col gap-2 w-full">
-        <div className="flex items-center gap-2">
-          <div className="w-12">{isWebsite ? '名稱' : '類型'}</div>
+      <form onSubmit={formik.handleSubmit} className="contents">
+        <div className="flex flex-col gap-2 w-full">
+          <div className="flex items-center gap-2">
+            <div className="w-12">{isWebsite ? '名稱' : '類型'}</div>
 
-          {isWebsite ? (
-            <div className="flex-auto">
+            {isWebsite ? (
+              <div className="flex-auto">
+                <LabelInput
+                  formik={formik}
+                  name="title"
+                  small
+                  placeholder="請輸入連結名稱"
+                />
+              </div>
+            ) : (
+              <div className="border-2 rounded-lg w-1/3">
+                <Selector formik={formik} name="type" options={linkList} />
+              </div>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-12 ">連結</div>
+            <div className="flex-auto ">
               <LabelInput
                 formik={formik}
-                name="title"
+                name="url"
                 small
-                placeholder="請輸入連結名稱"
+                placeholder="請輸入連結網址"
               />
             </div>
-          ) : (
-            <div className="border-2 rounded-lg w-1/3">
-              <Selector
-                formik={formik}
-                name="type"
-                options={linkList}
-                selected={selected}
-                onChange={setSelected}
-              />
-            </div>
-          )}
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-12 ">連結</div>
-          <div className="flex-auto ">
-            <LabelInput
-              formik={formik}
-              name="url"
-              small
-              placeholder="請輸入連結網址"
-            />
           </div>
         </div>
-      </div>
 
-      <div className="flex flex-col gap-3">
-        <div className="bg-grey-400 rounded-full p-1.5 hover:bg-slate-800 cursor-pointer">
-          <MdClose className="h-5 w-5 text-white" onClick={onClose} />
+        <div className="flex flex-col gap-3">
+          <div className="bg-grey-400 rounded-full p-1.5 hover:bg-slate-800 cursor-pointer">
+            <MdClose className="h-5 w-5 text-white" onClick={onClose} />
+          </div>
+          <div
+            className={
+              'bg-secondary-500 rounded-full p-1.5 hover:opacity-80 cursor-pointer'
+            }
+            onClick={handleSubmit}
+          >
+            <MdCheck className="h-5 w-5 text-white" />
+          </div>
         </div>
-        <div
-          className={
-            'bg-secondary-500 rounded-full p-1.5 hover:opacity-80 cursor-pointer'
-          }
-        >
-          <MdCheck className="h-5 w-5 text-white" onClick={onClose} />
-        </div>
-      </div>
+      </form>
     </div>
   )
 }

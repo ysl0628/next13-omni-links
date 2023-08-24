@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Transition } from '@headlessui/react'
 
 import Button from '../Button'
@@ -21,18 +21,19 @@ const dummyItems = [
 ]
 
 const LinksSetting = () => {
-  const { links } = useSetting((state) => state)
+  const links = useSetting((state) => state.links)
 
   const [linkType, setLinkType] = useState<'' | 'website' | 'social'>('')
-  const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [isEditingId, setIsEditingId] = useState<string>('')
 
   return (
     <>
-      <div className="text-3xl font-semibold px-6 p-2 text-grey-600 divide-y">
-        連結設定
+      <div className="text-3xl font-semibold flex items-center px-6 p-2 gap-3 text-grey-600 ">
+        <p>連結設定</p>
+        <p className="text-sm font-light text-grey-400 ">最多可新增 8 筆連結</p>
       </div>
       <Divider />
-      <div className="px-6 py-4  flex flex-col gap-4">
+      <div className="px-6 pb-4  flex flex-col gap-4">
         <Transition
           appear={true}
           show={linkType === ''}
@@ -78,27 +79,26 @@ const LinksSetting = () => {
             lastItemOrder={links ? links.length - 1 : -1}
           />
         </Transition>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
           {links?.map((item, index) => {
-            return isEditing ? (
+            return isEditingId === item.id ? (
               <EditLinkItem
                 key={item.id}
                 item={item}
                 index={index}
                 lastItemOrder={links.length - 1}
-                isWebsite={item.type === 'custom'}
-                onClose={() => setIsEditing(false)}
+                isWebsite={item.type?.id === 'website'}
+                onClose={() => setIsEditingId('')}
               />
             ) : (
-              <>
+              <div className="flex w-full items-center" key={item.id}>
                 <MdDragIndicator size={24} className="text-grey-400" />
                 <DisplayLinkItem
-                  key={item.id}
                   item={item}
-                  isWebsite={item.type === 'custom'}
-                  onEditMode={() => setIsEditing(true)}
+                  isWebsite={item.type?.id === 'website'}
+                  onEditMode={() => setIsEditingId(item.id)}
                 />
-              </>
+              </div>
             )
           })}
         </div>

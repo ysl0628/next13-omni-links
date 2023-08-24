@@ -7,30 +7,43 @@ import { FormikProps, getIn } from 'formik'
 interface Values {
   [x: string]: any
 }
+interface LinkItemValue {
+  id: string
+  label: string
+}
 interface LinkItemProps<T extends Values> {
-  selected: string
+  // selected: string
   formik: FormikProps<T>
   name: string
-  onChange: (value: string) => void
-  options: { id: string; label: string }[]
+  // onChange: (value: string) => void
+  options: LinkItemValue[]
+}
+
+const defaultValue = {
+  id: 'default',
+  label: '請選擇'
 }
 
 const Selector: React.FC<LinkItemProps<Values>> = ({
   formik,
   name,
-  selected,
-  onChange,
+  // selected,
+  // onChange,
   options
 }) => {
   const value = getIn(formik.values, name)
   const error = getIn(formik.errors, name)
 
+  const handleChange = (value: LinkItemValue) => {
+    formik.setFieldValue(name, value)
+  }
+
   return (
     <>
-      <Listbox value={value} onChange={formik.handleChange}>
+      <Listbox value={value || defaultValue} onChange={handleChange}>
         <div className=" w-full">
           <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left hover:shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-            <span className="block truncate">{selected}</span>
+            <span className="block truncate">{value.label}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <LuChevronsUpDown
                 className="h-5 w-5 text-gray-400"
@@ -53,7 +66,7 @@ const Selector: React.FC<LinkItemProps<Values>> = ({
                       active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
                     }`
                   }
-                  value={item.id}
+                  value={item}
                 >
                   {({ selected }) => (
                     <>

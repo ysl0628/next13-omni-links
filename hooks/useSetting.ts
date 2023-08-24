@@ -1,27 +1,28 @@
 import { create } from 'zustand'
 import { produce } from 'immer'
-import { AdminType, LinkType } from '@/types'
+import { AdminSettingType, LinkSettingType } from '@/types'
 import { SafeUser } from '@/types/safe'
 
 interface State {
   user: SafeUser | null
-  admin: AdminType
-  links: LinkType[] | null
+  admin: AdminSettingType
+  links: LinkSettingType[] | null
 }
 interface SettingStore {
   user: State['user']
   admin: State['admin']
   links: State['links']
   update: (partial: Partial<State>) => void
+  addLink: (link: LinkSettingType) => void
 }
 
 const useSetting = create<SettingStore>((set) => ({
   user: null,
   admin: {
     username: '',
-    customImage: null,
-    title: null,
-    description: null,
+    customImage: '',
+    title: '',
+    description: '',
     themeColor: null
   },
   links: null,
@@ -38,12 +39,18 @@ const useSetting = create<SettingStore>((set) => ({
           state.admin.themeColor =
             partial.admin.themeColor ?? state.admin.themeColor
         }
-        if (partial.links !== undefined) {
+        if (partial.links) {
           state.links = partial.links
         }
-        if (partial.user !== undefined) {
+        if (partial.user) {
           state.user = partial.user
         }
+      })
+    ),
+  addLink: (link) =>
+    set(
+      produce((state) => {
+        state.links?.push(link)
       })
     )
 }))
