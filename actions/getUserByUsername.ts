@@ -19,6 +19,8 @@ export async function getUserByUsername(username: string) {
     return {
       username: user.username,
       title: user.title,
+      themeColor: user.themeColor,
+      customImage: user.customImage,
       description: user.description,
       links: links
     }
