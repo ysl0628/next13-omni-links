@@ -1,13 +1,15 @@
-import axios, { AxiosResponse } from 'axios'
+import React from 'react'
+import axios from 'axios'
 import { toast } from 'react-hot-toast'
-import React, { useState } from 'react'
 import { useFormik } from 'formik'
 
 import Selector from '../input/Selector'
 import LabelInput from '../input/LabelInput'
 
+import { LinkSetupType } from '@/types'
 import { Link, LinkType } from '@prisma/client'
-import useSetting from '@/hooks/useSetting'
+
+import useSetup from '@/hooks/useSetup'
 import { linkList } from '@/constants/linkMapping'
 
 import { MdClose, MdCheck } from 'react-icons/md'
@@ -41,8 +43,9 @@ const EditLinkItem = ({
   lastItemOrder,
   onClose
 }: EditLinkItemProps) => {
-  const user = useSetting((state) => state.user)
-  const addLink = useSetting((state) => state.addLink)
+  const user = useSetup((state) => state.user)
+  const addLink = useSetup((state) => state.addLink)
+  const updateLink = useSetup((state) => state.updateLink)
 
   const formik = useFormik<FormValues>({
     initialValues: {
@@ -61,6 +64,7 @@ const EditLinkItem = ({
 
       if (item) {
         handleUpdateLink(result)
+        return
       }
       handleAddLink(result)
     }
@@ -89,16 +93,18 @@ const EditLinkItem = ({
 
   const handleUpdateLink = async (values: FormValues) => {
     const result = {
-      url: values.url,
+      url: values.url || '',
       type: values.type,
-      title: values.title,
+      title: values.title || '',
       order: values.order
     }
     try {
       await axios.put(`/api/user/${user?.id}/links/${values.id}`, result)
       toast.success('更新成功')
+      updateLink(values?.id, result as LinkSetupType)
     } catch (error) {
       toast.error('更新失敗')
+      console.log(error)
     }
   }
 
