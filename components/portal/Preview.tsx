@@ -41,7 +41,7 @@ const Preview = () => {
             {(links || []).map((link) => (
               <SocialLink
                 key={link.id}
-                type={link.type.id}
+                type={link.type?.id}
                 url={link.url}
                 label={link.title}
               />

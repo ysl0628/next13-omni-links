@@ -27,7 +27,7 @@ const PublicClient: React.FC<PublicClientProps> = ({ user, currentUser }) => {
   const themeColor = user?.themeColor || 'basic'
   const bgColor = bgColors[themeColor]
 
-  const combinedStyle = ` h-full w-full flex justify-center rounded-lg ${bgColor} bg-gradient-to-tl from-gray-200 to-gray-50 relative`
+  const combinedStyle = ` h-full w-full flex justify-center rounded-lg ${bgColor} relative`
 
   return (
     <div className={combinedStyle}>
