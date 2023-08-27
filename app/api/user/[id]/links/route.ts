@@ -2,7 +2,6 @@ import { getCurrentUser } from '@/actions/getCurrentUser'
 import { NextResponse } from 'next/server'
 
 import prisma from '@/libs/prismadb'
-import { LinkType } from '@prisma/client'
 
 export async function POST(
   req: Request,
@@ -44,6 +43,51 @@ export async function POST(
         userId: params.id,
         createdAt: new Date(),
         updatedAt: new Date()
+      }
+    })
+
+    return NextResponse.json({ data, message: 'success' })
+  } catch (error) {
+    return console.log(error)
+  }
+}
+
+export async function PATCH(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    if (!params.id) return new NextResponse('Unauthorized', { status: 401 })
+
+    const body = await req.json()
+
+    const { links } = body
+
+    // const data = []
+    // for (const link of links) {
+    //   const {id,  order} = link
+
+    //   const update = await prisma.link.update({
+    //     where: {
+    //       id
+    //     },
+    //     data: {
+    //       order,
+    //       updatedAt: new Date()
+    //     }
+    //   })
+
+    //   data.push(update)
+    // }
+
+    const data = await prisma.user.update({
+      where: {
+        id: params.id
+      },
+      data: {
+        links: {
+          set: links
+        }
       }
     })
 
