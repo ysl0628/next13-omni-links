@@ -33,7 +33,7 @@ export default async function SettingLayout({ children }: SettingLayoutProps) {
   }
 
   return (
-    <section className="w-full h-full flex pt-2.5 bg-grey-50 overflow-auto">
+    <section className="w-full h-full flex pt-16 bg-grey-50 overflow-auto">
       <StoreInitializer
         adminSetting={adminSetting}
         linkSetting={linkSetting}
