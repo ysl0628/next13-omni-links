@@ -3,11 +3,14 @@ import { NextResponse } from 'next/server'
 
 import prisma from '@/libs/prismadb'
 
-export async function DELETE({
-  params
-}: {
-  params: { id: string; linkId: string }
-}) {
+export async function DELETE(
+  req: Request,
+  {
+    params
+  }: {
+    params: { id: string; linkId: string }
+  }
+) {
   const currentUser = await getCurrentUser()
   if (!currentUser) return new NextResponse('Unauthorized', { status: 401 })
 
@@ -40,8 +43,14 @@ export async function PUT(
   const { id, linkId } = params
   const { title, type, url, order } = body
 
-  if (!title || !type || !url || !order || !id || !linkId)
-    return new NextResponse('Bad Request', { status: 400 })
+  if (!id || !linkId) return new NextResponse('Bad Request', { status: 400 })
+
+  if (!title) return new NextResponse('Title is required ', { status: 400 })
+  if (!type) return new NextResponse('Type is required ', { status: 400 })
+  if (!url) return new NextResponse('Url is required ', { status: 400 })
+
+  if (order === undefined)
+    return new NextResponse('Order is required ', { status: 400 })
 
   const data = await prisma.link.update({
     where: {
