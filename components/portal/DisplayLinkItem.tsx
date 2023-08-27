@@ -1,10 +1,11 @@
 'use client'
 import axios from 'axios'
-import useSetting from '@/hooks/useSetting'
+import toast from 'react-hot-toast'
+
+import useSetup from '@/hooks/useSetup'
 
 import { FiTrash } from 'react-icons/fi'
 import { MdEdit } from 'react-icons/md'
-import toast from 'react-hot-toast'
 import { LinkType } from '@prisma/client'
 
 interface DisplayLinkItemProps {
@@ -23,11 +24,13 @@ const DisplayLinkItem = ({
   isWebsite,
   onEditMode
 }: DisplayLinkItemProps) => {
-  const { user } = useSetting((state) => state)
+  const user = useSetup((state) => state.user)
+  const removeLink = useSetup((state) => state.removeLink)
 
   const handleDeleteLink = async () => {
     try {
       await axios.delete(`/api/user/${user?.id}/links/${item?.id}`)
+      removeLink(item.id)
       toast.success('刪除成功')
     } catch (error) {
       toast.error('刪除失敗')
