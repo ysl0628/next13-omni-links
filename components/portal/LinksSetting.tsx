@@ -1,7 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import axios from 'axios'
+import toast from 'react-hot-toast'
+import { useCallback, useEffect, useState } from 'react'
 import { Transition } from '@headlessui/react'
+import {
+  DragDropContext,
+  Draggable,
+  DropResult,
+  Droppable
+} from 'react-beautiful-dnd'
 
 import Button from '../Button'
 import Divider from '../Divider'
@@ -9,22 +17,90 @@ import EditLinkItem from './EditLinkItem'
 import DisplayLinkItem from './DisplayLinkItem'
 
 import useSetup from '@/hooks/useSetup'
+import { LinkSetupType } from '@/types'
+
 import { MdDragIndicator } from 'react-icons/md'
 
-const dummyItems = [
-  {
-    id: '11gg',
-    title: 'Facebook',
-    url: 'https://www.facebook.com',
-    type: 'facebook'
-  }
-]
-
 const LinksSetting = () => {
+  const user = useSetup((state) => state.user)
   const links = useSetup((state) => state.links)
-
+  const update = useSetup((state) => state.update)
+  const [enabled, setEnabled] = useState(false)
+  const [originalOrder] = useState<LinkSetupType[] | null>(links)
   const [linkType, setLinkType] = useState<'' | 'website' | 'social'>('')
   const [isEditingId, setIsEditingId] = useState<string>('')
+  const [isDragging, setIsDragging] = useState(false)
+
+  const reorder = (
+    list: LinkSetupType[] | null,
+    startIndex: number,
+    endIndex: number
+  ) => {
+    const result = Array.from(list || [])
+    const [removed] = result.splice(startIndex, 1)
+    result.splice(endIndex, 0, removed)
+
+    const newOrder = result.map((item, index) => {
+      return {
+        ...item,
+        order: index
+      }
+    })
+
+    return newOrder
+  }
+
+  const onDragEnd = useCallback(
+    (result: DropResult) => {
+      if (!result.destination) {
+        return
+      }
+
+      const items = reorder(
+        links,
+        result.source.index,
+        result.destination.index
+      )
+
+      update({ links: items })
+
+      // setResult(items)
+    },
+    [links, update]
+  )
+
+  useEffect(() => {
+    const animation = requestAnimationFrame(() => setEnabled(true))
+
+    return () => {
+      cancelAnimationFrame(animation) // 組件卸載時取消請求的動畫幀，以防止內存洩漏
+      setEnabled(false)
+    }
+  }, [])
+
+  if (!enabled) {
+    return null
+  }
+
+  const handleToggleDraggable = () => {
+    setIsDragging((prev) => !prev)
+  }
+
+  const handleUpdateLinks = async () => {
+    try {
+      await axios.patch(`/api/user/${user?.id}/links`, links)
+      toast.success('更新成功')
+      setIsDragging(false)
+    } catch (error) {
+      toast.error('更新失敗')
+      console.log(error)
+    }
+  }
+
+  const handleCancelUpdate = () => {
+    setIsDragging(false)
+    update({ links: originalOrder })
+  }
 
   return (
     <>
@@ -79,29 +155,88 @@ const LinksSetting = () => {
             lastItemOrder={links ? links.length - 1 : -1}
           />
         </Transition>
-        <div className="flex flex-col items-center gap-2">
-          {links?.map((item, index) => {
-            return isEditingId === item.id ? (
-              <EditLinkItem
-                key={item.id}
-                item={item}
-                index={index}
-                lastItemOrder={links.length - 1}
-                isWebsite={item.type?.id === 'website'}
-                onClose={() => setIsEditingId('')}
-              />
-            ) : (
-              <div className="flex w-full items-center" key={item.id}>
-                <MdDragIndicator size={24} className="text-grey-400" />
-                <DisplayLinkItem
-                  item={item}
-                  isWebsite={item.type?.id === 'website'}
-                  onEditMode={() => setIsEditingId(item.id)}
-                />
-              </div>
-            )
-          })}
-        </div>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <div className="flex flex-col items-center gap-2">
+            <Droppable droppableId="droppable-1" type="PERSON">
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  className="flex flex-col items-center gap-2 w-full"
+                  {...provided.droppableProps}
+                >
+                  {links?.map((item, index) => {
+                    return isEditingId === item.id ? (
+                      <EditLinkItem
+                        key={item.id}
+                        item={item}
+                        index={index}
+                        lastItemOrder={links.length - 1}
+                        isWebsite={item.type?.id === 'website'}
+                        onClose={() => setIsEditingId('')}
+                      />
+                    ) : (
+                      <Draggable
+                        key={item.id}
+                        draggableId={item.id}
+                        index={item.order || 0}
+                      >
+                        {(provided) => (
+                          <div
+                            className="flex w-full items-center"
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                          >
+                            <div {...provided.dragHandleProps}>
+                              {isDragging && (
+                                <MdDragIndicator
+                                  size={24}
+                                  className="text-grey-400"
+                                />
+                              )}
+                            </div>
+
+                            <DisplayLinkItem
+                              item={item}
+                              isWebsite={item.type?.id === 'website'}
+                              onEditMode={() => setIsEditingId(item.id)}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    )
+                  })}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </div>
+        </DragDropContext>
+        {isDragging ? (
+          <div className="flex gap-4">
+            <Button
+              label="取消"
+              rounded="full"
+              color="dark"
+              variant="outline"
+              className="w-full"
+              onClick={handleCancelUpdate}
+            />
+            <Button
+              label="更新"
+              rounded="full"
+              color="info"
+              className="w-full"
+              onClick={handleUpdateLinks}
+            />
+          </div>
+        ) : (
+          <Button
+            label="編輯順序"
+            color="info"
+            rounded="full"
+            onClick={handleToggleDraggable}
+          />
+        )}
       </div>
     </>
   )
