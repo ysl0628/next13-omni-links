@@ -65,7 +65,10 @@ const useSetup = createWithEqualityFn<SettingStore>(
     removeLink: (linkId) =>
       set(
         produce((state) => {
-          state.links?.filter((l: LinkSetupType) => l.id !== linkId)
+          const newState = state.links?.filter(
+            (l: LinkSetupType) => l.id !== linkId
+          )
+          state.links = newState
         })
       ),
     updateLink: (linkId, newLink) =>
