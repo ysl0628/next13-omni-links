@@ -37,13 +37,13 @@ const DisplayLinkItem = ({
     }
   }
   return (
-    <div className="flex w-full justify-between items-center gap-8 shadow-lg p-4 rounded-xl">
+    <div className="flex w-full justify-between items-center gap-8 shadow-lg p-4 rounded-xl bg-white">
       <div className="flex flex-col gap-2 w-full">
         <div className="flex items-center gap-2">
           <div className="w-12">{isWebsite ? '名稱' : '類型'}</div>
 
           <div className="py-1.5 text-grey-500">
-            {isWebsite ? item.title : item.type.label}
+            {isWebsite ? item.title : item.type?.label}
           </div>
         </div>
         <div className="flex items-center gap-2">

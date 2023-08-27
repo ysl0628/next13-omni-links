@@ -1,5 +1,5 @@
 import React from 'react'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { toast } from 'react-hot-toast'
 import { useFormik } from 'formik'
 
@@ -78,11 +78,12 @@ const EditLinkItem = ({
         title: values.title,
         order: values.order
       }
-      const { data: res } = await axios.post<Link>(
+      const { data: res } = await axios.post<AxiosResponse<Link>>(
         `/api/user/${user?.id}/links`,
         result
       )
-      addLink(res)
+
+      addLink(res.data)
 
       toast.success('新增成功')
     } catch (error) {
@@ -149,8 +150,11 @@ const EditLinkItem = ({
         </div>
 
         <div className="flex flex-col gap-3">
-          <div className="bg-grey-400 rounded-full p-1.5 hover:bg-slate-800 cursor-pointer">
-            <MdClose className="h-5 w-5 text-white" onClick={onClose} />
+          <div
+            className="bg-grey-400 rounded-full p-1.5 hover:bg-slate-800 cursor-pointer"
+            onClick={onClose}
+          >
+            <MdClose className="h-5 w-5 text-white" />
           </div>
           <div
             className={
