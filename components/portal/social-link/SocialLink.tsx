@@ -1,7 +1,8 @@
-import { socialType } from '@/constants/linkMapping'
-import Link from 'next/link'
 import React from 'react'
+import Link from 'next/link'
+
 import { IconType } from 'react-icons'
+import { socialType } from '@/constants/linkMapping'
 // import {
 //   BiLogoDiscordAlt,
 //   BiLogoFacebookCircle,
@@ -34,7 +35,7 @@ const SocialLink = ({
   const Icon = icon || socialType[type]?.icon
   const style = customStyle || socialType[type]?.style
   const socialLabel = socialType[type]?.label
-  const combinedStyle = `px-4 py-1.5 flex gap-2 justify-center items-center w-full text-sm font-medium border-2 rounded ${style} hover:shadow-md hover:opacity-80`
+  const combinedStyle = `px-4 py-2 flex gap-2 justify-center items-center w-full text-md font-medium border-2 rounded ${style} hover:shadow-md hover:opacity-80`
 
   return (
     <Link className="w-full " href={url || '/'} target="_blank">

@@ -8,7 +8,7 @@ export interface IconTypeProps {
   style?: string
 }
 
-export interface LinkSettingType {
+export interface LinkSetupType {
   id: string
   type: LinkType
   title: string
@@ -18,11 +18,11 @@ export interface LinkSettingType {
 
 export type ThemeColorType = 'basic' | 'blue-rose' | 'lime' | null
 
-export interface AdminSettingType {
-  username?: string
-  customImage?: string
-  title?: string
-  description?: string
+export interface AdminSetupType {
+  username?: string | null
+  customImage?: string | null
+  title?: string | null
+  description?: string | null
   themeColor?: ThemeColorType
 }
 
@@ -35,4 +35,5 @@ export interface ResponseType {
   type?: LinkType | null
   url?: string | null
   order?: number | null
+  username?: string | null
 }

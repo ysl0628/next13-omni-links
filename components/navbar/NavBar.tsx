@@ -17,14 +17,16 @@ interface NavBarProps {
 const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
   const path = usePathname()
   const isAdmin = path.includes('/portal')
+  const isNavBarShow = path === '/home' || isAdmin
+
+  if (!isNavBarShow) return null
 
   return (
     <div
       className={`fixed w-full 
       ${isAdmin ? 'bg-white shadow-sm' : 'bg-grey-50'} 
-      min-h-[4.5rem]
-
-      z-10`}
+      min-h-[4.5rem] z-10
+      `}
     >
       <div className={`py-4 ${isAdmin ? 'border-b-[1px]' : ''} `}>
         <Container>
