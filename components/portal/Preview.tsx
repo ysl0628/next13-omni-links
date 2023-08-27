@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import { shallow } from 'zustand/shallow'
 
 import Avatar from '../Avatar'
 import SocialLink from './social-link/SocialLink'
@@ -12,13 +11,10 @@ import { bgColors } from '@/constants/themeColors'
 //https:lowbite.com/docs/components/device-mockups/
 
 const Preview = () => {
-  const { admin, links } = useSetup(
-    (state) => ({
-      admin: state.admin,
-      links: state.links
-    }),
-    shallow
-  )
+  const { admin, links } = useSetup((state) => ({
+    admin: state.admin,
+    links: state.links
+  }))
   const avatarImage = admin?.customImage
   const themeColor = admin?.themeColor || 'basic'
 
