@@ -4,7 +4,6 @@ import BasicSetting from '@/components/portal/BasicSetting'
 
 const AdminPage = async () => {
   const links = await getLinks()
-  console.log(links)
 
   return <PortalContainer mainComponent={BasicSetting} />
 }

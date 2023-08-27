@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 import { Transition } from '@headlessui/react'
 
 import Button from '../Button'
@@ -8,7 +8,7 @@ import Divider from '../Divider'
 import EditLinkItem from './EditLinkItem'
 import DisplayLinkItem from './DisplayLinkItem'
 
-import useSetting from '@/hooks/useSetting'
+import useSetup from '@/hooks/useSetup'
 import { MdDragIndicator } from 'react-icons/md'
 
 const dummyItems = [
@@ -21,7 +21,7 @@ const dummyItems = [
 ]
 
 const LinksSetting = () => {
-  const links = useSetting((state) => state.links)
+  const links = useSetup((state) => state.links)
 
   const [linkType, setLinkType] = useState<'' | 'website' | 'social'>('')
   const [isEditingId, setIsEditingId] = useState<string>('')
@@ -103,14 +103,6 @@ const LinksSetting = () => {
           })}
         </div>
       </div>
-      {/* <div className="px-6 py-4 flex justify-end">
-        <Button
-          label="預覽"
-          size="large"
-          className="w-full md:w-1/4"
-          onClick={() => {}}
-        />
-      </div> */}
     </>
   )
 }

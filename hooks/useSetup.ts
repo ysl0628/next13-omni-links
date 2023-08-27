@@ -1,22 +1,28 @@
 import { create } from 'zustand'
 import { produce } from 'immer'
-import { AdminSettingType, LinkSettingType } from '@/types'
+
+import { AdminSetupType, LinkSetupType } from '@/types'
 import { SafeUser } from '@/types/safe'
 
 interface State {
   user: SafeUser | null
-  admin: AdminSettingType
-  links: LinkSettingType[] | null
+  admin: AdminSetupType
+  links: LinkSetupType[] | null
 }
 interface SettingStore {
   user: State['user']
   admin: State['admin']
   links: State['links']
   update: (partial: Partial<State>) => void
-  addLink: (link: LinkSettingType) => void
+  addLink: (link: LinkSetupType) => void
+  removeLink: (linkId: string) => void
+  updateLink: (
+    linkId: string | undefined,
+    newLink: Omit<LinkSetupType, 'id'> | undefined
+  ) => void
 }
 
-const useSetting = create<SettingStore>((set) => ({
+const useSetup = create<SettingStore>((set) => ({
   user: null,
   admin: {
     username: '',
@@ -52,7 +58,27 @@ const useSetting = create<SettingStore>((set) => ({
       produce((state) => {
         state.links?.push(link)
       })
+    ),
+  removeLink: (linkId) =>
+    set(
+      produce((state) => {
+        state.links?.filter((l: LinkSetupType) => l.id !== linkId)
+      })
+    ),
+  updateLink: (linkId, newLink) =>
+    set(
+      produce((state) => {
+        const link = state.links?.find((l: LinkSetupType) => l.id === linkId)
+        if (!link || !newLink) return
+
+        if (link) {
+          link.title = newLink.title
+          link.type = newLink.type
+          link.url = newLink.url
+          link.order = newLink.order
+        }
+      })
     )
 }))
 
-export default useSetting
+export default useSetup

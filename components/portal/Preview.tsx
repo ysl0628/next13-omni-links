@@ -1,17 +1,18 @@
 'use client'
 
 import React from 'react'
+import { shallow } from 'zustand/shallow'
+
 import Avatar from '../Avatar'
 import SocialLink from './social-link/SocialLink'
 
-import useSetting from '@/hooks/useSetting'
+import useSetup from '@/hooks/useSetup'
 import { bgColors } from '@/constants/themeColors'
-import { shallow } from 'zustand/shallow'
 
 //https:lowbite.com/docs/components/device-mockups/
 
 const Preview = () => {
-  const { admin, links } = useSetting(
+  const { admin, links } = useSetup(
     (state) => ({
       admin: state.admin,
       links: state.links
@@ -29,7 +30,7 @@ const Preview = () => {
       <div className="h-[64px] w-[3px] bg-gray-800 dark:bg-gray-800 absolute -right-[17px] top-[142px] rounded-r-lg"></div>
       <div className="rounded-[2rem] overflow-auto w-[272px] h-[572px] bg-white dark:bg-gray-800">
         <div
-          className={`flex flex-col gap-4 justify-center items-center py-12 px-6 
+          className={`flex flex-col gap-4 justify-start items-center py-12 px-6 h-full
           ${bgColors[themeColor]}
           `}
         >
@@ -40,7 +41,7 @@ const Preview = () => {
           <div className="text-xs text-justify text-gray-500 dark:text-gray-300">
             {admin?.description || '這是我的簡介'}
           </div>
-          <div className="flex flex-col w-full gap-2">
+          <div className="flex flex-col w-full gap-4">
             {(links || []).map((link) => (
               <SocialLink
                 key={link.id}
@@ -49,18 +50,6 @@ const Preview = () => {
                 label={link.title}
               />
             ))}
-            {/* <SocialLink type="facebook" url={'123'} />
-            <SocialLink type="youtube" url={'123'} />
-            <SocialLink type="instagram" url={'123'} />
-            <SocialLink type="twitter" label="111" url={'123'} />
-
-            <SocialLink type="linkedin" url={'123'} />
-            <SocialLink type="github" url={'123'} />
-            <SocialLink type="spotify" url={'123'} />
-            <SocialLink type="discord" url={'123'} />
-            <SocialLink type="tiktok" url={'123'} />
-            <SocialLink type="email" url={'123'} />
-            <SocialLink type="website" url={'123'} /> */}
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ import Descriptions from '@/components/home/Descriptions'
 
 export default function Home() {
   return (
-    <div className="h-full w-full overflow-hidden">
+    <div className="h-full w-full pt-16 overflow-hidden">
       <div className="h-[95%] w-full pt-2 flex flex-col items-center relative bg-grey-50">
         <main className="flex h-full absolute items-center justify-between p-24">
           <Descriptions />

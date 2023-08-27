@@ -9,7 +9,7 @@ import LabelInput from '../input/LabelInput'
 import ImageUpload from '../input/ImageUpload'
 
 import { SafeUser } from '@/types/safe'
-import useSetting from '@/hooks/useSetting'
+import useSetup from '@/hooks/useSetup'
 
 const themeList = [
   {
@@ -38,7 +38,7 @@ interface FormValues {
 }
 
 const BasicSetting: React.FC<BasicSettingProps> = () => {
-  const { update, admin } = useSetting((state) => state)
+  const { update, admin } = useSetup((state) => state)
 
   const formik = useFormik<FormValues>({
     initialValues: { ...admin },
