@@ -5,7 +5,7 @@ import { useMore } from '@/hooks/useMore'
 import { bgColors } from '@/constants/themeColors'
 
 import Avatar from '@/components/Avatar'
-import SocialLink from '@/components/portal/social-link/SocialLink'
+import SocialLink from '@/components/page/portal/LinksSetup/SocialLink'
 import MoreContent from './MoreContent'
 
 import { Link } from '@prisma/client'

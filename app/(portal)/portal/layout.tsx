@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import StoreInitializer from '@/components/portal/StoreInitializer'
+import StoreInitializer from '@/components/page/portal/StoreInitializer'
 import { getCurrentUser } from '@/actions/getCurrentUser'
 import { getLinks } from '@/actions/getLinks'
 import { ThemeColorType } from '@/types'

@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 
-import Button from '../Button'
+import Button from '../../Button'
 
 const Descriptions = () => {
   const router = useRouter()

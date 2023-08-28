@@ -3,19 +3,6 @@ import Link from 'next/link'
 
 import { IconType } from 'react-icons'
 import { socialType } from '@/constants/linkMapping'
-// import {
-//   BiLogoDiscordAlt,
-//   BiLogoFacebookCircle,
-//   BiLogoGithub,
-//   BiLogoInstagram,
-//   BiLogoLinkedinSquare,
-//   BiLogoSpotify,
-//   BiLogoTiktok,
-//   BiLogoTwitter,
-//   BiLogoYoutube
-// } from 'react-icons/bi'
-// import { FaEnvelope } from 'react-icons/fa'
-// import { socialType } from '@/constants/linkMapping'
 
 export interface SocialLinkProps {
   label?: string

@@ -2,8 +2,8 @@
 
 import React from 'react'
 
-import Avatar from '../Avatar'
-import SocialLink from './social-link/SocialLink'
+import Avatar from '../../Avatar'
+import SocialLink from './LinksSetup/SocialLink'
 
 import useSetup from '@/hooks/useSetup'
 import { bgColors } from '@/constants/themeColors'

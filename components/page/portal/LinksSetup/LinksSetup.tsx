@@ -11,8 +11,8 @@ import {
   Droppable
 } from 'react-beautiful-dnd'
 
-import Button from '../Button'
-import Divider from '../Divider'
+import Button from '../../../Button'
+import Divider from '../../../Divider'
 import EditLinkItem from './EditLinkItem'
 import DisplayLinkItem from './DisplayLinkItem'
 
@@ -21,7 +21,7 @@ import { LinkSetupType } from '@/types'
 
 import { MdDragIndicator } from 'react-icons/md'
 
-const LinksSetting = () => {
+const LinksSetup = () => {
   const user = useSetup((state) => state.user)
   const links = useSetup((state) => state.links)
   const update = useSetup((state) => state.update)
@@ -242,4 +242,4 @@ const LinksSetting = () => {
   )
 }
 
-export default LinksSetting
+export default LinksSetup

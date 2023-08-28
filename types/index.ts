@@ -1,4 +1,3 @@
-import { socialType } from '@/constants/linkMapping'
 import { LinkType } from '@prisma/client'
 import { IconType } from 'react-icons'
 

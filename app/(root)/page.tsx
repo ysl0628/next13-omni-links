@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 import cover from '@/public/images/cover.png'
-import Descriptions from '@/components/home/Descriptions'
+import Descriptions from '@/components/page/home/Descriptions'
 
 export default function Home() {
   return (

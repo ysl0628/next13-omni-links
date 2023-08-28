@@ -3,8 +3,8 @@ import axios, { AxiosResponse } from 'axios'
 import { toast } from 'react-hot-toast'
 import { useFormik } from 'formik'
 
-import Selector from '../input/Selector'
-import LabelInput from '../input/LabelInput'
+import Selector from '../../../input/Selector'
+import LabelInput from '../../../input/LabelInput'
 
 import { LinkSetupType } from '@/types'
 import { Link, LinkType } from '@prisma/client'

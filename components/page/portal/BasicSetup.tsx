@@ -1,14 +1,15 @@
 'use client'
 import axios from 'axios'
+import { MouseEvent } from 'react'
 import { toast } from 'react-hot-toast'
 import { useFormik } from 'formik'
 
-import Avatar from '../Avatar'
-import Button from '../Button'
-import Divider from '../Divider'
-import ButtonGroup from '../ButtonGroup'
-import LabelInput from '../input/LabelInput'
-import ImageUpload from '../input/ImageUpload'
+import Avatar from '@/components/Avatar'
+import Button from '@/components/Button'
+import Divider from '@/components/Divider'
+import LabelInput from '@/components/input/LabelInput'
+import ButtonGroup from '@/components/ButtonGroup'
+import ImageUpload from '@/components/input/ImageUpload'
 
 import { SafeUser } from '@/types/safe'
 import useSetup from '@/hooks/useSetup'
@@ -28,7 +29,7 @@ const themeList = [
   }
 ]
 
-interface BasicSettingProps {
+interface BasicSetupProps {
   currentUser?: SafeUser | null
 }
 
@@ -39,7 +40,7 @@ interface FormValues {
   themeColor?: 'basic' | 'blue-rose' | 'lime' | null
 }
 
-const BasicSetting: React.FC<BasicSettingProps> = () => {
+const BasicSetup: React.FC<BasicSetupProps> = () => {
   const { update, admin } = useSetup((state) => state)
   const user = useSetup((state) => state.user)
 
@@ -59,7 +60,8 @@ const BasicSetting: React.FC<BasicSettingProps> = () => {
 
   const avatarImage = formik.values.customImage || admin?.customImage
 
-  const handlePreview = () => {
+  const handlePreview = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
     update({ admin: formik.values })
   }
 
@@ -128,7 +130,7 @@ const BasicSetting: React.FC<BasicSettingProps> = () => {
             color="secondary"
             size="large"
             className="w-full md:w-1/4"
-            onClick={handlePreview}
+            onClick={(e) => handlePreview(e)}
           />
           <Button
             label="儲存"
@@ -142,4 +144,4 @@ const BasicSetting: React.FC<BasicSettingProps> = () => {
   )
 }
 
-export default BasicSetting
+export default BasicSetup
