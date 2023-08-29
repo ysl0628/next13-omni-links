@@ -1,6 +1,9 @@
 import prisma from '@/libs/prismadb'
+import { cache } from 'react'
 
-export async function getUserByUsername(username: string) {
+export const revalidate = 60 * 60
+
+export const getUserByUsername = cache(async (username: string) => {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -27,4 +30,4 @@ export async function getUserByUsername(username: string) {
   } catch (error) {
     return null
   }
-}
+})
