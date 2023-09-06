@@ -61,17 +61,9 @@ const Input: React.FC<InputProps<Values>> = (
         type={type}
         className={`
           peer
-          w-full
-          p-2
+          p-2 
           pt-4
-          font-light 
-          bg-white 
-          border-2
-          rounded-md
-          outline-none
-          transition
-          disabled:opacity-70
-          disabled:cursor-not-allowed
+          input-base
           ${formatPrice ? 'pl-9' : 'pl-4'}
           ${Boolean(error) ? 'border-rose-500' : 'border-neutral-300'}
           ${Boolean(error) ? 'focus:border-rose-500' : 'focus:border-black'}

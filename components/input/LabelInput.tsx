@@ -78,16 +78,9 @@ const LabelInput: React.FC<LabelInputProps<Values>> = ({
           onChange={onChange || formik.handleChange}
           placeholder={placeholder || ' '}
           className={`
-          w-full
           h-32
           p-4
-          font-light 
-          bg-white 
-          border-2
-          rounded-md
-          outline-none
-          disabled:opacity-70
-          disabled:cursor-not-allowed
+          input-base
           ${formatPrice ? 'pl-9' : 'pl-4'}
           ${Boolean(error) ? 'border-rose-500' : ''}
           ${Boolean(error) ? 'focus:border-rose-500' : 'focus:border-gray-500'}
@@ -102,16 +95,9 @@ const LabelInput: React.FC<LabelInputProps<Values>> = ({
           placeholder={placeholder || ' '}
           type={type}
           className={`
-          w-full
           ${small ? 'h-8' : 'h-12'}
           p-4
-          font-light 
-          bg-white 
-          border-2
-          rounded-md
-          outline-none
-          disabled:opacity-70
-          disabled:cursor-not-allowed
+          input-base
           ${formatPrice ? 'pl-9' : 'pl-4'}
           ${Boolean(error) ? 'border-rose-500' : ''}
           ${Boolean(error) ? 'focus:border-rose-500' : 'focus:border-gray-500'}
