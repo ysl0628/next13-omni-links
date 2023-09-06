@@ -20,6 +20,7 @@ export default function Example({ title, list, formik, name }: Props) {
   return (
     <div className="w-full ">
       <RadioGroup
+        id="radio-group"
         className="flex flex-col gap-2"
         value={value}
         onChange={(value) =>
@@ -31,12 +32,13 @@ export default function Example({ title, list, formik, name }: Props) {
           })
         }
       >
-        <RadioGroup.Label className="text-md text-zinc-400">
+        <RadioGroup.Label id="radio-title" className="text-md text-zinc-400">
           {title}
         </RadioGroup.Label>
         <div className="flex shadow-lg divide-x-2 rounded-full ">
           {list.map((item, index) => (
             <RadioGroup.Option
+              id="radio-option"
               key={item.name}
               value={item.id}
               className={({ active, checked }) =>
@@ -62,6 +64,7 @@ export default function Example({ title, list, formik, name }: Props) {
                   <div className="flex items-center justify-between">
                     <div className="text-md">
                       <RadioGroup.Label
+                        id={`radio-option-${item.id}`}
                         as="p"
                         className={`font-medium  ${
                           checked ? 'text-white' : 'text-gray-900'
