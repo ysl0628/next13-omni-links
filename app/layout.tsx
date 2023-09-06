@@ -25,11 +25,7 @@ interface RootLayoutProps {
   admin: React.ReactNode
 }
 
-export default async function RootLayout({
-  children,
-  auth,
-  admin
-}: RootLayoutProps) {
+export default async function RootLayout({ children, auth }: RootLayoutProps) {
   const currentUser = await getCurrentUser()
   return (
     <html lang="en" suppressHydrationWarning>
