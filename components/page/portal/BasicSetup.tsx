@@ -60,8 +60,7 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
 
   const avatarImage = formik.values.customImage || admin?.customImage
 
-  const handlePreview = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
+  const handlePreview = () => {
     update({ admin: formik.values })
   }
 
@@ -130,7 +129,8 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
             color="secondary"
             size="large"
             className="w-full md:w-1/4"
-            onClick={(e) => handlePreview(e)}
+            type="button"
+            onClick={handlePreview}
           />
           <Button
             label="儲存"

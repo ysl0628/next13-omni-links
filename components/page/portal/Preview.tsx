@@ -26,9 +26,7 @@ const Preview = () => {
       <div className="h-[64px] w-[3px] bg-gray-800 dark:bg-gray-800 absolute -right-[17px] top-[142px] rounded-r-lg"></div>
       <div className="rounded-[2rem] overflow-auto w-[272px] h-[572px] bg-white dark:bg-gray-800">
         <div
-          className={`flex flex-col gap-4 justify-start items-center py-12 px-6 h-full
-          ${bgColors[themeColor]}
-          `}
+          className={`flex flex-col gap-4 justify-start items-center py-12 px-6 h-full bg-gradient-to-tl ${bgColors[themeColor]}`}
         >
           <Avatar size={90} src={avatarImage} />
           <div className="text-lg font-semibold text-gray-700 dark:text-gray-100">
