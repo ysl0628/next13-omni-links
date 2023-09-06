@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import cover from '@/public/images/cover.png'
+import cover from '@/public/images/Cover.png'
 import Descriptions from '@/components/page/home/Descriptions'
 
 export default function Home() {
@@ -9,7 +9,7 @@ export default function Home() {
       <div className="h-[95%] w-full pt-2 flex flex-col items-center relative bg-grey-50">
         <main className="flex h-full absolute items-center justify-between p-24">
           <Descriptions />
-          <div className="hidden lg:block lg:left-[12rem] xl:left-[15rem] relative">
+          <div className="hidden lg:block lg:right-[6rem] xl:left-[8rem] relative ">
             <Image alt="cover" src={cover} className="object-cover" priority />
           </div>
         </main>
