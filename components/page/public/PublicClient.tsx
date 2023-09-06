@@ -45,7 +45,7 @@ const PublicClient: React.FC<PublicClientProps> = ({ user, currentUser }) => {
         <div className="text-md text-justify text-gray-500 dark:text-gray-300">
           {user?.description || '這是我的簡介'}
         </div>
-        <div className="flex flex-col w-full gap-2">
+        <div className="flex flex-col w-full gap-6">
           {(user?.links || []).map((link) => (
             <SocialLink
               key={link.id}
