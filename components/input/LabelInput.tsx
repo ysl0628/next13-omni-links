@@ -1,15 +1,14 @@
 'use client'
 
-import { FormikProps, getIn } from 'formik'
-// import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
+import { memo } from 'react'
 import { BiDollar } from 'react-icons/bi'
+import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
 
 interface Values {
   [x: string]: any
 }
 interface LabelInputProps<T extends Values> {
-  name: string
-  formik: FormikProps<T>
+  id: string
   small?: boolean
   label?: string
   placeholder?: string
@@ -19,15 +18,16 @@ interface LabelInputProps<T extends Values> {
   disabled?: boolean
   formatPrice?: boolean
   required?: boolean
+  errors: FieldErrors
+  register: UseFormRegister<FieldValues>
   onChange?: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void
 }
 
 const LabelInput: React.FC<LabelInputProps<Values>> = ({
+  id,
   label,
-  formik,
-  name,
   small,
   placeholder,
   type = 'text',
@@ -36,10 +36,11 @@ const LabelInput: React.FC<LabelInputProps<Values>> = ({
   disabled,
   formatPrice,
   required,
+  errors,
+  register,
   onChange
 }) => {
-  const value = getIn(formik.values, name)
-  const error = getIn(formik.errors, name)
+  const message = errors[id]?.message as string
 
   // 使用 peer 來達到 placeholder 及 label 的轉換效果
   return (
@@ -61,7 +62,7 @@ const LabelInput: React.FC<LabelInputProps<Values>> = ({
           text-md
           text-gray-600
           ${formatPrice ? 'left-9' : 'left-4'}
-          ${Boolean(error) ? 'text-rose-500' : 'text-zinc-400'}
+          ${errors[id] ? 'text-rose-500' : 'text-zinc-400'}
         `}
         >
           {label}
@@ -71,27 +72,25 @@ const LabelInput: React.FC<LabelInputProps<Values>> = ({
 
       {textarea ? (
         <textarea
-          name={name}
+          id={id}
           disabled={disabled}
-          maxLength={textarea ? max : 80}
-          value={value || ''}
-          onChange={onChange || formik.handleChange}
+          {...register(id, { required })}
           placeholder={placeholder || ' '}
+          maxLength={max}
           className={`
           h-32
           p-4
           input-base
           ${formatPrice ? 'pl-9' : 'pl-4'}
-          ${Boolean(error) ? 'border-rose-500' : ''}
-          ${Boolean(error) ? 'focus:border-rose-500' : 'focus:border-gray-500'}
+          ${errors[id] ? 'border-rose-500' : ''}
+          ${errors[id] ? 'focus:border-rose-500' : 'focus:border-gray-500'}
           `}
         />
       ) : (
         <input
-          name={name}
+          id={id}
           disabled={disabled}
-          value={value || ''}
-          onChange={onChange || formik.handleChange}
+          {...register(id, { required })}
           placeholder={placeholder || ' '}
           type={type}
           className={`
@@ -99,16 +98,16 @@ const LabelInput: React.FC<LabelInputProps<Values>> = ({
           p-4
           input-base
           ${formatPrice ? 'pl-9' : 'pl-4'}
-          ${Boolean(error) ? 'border-rose-500' : ''}
-          ${Boolean(error) ? 'focus:border-rose-500' : 'focus:border-gray-500'}
+          ${errors[id] ? 'border-rose-500' : ''}
+          ${errors[id] ? 'focus:border-rose-500' : 'focus:border-gray-500'}
         `}
         />
       )}
-      {error && (
-        <span className="absolute text-rose-500 bottom-5">{error}</span>
+      {errors[id] && (
+        <span className="absolute text-rose-500 bottom-5">{message}</span>
       )}
     </div>
   )
 }
 
-export default LabelInput
+export default memo(LabelInput)

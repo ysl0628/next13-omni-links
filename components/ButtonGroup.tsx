@@ -2,35 +2,25 @@
 
 import { RadioGroup } from '@headlessui/react'
 
-import { FormikProps, getIn } from 'formik'
-
 interface Values {
   [x: string]: any
 }
 interface Props {
+  id: string
+  value: string
   list: Record<string, string>[]
   title: string
-  name: string
-  formik: FormikProps<Values>
+  onChange: (value: string) => void
 }
 
-export default function Example({ title, list, formik, name }: Props) {
-  const value = getIn(formik.values, name)
-
+export default function Example({ id, value, title, list, onChange }: Props) {
   return (
     <div className="w-full ">
       <RadioGroup
-        id="radio-group"
+        id={`radio-group-${id}`}
         className="flex flex-col gap-2"
         value={value}
-        onChange={(value) =>
-          formik.handleChange({
-            target: {
-              name,
-              value
-            }
-          })
-        }
+        onChange={onChange}
       >
         <RadioGroup.Label id="radio-title" className="text-md text-zinc-400">
           {title}
