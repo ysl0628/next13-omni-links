@@ -1,16 +1,15 @@
 'use client'
 import React from 'react'
 import Link from 'next/link'
-import { useFormik } from 'formik'
 import { signIn } from 'next-auth/react'
 import { toast } from 'react-hot-toast'
-import * as Yup from 'yup'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 
 import Button from '@/components/Button'
 import Input from '@/components/input/Input'
 
 import { AiFillGithub } from 'react-icons/ai'
-import { BiLogoGoogle, BiLogoFacebook } from 'react-icons/bi'
+import { BiLogoGoogle, BiLogoFacebook, BiLogoTwitter } from 'react-icons/bi'
 import { CALLBACK_URL } from '@/constants/common'
 
 interface FormikValues {
@@ -21,42 +20,47 @@ interface FormikValues {
 const LoginClient = () => {
   const [isLoading, setIsLoading] = React.useState(false)
 
-  const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .email('請輸入正確的 Email')
-      .required('Email 為必填欄位'),
-    password: Yup.string().required('Password 為必填欄位')
-  })
+  // const validationSchema = Yup.object().shape({
+  //   email: Yup.string()
+  //     .email('請輸入正確的 Email')
+  //     .required('Email 為必填欄位'),
+  //   password: Yup.string().required('Password 為必填欄位')
+  // })
 
-  const formik = useFormik<FormikValues>({
-    initialValues: {},
-    validationSchema,
-    validateOnChange: false,
-    validateOnBlur: false,
-    onSubmit: (values) => {
-      setIsLoading(true)
-
-      signIn('credentials', {
-        email: values.email,
-        password: values.password,
-        redirect: false,
-        callbackUrl: CALLBACK_URL
-      })
-        .then((callback) => {
-          setIsLoading(false)
-          if (callback?.ok) {
-            toast.success('登入成功')
-          }
-
-          if (callback?.error) {
-            toast.error('登入失敗')
-          }
-        })
-        .finally(() => {
-          setIsLoading(false)
-        })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FieldValues>({
+    defaultValues: {
+      email: '',
+      password: ''
     }
   })
+
+  const onSubmit: SubmitHandler<FieldValues> = (values) => {
+    setIsLoading(true)
+
+    signIn('credentials', {
+      email: values.email,
+      password: values.password,
+      redirect: false,
+      callbackUrl: CALLBACK_URL
+    })
+      .then((callback) => {
+        setIsLoading(false)
+        if (callback?.ok) {
+          toast.success('登入成功')
+        }
+
+        if (callback?.error) {
+          toast.error('登入失敗')
+        }
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }
 
   const handleSocialLogIn = (socialType: string) => {
     setIsLoading(true)
@@ -83,11 +87,18 @@ const LoginClient = () => {
         <h1 className="text-grey-600 text-3xl font-semibold">Log In</h1>
       </div>
       <div className="flex flex-col gap-6">
-        <form className="contents" onSubmit={formik.handleSubmit}>
-          <Input formik={formik} name="email" label="Email" className="" />
+        <form className="contents" onSubmit={handleSubmit(onSubmit)}>
           <Input
-            formik={formik}
-            name="password"
+            register={register}
+            id="email"
+            label="Email"
+            errors={errors}
+            className=""
+          />
+          <Input
+            register={register}
+            errors={errors}
+            id="password"
             label="Password"
             type="password"
             className=""
@@ -120,6 +131,12 @@ const LoginClient = () => {
             onClick={() => handleSocialLogIn('github')}
             className="w-full"
             color="dark"
+          />
+          <Button
+            icon={BiLogoTwitter}
+            onClick={() => handleSocialLogIn('twitter')}
+            color="info"
+            className="w-full bg-blue-400"
           />
         </div>
         <div className="text-md text-center text-gray-300 font-light">

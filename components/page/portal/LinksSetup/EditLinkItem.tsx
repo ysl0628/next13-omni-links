@@ -1,7 +1,7 @@
 import React from 'react'
 import axios, { AxiosResponse } from 'axios'
 import { toast } from 'react-hot-toast'
-import { useFormik } from 'formik'
+import { FieldValues, SubmitHandler, useForm, useWatch } from 'react-hook-form'
 
 import Selector from '../../../input/Selector'
 import LabelInput from '../../../input/LabelInput'
@@ -47,27 +47,34 @@ const EditLinkItem = ({
   const addLink = useSetup((state) => state.addLink)
   const updateLink = useSetup((state) => state.updateLink)
 
-  const formik = useFormik<FormValues>({
-    initialValues: {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+    setValue
+  } = useForm<FieldValues>({
+    defaultValues: {
       id: item?.id || '',
       title: item?.title || '',
       url: item?.url || '',
       type: item?.type || { id: 'default', label: '請選擇' },
       order: item ? index : lastItemOrder + 1
-    },
-    onSubmit: (values) => {
-      const result = {
-        ...values,
-        type: isWebsite ? websiteOption : values.type,
-        title: values.title || values.type?.label
-      }
-
-      if (item) {
-        handleUpdateLink(result)
-        return
-      }
-      handleAddLink(result)
     }
+  })
+
+  const setCustomValue = (id: string, value: any) => {
+    setValue(id, value, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true
+    })
+  }
+
+  const type = useWatch({
+    control,
+    name: 'type',
+    defaultValue: item?.type || { id: 'default', label: '請選擇' }
   })
 
   const handleAddLink = async (values: FormValues) => {
@@ -109,14 +116,23 @@ const EditLinkItem = ({
     }
   }
 
-  const handleSubmit = () => {
-    formik.handleSubmit()
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const result = {
+      ...data,
+      type: isWebsite ? websiteOption : data.type,
+      title: data.title || data.type?.label
+    }
+    if (item) {
+      handleUpdateLink(result)
+    } else {
+      handleAddLink(result)
+    }
     onClose && onClose()
   }
 
   return (
     <div className="flex w-full justify-between items-center gap-8 shadow-lg p-4 rounded-xl">
-      <form onSubmit={formik.handleSubmit} className="contents">
+      <form onSubmit={handleSubmit(onSubmit)} className="contents">
         <div className="flex flex-col gap-2 w-full">
           <div className="flex items-center gap-2">
             <div className="w-12">{isWebsite ? '名稱' : '類型'}</div>
@@ -124,15 +140,22 @@ const EditLinkItem = ({
             {isWebsite ? (
               <div className="flex-auto">
                 <LabelInput
-                  formik={formik}
-                  name="title"
+                  errors={errors}
+                  register={register}
+                  id="title"
                   small
                   placeholder="請輸入連結名稱"
                 />
               </div>
             ) : (
               <div className="border-2 rounded-lg w-1/3">
-                <Selector formik={formik} name="type" options={linkList} />
+                <Selector
+                  id="type"
+                  value={type}
+                  options={linkList}
+                  onChange={(value) => setCustomValue('type', value)}
+                  error={errors.type?.message as string}
+                />
               </div>
             )}
           </div>
@@ -140,8 +163,9 @@ const EditLinkItem = ({
             <div className="w-12 ">連結</div>
             <div className="flex-auto ">
               <LabelInput
-                formik={formik}
-                name="url"
+                errors={errors}
+                register={register}
+                id="url"
                 small
                 placeholder="請輸入連結網址"
               />
@@ -156,14 +180,15 @@ const EditLinkItem = ({
           >
             <MdClose className="h-5 w-5 text-white" />
           </div>
-          <div
+          <button
+            title="submit"
             className={
               'bg-secondary-500 rounded-full p-1.5 hover:opacity-80 cursor-pointer'
             }
-            onClick={handleSubmit}
+            type="submit"
           >
             <MdCheck className="h-5 w-5 text-white" />
-          </div>
+          </button>
         </div>
       </form>
     </div>

@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import toast from 'react-hot-toast/headless'
 import { useRouter } from 'next/navigation'
-import { useFormik } from 'formik'
 
 import Button from '@/components/Button'
 import Input from '@/components/input/Input'
@@ -13,27 +12,38 @@ import Input from '@/components/input/Input'
 import { AiFillGithub } from 'react-icons/ai'
 import { BiLogoGoogle, BiLogoFacebook } from 'react-icons/bi'
 import { CALLBACK_URL } from '@/constants/common'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 
 const SignUpClient = () => {
   const router = useRouter()
   const [isLoading, setIsLoading] = React.useState(false)
-  const formik = useFormik({
-    initialValues: {},
-    onSubmit: (values) => {
-      setIsLoading(true)
-      axios
-        .post('/api/register', values)
-        .then(() => {
-          router.push('/portal/basic')
-        })
-        .catch((err) => {
-          toast.error('註冊失敗')
-        })
-        .finally(() => {
-          setIsLoading(false)
-        })
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FieldValues>({
+    defaultValues: {
+      username: '',
+      email: '',
+      password: ''
     }
   })
+
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    setIsLoading(true)
+    axios
+      .post('/api/register', data)
+      .then(() => {
+        router.push('/portal/basic')
+      })
+      .catch((err) => {
+        toast.error('註冊失敗')
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }
 
   const handleSocialSignUp = (socialType: string) => {
     signIn(socialType, {
@@ -55,17 +65,25 @@ const SignUpClient = () => {
         <h1 className="text-grey-600 text-3xl font-semibold">Sign Up</h1>
       </div>
       <div className="flex flex-col gap-6">
-        <form className="contents" onSubmit={formik.handleSubmit}>
+        <form className="contents" onSubmit={handleSubmit(onSubmit)}>
           <Input
-            formik={formik}
-            name="username"
+            register={register}
+            id="username"
+            errors={errors}
             label="Username"
             className=""
           />
-          <Input formik={formik} name="email" label="Email" className="" />
           <Input
-            formik={formik}
-            name="password"
+            register={register}
+            id="email"
+            errors={errors}
+            label="Email"
+            className=""
+          />
+          <Input
+            register={register}
+            errors={errors}
+            id="password"
             label="Password"
             type="password"
             className=""

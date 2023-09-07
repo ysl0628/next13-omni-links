@@ -1,8 +1,7 @@
 'use client'
 import axios from 'axios'
-import { MouseEvent } from 'react'
 import { toast } from 'react-hot-toast'
-import { useFormik } from 'formik'
+import { FieldValues, SubmitHandler, useForm, useWatch } from 'react-hook-form'
 
 import Avatar from '@/components/Avatar'
 import Button from '@/components/Button'
@@ -44,32 +43,63 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
   const { update, admin } = useSetup((state) => state)
   const user = useSetup((state) => state.user)
 
-  const formik = useFormik<FormValues>({
-    initialValues: { ...admin },
-    onSubmit: async (values) => {
-      try {
-        const { data: res } = await axios.put(`/api/user/${user?.id}`, values)
-        update({ admin: res.data })
-        toast.success('更新成功')
-      } catch (error) {
-        toast.error('更新失敗')
-        console.log(error)
-      }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+    setValue,
+    getValues
+  } = useForm<FieldValues>({
+    defaultValues: {
+      customImage: admin?.customImage || '',
+      title: admin?.title || '',
+      description: admin?.description || '',
+      themeColor: admin?.themeColor || ''
     }
   })
 
-  const avatarImage = formik.values.customImage || admin?.customImage
+  const avatarImage = useWatch({
+    control,
+    name: 'customImage',
+    defaultValue: admin?.customImage || ''
+  })
+  const themeColor = useWatch({
+    control,
+    name: 'themeColor',
+    defaultValue: admin?.themeColor || ''
+  })
 
   const handlePreview = () => {
-    update({ admin: formik.values })
+    const adminValues = getValues()
+    update({ admin: adminValues })
   }
 
   const handleUpload = (url: string) => {
-    formik.setFieldValue('customImage', url)
+    setCustomValue('customImage', url)
   }
 
   const handleResetImg = () => {
-    formik.setFieldValue('customImage', admin.customImage)
+    setCustomValue('customImage', admin.customImage)
+  }
+
+  const setCustomValue = (id: string, value: any) => {
+    setValue(id, value, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true
+    })
+  }
+
+  const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+    try {
+      const { data: res } = await axios.put(`/api/user/${user?.id}`, values)
+      update({ admin: res.data })
+      toast.success('更新成功')
+    } catch (error) {
+      toast.error('更新失敗')
+      console.log(error)
+    }
   }
 
   return (
@@ -78,7 +108,7 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
         基本設定
       </div>
       <Divider />
-      <form className="contents" onSubmit={formik.handleSubmit}>
+      <form className="contents" onSubmit={handleSubmit(onSubmit)}>
         <div className="px-6 pt-6 pb-4 w-full flex justify-between flex-grow items-center md:flex-row flex-col gap-12">
           <Avatar size={150} src={avatarImage} />
           <div className="flex justify-between items-center flex-auto gap-6">
@@ -102,23 +132,26 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
         <div className="px-6 py-4 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <LabelInput
-              formik={formik}
-              name="title"
+              id="title"
+              register={register}
+              errors={errors}
               label="標題"
               placeholder="請輸入標題"
             />
             <LabelInput
-              formik={formik}
-              name="description"
+              id="description"
+              register={register}
+              errors={errors}
               label="簡介"
               textarea
               placeholder="請輸入用簡介"
             />
             <ButtonGroup
               title="主題色"
-              name="themeColor"
+              id="themeColor"
+              value={themeColor}
               list={themeList}
-              formik={formik}
+              onChange={(value) => setCustomValue('themeColor', value)}
             />
           </div>
         </div>
