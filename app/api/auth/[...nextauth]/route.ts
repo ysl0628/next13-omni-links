@@ -27,7 +27,13 @@ export const authOptions: AuthOptions = {
     TwitterProvider({
       clientId: process.env.TWITTER_ID as string,
       clientSecret: process.env.TWITTER_SECRET as string,
-      version: '2.0' // opt-in to Twitter OAuth 2.0
+      version: '2.0', // opt-in to Twitter OAuth 2.0,
+      profile(profile) {
+        return {
+          ...profile.data,
+          name: profile.data.username
+        }
+      }
     }),
     CredentialsProvider({
       name: 'Credentials',
@@ -59,23 +65,27 @@ export const authOptions: AuthOptions = {
     })
   ],
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn({ user, account, profile }) {
+      const customEmail = user?.name + '@' + account?.provider + '.com'
+
       // 設定登入時將user的name 設為 prisma 的username
       const exists = await prisma.user.findUnique({
         where: {
-          email: user.email as string
+          email: (user.email || customEmail) as string
         }
       })
 
       if (account?.type === 'oauth' && !exists) {
-        const defaultUsername = user?.email?.split('@')[0]
+        const defaultUsername = user?.email
+          ? user.email.split('@')[0]
+          : user?.name
 
         try {
           const newUser = await prisma.user.create({
             data: {
               username: defaultUsername,
               name: user.name,
-              email: user.email,
+              email: user.email || customEmail,
               emailVerified: null,
               createdAt: new Date(),
               updatedAt: new Date(),
@@ -97,6 +107,7 @@ export const authOptions: AuthOptions = {
           })
         } catch (error) {
           console.log('error', error)
+          return false
         }
         return true
       }
