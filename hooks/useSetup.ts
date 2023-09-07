@@ -59,7 +59,7 @@ const useSetup = createWithEqualityFn<SettingStore>(
     addLink: (link) =>
       set(
         produce((state) => {
-          state.links?.push(link)
+          state.links = state.links ? [link, ...state.links] : [link]
         })
       ),
     removeLink: (linkId) =>

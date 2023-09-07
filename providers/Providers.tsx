@@ -8,10 +8,10 @@ import ToasterProvider from './ToastProvider'
 
 const Providers: FC<ThemeProviderProps> = ({ children, ...props }) => {
   return (
-    <ThemeProvider {...props}>
+    <>
       <ToasterProvider />
       {children}
-    </ThemeProvider>
+    </>
   )
 }
 
