@@ -8,7 +8,7 @@ import { BiDollar } from 'react-icons/bi'
 interface Values {
   [x: string]: any
 }
-interface InputProps<T extends Values> {
+interface InputProps {
   id: string
   label: string
   errors: FieldErrors
@@ -23,7 +23,7 @@ interface InputProps<T extends Values> {
   // errors: FieldErrors
 }
 
-const Input: React.FC<InputProps<Values>> = ({
+const Input: React.FC<InputProps> = ({
   id,
   label,
   errors,
@@ -95,7 +95,7 @@ const Input: React.FC<InputProps<Values>> = ({
       </label>
 
       {errors[id] && (
-        <span className="absolute text-rose-500 bottom-5">
+        <span className="absolute text-rose-500 text-sm -bottom-5 left-0">
           {errors[id]?.message as string}
         </span>
       )}

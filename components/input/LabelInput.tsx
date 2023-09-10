@@ -4,10 +4,7 @@ import { memo } from 'react'
 import { BiDollar } from 'react-icons/bi'
 import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
 
-interface Values {
-  [x: string]: any
-}
-interface LabelInputProps<T extends Values> {
+interface LabelInputProps {
   id: string
   small?: boolean
   label?: string
@@ -25,7 +22,7 @@ interface LabelInputProps<T extends Values> {
   ) => void
 }
 
-const LabelInput: React.FC<LabelInputProps<Values>> = ({
+const LabelInput: React.FC<LabelInputProps> = ({
   id,
   label,
   small,
@@ -104,7 +101,9 @@ const LabelInput: React.FC<LabelInputProps<Values>> = ({
         />
       )}
       {errors[id] && (
-        <span className="absolute text-rose-500 bottom-5">{message}</span>
+        <span className="absolute text-rose-500 -bottom-5 text-sm">
+          {message}
+        </span>
       )}
     </div>
   )
