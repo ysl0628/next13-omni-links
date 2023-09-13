@@ -1,4 +1,5 @@
 import React from 'react'
+import { z } from 'zod'
 import axios, { AxiosResponse } from 'axios'
 import { toast } from 'react-hot-toast'
 import { FieldValues, SubmitHandler, useForm, useWatch } from 'react-hook-form'
@@ -13,6 +14,7 @@ import useSetup from '@/hooks/useSetup'
 import { linkList } from '@/constants/linkMapping'
 
 import { MdClose, MdCheck } from 'react-icons/md'
+
 interface EditLinkItemProps {
   item?: {
     id: string
@@ -35,6 +37,30 @@ interface FormValues {
 }
 
 const websiteOption = { id: 'website', label: 'Website' }
+const typeSchema = z
+  .object({
+    id: z.string(),
+    label: z.string()
+  })
+  .catch({ id: 'default', label: '請選擇' })
+
+const schema = z
+  .object({
+    id: z.string().nullable(),
+    title: z.string().nullable(),
+    url: z.string().url().nullable(),
+    type: typeSchema,
+    order: z.number().int().nullable()
+  })
+  .superRefine((val, ctx) => {
+    if (val.type.id === 'website') {
+      if (!val.title)
+        return ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: '請輸入連結名稱'
+        })
+    }
+  })
 
 const EditLinkItem = ({
   item,

@@ -1,11 +1,12 @@
 import { Metadata } from 'next'
+import { z } from 'zod'
 
-import StoreInitializer from '@/components/page/portal/StoreInitializer'
-import { getCurrentUser } from '@/actions/getCurrentUser'
-import { getLinks } from '@/actions/getLinks'
-import { ThemeColorType } from '@/types'
 import Container from '@/components/Container'
 import Preview from '@/components/page/portal/Preview'
+import StoreInitializer from '@/components/page/portal/StoreInitializer'
+
+import { getLinks } from '@/actions/getLinks'
+import { getCurrentUser } from '@/actions/getCurrentUser'
 
 interface SettingLayoutProps {
   children: React.ReactNode
@@ -17,24 +18,47 @@ export const metadata: Metadata = {
   description: 'Setting Your LinkOrchard'
 }
 
-const isValidThemeColor = (color: any): color is ThemeColorType =>
-  ['basic', 'blue-rose', 'lime'].includes(color)
+const themeColorSchema = z.enum(['basic', 'blue-rose', 'lime']).catch('basic')
 
-export default async function SettingLayout({
-  children,
-  preview
-}: SettingLayoutProps) {
+const currentUserSchema = z.object({
+  name: z.string().nullable(),
+  username: z.string().nullable(),
+  customImage: z.string().nullable(),
+  image: z.string().nullable(),
+  title: z.string().nullable(),
+  description: z.string().nullable(),
+  themeColor: themeColorSchema
+})
+
+type CurrentUser = z.infer<typeof currentUserSchema>
+type SafeThemeColor = z.infer<typeof themeColorSchema>
+
+const isValidCurrentUser = (user: unknown): user is CurrentUser => {
+  return currentUserSchema.safeParse(user).success
+}
+
+const isValidThemeColor = (
+  themeColor: unknown
+): themeColor is SafeThemeColor => {
+  return themeColorSchema.safeParse(themeColor).success
+}
+
+export default async function SettingLayout({ children }: SettingLayoutProps) {
   const currentUser = await getCurrentUser()
   const linkSetting = await getLinks()
+
+  if (!isValidCurrentUser(currentUser)) {
+    return <div>Something went wrong</div>
+  }
 
   const themeColor = isValidThemeColor(currentUser?.themeColor)
     ? currentUser?.themeColor
     : 'basic'
   const adminSetting = {
-    username: currentUser?.username,
-    customImage: currentUser?.customImage || currentUser?.image,
-    title: currentUser?.title,
-    description: currentUser?.description,
+    username: currentUser.username || currentUser.name,
+    customImage: currentUser.customImage || currentUser.image,
+    title: currentUser.title,
+    description: currentUser.description,
     themeColor: themeColor
   }
 
