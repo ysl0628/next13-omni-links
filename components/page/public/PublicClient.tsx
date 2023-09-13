@@ -2,7 +2,6 @@
 import React from 'react'
 
 import { useMore } from '@/hooks/useMore'
-import { bgColors } from '@/constants/themeColors'
 
 import Avatar from '@/components/Avatar'
 import SocialLink from '@/components/page/portal/LinksSetup/SocialLink'
@@ -25,9 +24,9 @@ const PublicClient: React.FC<PublicClientProps> = ({ user, currentUser }) => {
   const toggleMore = useMore((store) => store.toggle)
   const avatarImage = user?.customImage
   const themeColor = user?.themeColor || 'basic'
-  const bgColor = bgColors[themeColor]
+  const bgColor = `bg-gradient-${themeColor}`
 
-  const combinedStyle = ` h-full w-full flex justify-center rounded-lg ${bgColor} relative`
+  const combinedStyle = `h-full w-full flex justify-center rounded-lg ${bgColor} relative`
 
   return (
     <div className={combinedStyle}>

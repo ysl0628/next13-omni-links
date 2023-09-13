@@ -17,6 +17,7 @@ const Preview = () => {
   }))
   const avatarImage = admin?.customImage
   const themeColor = admin?.themeColor || 'basic'
+  const bgClassName = `bg-gradient-${themeColor}`
 
   return (
     <div className="hidden md:block self-center mx-16 my-12 relative border-gray-800 dark:border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-[rgba(24,_24,_7,_0.3)_50px_50px_50px_10px]">
@@ -24,9 +25,11 @@ const Preview = () => {
       <div className="h-[46px] w-[3px] bg-gray-800 dark:bg-gray-800 absolute -left-[17px] top-[124px] rounded-l-lg"></div>
       <div className="h-[46px] w-[3px] bg-gray-800 dark:bg-gray-800 absolute -left-[17px] top-[178px] rounded-l-lg"></div>
       <div className="h-[64px] w-[3px] bg-gray-800 dark:bg-gray-800 absolute -right-[17px] top-[142px] rounded-r-lg"></div>
-      <div className="rounded-[2rem] overflow-auto w-[272px] h-[572px] bg-white dark:bg-gray-800">
+      <div
+        className={`rounded-[2rem] overflow-auto w-[272px] h-[572px] bg-white dark:bg-gray-800 ${bgClassName}`}
+      >
         <div
-          className={`flex flex-col gap-4 justify-start items-center py-12 px-6 h-full bg-gradient-to-tl ${bgColors[themeColor]}`}
+          className={`flex flex-col gap-4 justify-start items-center py-12 px-6 h-full `}
         >
           <Avatar size={90} src={avatarImage} />
           <div className="text-lg font-semibold text-gray-700 dark:text-gray-100">

@@ -5,9 +5,6 @@ import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
 
 import { BiDollar } from 'react-icons/bi'
 
-interface Values {
-  [x: string]: any
-}
 interface InputProps {
   id: string
   label: string
