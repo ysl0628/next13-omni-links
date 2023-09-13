@@ -1,7 +1,10 @@
 'use client'
+
+import { z } from 'zod'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
-import { FieldValues, SubmitHandler, useForm, useWatch } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm, useWatch } from 'react-hook-form'
 
 import Avatar from '@/components/Avatar'
 import Button from '@/components/Button'
@@ -32,12 +35,16 @@ interface BasicSetupProps {
   currentUser?: SafeUser | null
 }
 
-interface FormValues {
-  customImage?: string | null
-  title?: string | null
-  description?: string | null
-  themeColor?: 'basic' | 'blue-rose' | 'lime' | null
-}
+const schema = z.object({
+  customImage: z.string().url().nullable(),
+  title: z.string().nullable(),
+  description: z.string().max(300, '字數不可超過 300 字').nullable(),
+  themeColor: z.enum(['basic', 'blue-rose', 'lime']).catch('basic')
+})
+const genericFieldsSchema = z.record(z.string(), z.string().nullable())
+const unionSchema = z.union([schema, genericFieldsSchema])
+
+type FormValues = z.infer<typeof unionSchema>
 
 const BasicSetup: React.FC<BasicSetupProps> = () => {
   const { update, admin } = useSetup((state) => state)
@@ -46,17 +53,19 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     control,
     setValue,
-    getValues
-  } = useForm<FieldValues>({
+    getValues,
+    trigger
+  } = useForm<FormValues>({
     defaultValues: {
       customImage: admin?.customImage || '',
       title: admin?.title || '',
       description: admin?.description || '',
-      themeColor: admin?.themeColor || ''
-    }
+      themeColor: admin?.themeColor || 'basic'
+    },
+    resolver: zodResolver(schema)
   })
 
   const avatarImage = useWatch({
@@ -67,10 +76,13 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
   const themeColor = useWatch({
     control,
     name: 'themeColor',
-    defaultValue: admin?.themeColor || ''
+    defaultValue: admin?.themeColor || 'basic'
   })
 
-  const handlePreview = () => {
+  const handlePreview = async () => {
+    const result = await trigger()
+    if (!result) return
+
     const adminValues = getValues()
     update({ admin: adminValues })
   }
@@ -83,7 +95,7 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
     setCustomValue('customImage', admin.customImage)
   }
 
-  const setCustomValue = (id: string, value: any) => {
+  const setCustomValue = (id: keyof FormValues, value: any) => {
     setValue(id, value, {
       shouldValidate: true,
       shouldDirty: true,
@@ -91,7 +103,7 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
     })
   }
 
-  const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+  const onSubmit = async (values: FormValues) => {
     try {
       const { data: res } = await axios.put(`/api/user/${user?.id}`, values)
       update({ admin: res.data })
@@ -117,6 +129,7 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
               rounded="full"
               size="large"
               className="w-full"
+              type="button"
               onChange={(url) => handleUpload(url)}
             />
             <Button
@@ -125,12 +138,13 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
               className="w-full"
               size="large"
               rounded="full"
+              type="button"
               onClick={handleResetImg}
             />
           </div>
         </div>
         <div className="px-6 py-4 flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-5">
             <LabelInput
               id="title"
               register={register}
@@ -144,12 +158,13 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
               errors={errors}
               label="簡介"
               textarea
+              max={500}
               placeholder="請輸入用簡介"
             />
             <ButtonGroup
               title="主題色"
               id="themeColor"
-              value={themeColor}
+              value={themeColor || 'basic'}
               list={themeList}
               onChange={(value) => setCustomValue('themeColor', value)}
             />
@@ -170,6 +185,7 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
             size="large"
             className="w-full md:w-1/4"
             type="submit"
+            disabled={isSubmitting}
           />
         </div>
       </form>
