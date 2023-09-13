@@ -2,10 +2,16 @@
 
 import { Toaster } from 'react-hot-toast'
 
-// Toaster 是 server component，所以要用 provider 包起來
-
 const ToasterProvider = () => {
-  return <Toaster />
+  return (
+    <Toaster
+      containerStyle={{
+        position: 'relative',
+        top: '5rem',
+        marginRight: '1.5rem'
+      }}
+    />
+  )
 }
 
 export default ToasterProvider
