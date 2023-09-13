@@ -1,10 +1,14 @@
 'use client'
 import React from 'react'
 import axios from 'axios'
+import { z } from 'zod'
+import Image from 'next/image'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import toast from 'react-hot-toast/headless'
 import { useRouter } from 'next/navigation'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 import Button from '@/components/Button'
 import Input from '@/components/input/Input'
@@ -12,7 +16,27 @@ import Input from '@/components/input/Input'
 import { AiFillGithub } from 'react-icons/ai'
 import { BiLogoGoogle, BiLogoFacebook } from 'react-icons/bi'
 import { CALLBACK_URL } from '@/constants/common'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+
+import logo from '@/public/images/logo.svg'
+
+const signUpSchema = z.object({
+  username: z
+    .string({ required_error: 'Username 為必填欄位' })
+    .regex(
+      /^[a-zA-Z0-9_]*$/,
+      '只能包含英文、數字及底線，不可包含空白及特殊符號'
+    ),
+  email: z
+    .string({ required_error: 'Email 為必填欄位' })
+    .email('請輸入正確的 Email'),
+  password: z
+    .string({ required_error: 'Password 為必填欄位' })
+    .min(8, '密碼長度不可小於 8 個字元')
+})
+const genericFieldsSchema = z.record(z.string(), z.string().nullable())
+const unionSchema = z.union([signUpSchema, genericFieldsSchema])
+
+type FieldValues = z.infer<typeof unionSchema>
 
 const SignUpClient = () => {
   const router = useRouter()
@@ -27,7 +51,8 @@ const SignUpClient = () => {
       username: '',
       email: '',
       password: ''
-    }
+    },
+    resolver: zodResolver(signUpSchema)
   })
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -61,8 +86,13 @@ const SignUpClient = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center my-14 mb-16">
-        <h1 className="text-grey-600 text-3xl font-semibold">Sign Up</h1>
+      <div className="flex flex-col gap-4 justify-center items-center my-12">
+        <div>
+          <Image src={logo} alt="logo" priority />
+        </div>
+        <h1 className="text-grey-600 text-3xl font-semibold">
+          Create Your Account
+        </h1>
       </div>
       <div className="flex flex-col gap-6">
         <form className="contents" onSubmit={handleSubmit(onSubmit)}>

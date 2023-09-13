@@ -1,9 +1,11 @@
 'use client'
 import React from 'react'
+import { z } from 'zod'
 import Link from 'next/link'
+import Image from 'next/image'
 import { signIn } from 'next-auth/react'
 import { toast } from 'react-hot-toast'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 import Button from '@/components/Button'
 import Input from '@/components/input/Input'
@@ -12,20 +14,26 @@ import { AiFillGithub } from 'react-icons/ai'
 import { BiLogoGoogle, BiLogoFacebook, BiLogoTwitter } from 'react-icons/bi'
 import { CALLBACK_URL } from '@/constants/common'
 
+import logo from '@/public/images/logo.svg'
+
 interface FormikValues {
   email?: string
   password?: string
 }
 
+const loginSchema = z.object({
+  email: z
+    .string({ required_error: 'Email 為必填欄位' })
+    .email('請輸入正確的 Email'),
+  password: z.string({ required_error: 'Password 為必填欄位' })
+})
+const genericFieldsSchema = z.record(z.string(), z.string().nullable())
+const unionSchema = z.union([loginSchema, genericFieldsSchema])
+
+type FieldValues = z.infer<typeof unionSchema>
+
 const LoginClient = () => {
   const [isLoading, setIsLoading] = React.useState(false)
-
-  // const validationSchema = Yup.object().shape({
-  //   email: Yup.string()
-  //     .email('請輸入正確的 Email')
-  //     .required('Email 為必填欄位'),
-  //   password: Yup.string().required('Password 為必填欄位')
-  // })
 
   const {
     register,
@@ -83,8 +91,11 @@ const LoginClient = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center my-14 mb-16">
-        <h1 className="text-grey-600 text-3xl font-semibold">Log In</h1>
+      <div className="flex flex-col justify-center gap-6 items-center my-12">
+        <div>
+          <Image src={logo} alt="logo" priority />
+        </div>
+        <h1 className="text-grey-600 text-3xl font-semibold">Welcome Back !</h1>
       </div>
       <div className="flex flex-col gap-6">
         <form className="contents" onSubmit={handleSubmit(onSubmit)}>
