@@ -1,7 +1,19 @@
 import { getCurrentUser } from '@/actions/getCurrentUser'
 import { NextResponse } from 'next/server'
+import { z } from 'zod'
 
 import prisma from '@/libs/prismadb'
+import { link } from 'fs'
+
+const postValidate = z.object({
+  title: z.string().max(15, '標題最多可輸入 15 字'),
+  type: z.object({
+    id: z.string(),
+    label: z.string()
+  }),
+  url: z.string().url(),
+  order: z.number()
+})
 
 export async function POST(
   req: Request,
@@ -10,18 +22,17 @@ export async function POST(
   try {
     const currentUser = await getCurrentUser()
 
-    if (!currentUser) return new NextResponse('Unauthorized', { status: 401 })
+    if (!currentUser || params.id !== currentUser.id)
+      return new NextResponse('Unauthorized', { status: 401 })
 
     const body = await req.json()
 
     const { title, type, url, order } = body
 
-    // 檢查型別
-    if (typeof title !== 'string')
-      return new NextResponse('title must be string ', { status: 400 })
-
-    if (type.id === 'default')
-      return new NextResponse('type must select ', { status: 400 })
+    const result = postValidate.safeParse(body)
+    if (!result.success) {
+      throw new z.ZodError(result.error.issues)
+    }
 
     // 檢查 order 有沒有重複
     const checkOrder = await prisma.link.findFirst({
@@ -48,51 +59,76 @@ export async function POST(
 
     return NextResponse.json({ data, message: 'success' })
   } catch (error) {
-    return console.log(error)
+    if (error instanceof z.ZodError) {
+      const message = error.errors.map((e) => e.message).join(', ')
+      return new NextResponse(message, { status: 400 })
+    }
+    return new NextResponse('Server Error', { status: 500 })
   }
 }
+
+const patchValidate = z.array(
+  z.object({
+    id: z.string(),
+    order: z.number(),
+    type: z.object({
+      id: z.string(),
+      label: z.string()
+    }),
+    title: z.string().max(15, '標題最多可輸入 15 字'),
+    url: z.string().url()
+  }),
+  {
+    required_error: 'links is empty'
+  }
+)
 
 export async function PATCH(
   req: Request,
   { params }: { params: { id: string } }
 ) {
   try {
-    if (!params.id) return new NextResponse('Unauthorized', { status: 401 })
+    const currentUser = await getCurrentUser()
+
+    if (!currentUser || currentUser.id !== params.id)
+      return new NextResponse('Unauthorized', { status: 401 })
+
+    if (!params.id) {
+      return new NextResponse('User ID is required', { status: 400 })
+    }
 
     const body = await req.json()
 
     const { links } = body
 
-    // const data = []
-    // for (const link of links) {
-    //   const {id,  order} = link
+    const result = patchValidate.safeParse(links)
+    if (!result.success) {
+      throw new z.ZodError(result.error.issues)
+    }
+    const updatedLinks = []
 
-    //   const update = await prisma.link.update({
-    //     where: {
-    //       id
-    //     },
-    //     data: {
-    //       order,
-    //       updatedAt: new Date()
-    //     }
-    //   })
-
-    //   data.push(update)
-    // }
-
-    const data = await prisma.user.update({
-      where: {
-        id: params.id
-      },
-      data: {
-        links: {
-          set: links
+    for (const link of links) {
+      const updatedLink = await prisma.link.update({
+        where: {
+          id: link.id
+        },
+        data: {
+          order: link.order
         }
-      }
-    })
+      })
+      // 升冪排序
+      updatedLinks.push(updatedLink)
+    }
 
-    return NextResponse.json({ data, message: 'success' })
+    // console.log('updatedLinks', updatedLinks)
+
+    return NextResponse.json({ data: updatedLinks, message: 'success' })
   } catch (error) {
-    return console.log(error)
+    console.log(error)
+    if (error instanceof z.ZodError) {
+      const message = error.errors.map((e) => e.message).join(', ')
+      return new NextResponse(message, { status: 400 })
+    }
+    return new NextResponse('Server Error', { status: 500 })
   }
 }

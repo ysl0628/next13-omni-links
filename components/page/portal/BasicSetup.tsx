@@ -109,8 +109,12 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
       update({ admin: res.data })
       toast.success('更新成功')
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error?.response?.data
+        toast.error(message)
+        return
+      }
       toast.error('更新失敗')
-      console.log(error)
     }
   }
 

@@ -41,10 +41,10 @@ const Preview = () => {
           <div className="flex flex-col w-full gap-4">
             {(links || []).map((link) => (
               <SocialLink
-                key={link.id}
-                type={link.type?.id}
-                url={link.url}
-                label={link.title}
+                key={link?.id}
+                type={link?.type?.id}
+                url={link?.url}
+                label={link?.title}
               />
             ))}
           </div>
