@@ -9,7 +9,7 @@ import {
   Draggable,
   DropResult,
   Droppable
-} from 'react-beautiful-dnd'
+} from '@hello-pangea/dnd'
 
 import Button from '../../../Button'
 import Divider from '../../../Divider'
@@ -40,14 +40,7 @@ const LinksSetup = () => {
     const [removed] = result.splice(startIndex, 1)
     result.splice(endIndex, 0, removed)
 
-    const newOrder = result.map((item, index) => {
-      return {
-        ...item,
-        order: index
-      }
-    })
-
-    return newOrder
+    return result
   }
 
   const onDragEnd = useCallback(
@@ -63,8 +56,6 @@ const LinksSetup = () => {
       )
 
       update({ links: items })
-
-      // setResult(items)
     },
     [links, update]
   )
@@ -88,10 +79,25 @@ const LinksSetup = () => {
 
   const handleUpdateLinks = async () => {
     try {
-      await axios.patch(`/api/user/${user?.id}/links`, links)
+      const updateLinks = links?.map((item, index) => {
+        return {
+          ...item,
+          order: links.length - index
+        }
+      })
+      const { data: res } = await axios.patch(`/api/user/${user?.id}/links`, {
+        links: updateLinks
+      })
+
+      update({ links: res.data })
       toast.success('更新成功')
       setIsDragging(false)
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error?.response?.data
+        toast.error(message)
+        return
+      }
       toast.error('更新失敗')
       console.log(error)
     }
@@ -157,7 +163,7 @@ const LinksSetup = () => {
         </Transition>
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="flex flex-col items-center gap-2">
-            <Droppable droppableId="droppable-1" type="PERSON">
+            <Droppable droppableId="droppable-1">
               {(provided, snapshot) => (
                 <div
                   ref={provided.innerRef}
@@ -165,20 +171,20 @@ const LinksSetup = () => {
                   {...provided.droppableProps}
                 >
                   {links?.map((item, index) => {
-                    return isEditingId === item.id ? (
+                    return isEditingId === item?.id ? (
                       <EditLinkItem
-                        key={item.id}
+                        key={item?.id}
                         item={item}
                         index={index}
                         lastItemOrder={links.length - 1}
-                        isWebsite={item.type?.id === 'website'}
+                        isWebsite={item?.type?.id === 'website'}
                         onClose={() => setIsEditingId('')}
                       />
                     ) : (
                       <Draggable
-                        key={item.id}
-                        draggableId={item.id}
-                        index={item.order || 0}
+                        key={item?.id}
+                        draggableId={item?.id}
+                        index={index}
                       >
                         {(provided) => (
                           <div
@@ -186,19 +192,22 @@ const LinksSetup = () => {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                           >
-                            <div {...provided.dragHandleProps}>
-                              {isDragging && (
+                            {isDragging && (
+                              <div
+                                {...provided.dragHandleProps}
+                                draggable={isDragging}
+                              >
                                 <MdDragIndicator
                                   size={24}
                                   className="text-grey-400"
                                 />
-                              )}
-                            </div>
+                              </div>
+                            )}
 
                             <DisplayLinkItem
                               item={item}
-                              isWebsite={item.type?.id === 'website'}
-                              onEditMode={() => setIsEditingId(item.id)}
+                              isWebsite={item?.type?.id === 'website'}
+                              onEditMode={() => setIsEditingId(item?.id)}
                             />
                           </div>
                         )}

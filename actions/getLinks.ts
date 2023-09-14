@@ -12,7 +12,7 @@ export async function getLinks() {
       userId: currentUser.id
     },
     orderBy: {
-      order: 'asc'
+      order: 'desc'
     }
   })
 

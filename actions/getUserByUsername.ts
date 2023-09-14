@@ -16,6 +16,9 @@ export const getUserByUsername = cache(async (username: string) => {
     const links = await prisma.link.findMany({
       where: {
         userId: user.id
+      },
+      orderBy: {
+        order: 'desc'
       }
     })
 
