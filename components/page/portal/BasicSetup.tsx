@@ -3,6 +3,7 @@
 import { z } from 'zod'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
+import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, useWatch } from 'react-hook-form'
 
@@ -47,8 +48,9 @@ const unionSchema = z.union([schema, genericFieldsSchema])
 type FormValues = z.infer<typeof unionSchema>
 
 const BasicSetup: React.FC<BasicSetupProps> = () => {
-  const { update, admin } = useSetup((state) => state)
+  const { update } = useSetup((state) => state)
   const user = useSetup((state) => state.user)
+  const [oldUser] = useState(user)
 
   const {
     register,
@@ -60,10 +62,10 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
     trigger
   } = useForm<FormValues>({
     defaultValues: {
-      customImage: admin?.customImage || '',
-      title: admin?.title || '',
-      description: admin?.description || '',
-      themeColor: admin?.themeColor || 'basic'
+      customImage: user?.customImage || '',
+      title: user?.title || '',
+      description: user?.description || '',
+      themeColor: user?.themeColor || 'basic'
     },
     resolver: zodResolver(schema)
   })
@@ -71,20 +73,20 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
   const avatarImage = useWatch({
     control,
     name: 'customImage',
-    defaultValue: admin?.customImage || ''
+    defaultValue: user?.customImage || ''
   })
   const themeColor = useWatch({
     control,
     name: 'themeColor',
-    defaultValue: admin?.themeColor || 'basic'
+    defaultValue: user?.themeColor || 'basic'
   })
 
   const handlePreview = async () => {
     const result = await trigger()
     if (!result) return
 
-    const adminValues = getValues()
-    update({ admin: adminValues })
+    const basicValues = getValues()
+    update({ user: basicValues })
   }
 
   const handleUpload = (url: string) => {
@@ -92,7 +94,7 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
   }
 
   const handleResetImg = () => {
-    setCustomValue('customImage', admin.customImage)
+    setCustomValue('customImage', user?.customImage)
   }
 
   const setCustomValue = (id: keyof FormValues, value: any) => {
@@ -106,7 +108,7 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
   const onSubmit = async (values: FormValues) => {
     try {
       const { data: res } = await axios.put(`/api/user/${user?.id}`, values)
-      update({ admin: res.data })
+      update({ user: res.data })
       toast.success('更新成功')
     } catch (error) {
       if (axios.isAxiosError(error)) {

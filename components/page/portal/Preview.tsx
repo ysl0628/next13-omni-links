@@ -11,12 +11,12 @@ import { bgColors } from '@/constants/themeColors'
 //https:lowbite.com/docs/components/device-mockups/
 
 const Preview = () => {
-  const { admin, links } = useSetup((state) => ({
-    admin: state.admin,
+  const { user, links } = useSetup((state) => ({
+    user: state.user,
     links: state.links
   }))
-  const avatarImage = admin?.customImage
-  const themeColor = admin?.themeColor || 'basic'
+  const avatarImage = user?.customImage
+  const themeColor = user?.themeColor || 'basic'
   const bgClassName = `bg-gradient-${themeColor}`
 
   return (
@@ -33,10 +33,10 @@ const Preview = () => {
         >
           <Avatar size={90} src={avatarImage} />
           <div className="text-lg font-semibold text-gray-700 dark:text-gray-100">
-            {admin?.title || `我是${admin?.username}`}
+            {user?.title || `我是${user?.username}`}
           </div>
           <div className="text-xs text-justify text-gray-500 dark:text-gray-300">
-            {admin?.description || '這是我的簡介'}
+            {user?.description || '這是我的簡介'}
           </div>
           <div className="flex flex-col w-full gap-4">
             {(links || []).map((link) => (

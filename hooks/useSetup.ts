@@ -2,64 +2,67 @@ import { produce } from 'immer'
 import { shallow } from 'zustand/shallow'
 import { createWithEqualityFn } from 'zustand/traditional'
 
-import { AdminSetupType, LinkSetupType } from '@/types'
+import { LinkSetupType } from '@/types'
 import { SafeUser } from '@/types/safe'
 
 interface State {
-  user: SafeUser | null
-  admin: AdminSetupType
+  user: SafeUser | null | Record<string, string | null>
   links: LinkSetupType[] | null
+}
+interface NewLink extends Omit<LinkSetupType, 'id'> {
+  [key: string]: any
 }
 interface SettingStore {
   user: State['user']
-  admin: State['admin']
   links: State['links']
+  initialSync: (partial: Partial<State>) => void
   update: (partial: Partial<State>) => void
   addLink: (link: LinkSetupType) => void
   removeLink: (linkId: string) => void
-  updateLink: (
-    linkId: string | undefined,
-    newLink: Omit<LinkSetupType, 'id'> | undefined
-  ) => void
+  updateLink: (linkId: string | undefined, newLink: NewLink | undefined) => void
+  revertLinks: (oldLinks: LinkSetupType[] | null) => void
+  revertUser: (oldUser: SafeUser | null) => void
 }
 
 const useSetup = createWithEqualityFn<SettingStore>(
   (set) => ({
     user: null,
-    admin: {
-      username: '',
-      customImage: '',
-      title: '',
-      description: '',
-      themeColor: null
-    },
     links: null,
-    update: (partial) =>
+    initialSync: (partial) =>
       set(
         produce((state) => {
-          if (partial.admin) {
-            state.admin.username =
-              partial.admin.username ?? state.admin.username
-            state.admin.customImage =
-              partial.admin.customImage ?? state.admin.customImage
-            state.admin.title = partial.admin.title ?? state.admin.title
-            state.admin.description =
-              partial.admin.description ?? state.admin.description
-            state.admin.themeColor =
-              partial.admin.themeColor ?? state.admin.themeColor
+          if (partial.user) {
+            state.user = partial.user
           }
           if (partial.links) {
             state.links = partial.links
           }
+        })
+      ),
+    update: (partial) =>
+      set(
+        produce((state) => {
           if (partial.user) {
-            state.user = partial.user
+            state.user.username = partial.user.username ?? state.user.username
+            state.user.customImage =
+              partial.user.customImage ?? state.user.customImage
+            state.user.title = partial.user.title ?? state.user.title
+            state.user.description =
+              partial.user.description ?? state.user.description
+            state.user.themeColor =
+              partial.user.themeColor ?? state.user.themeColor
+          }
+          if (partial.links) {
+            state.links = partial.links
+            state.user.links = partial.links
           }
         })
       ),
-    addLink: (link) =>
+    addLink: (newLink) =>
       set(
         produce((state) => {
-          state.links = state.links ? [link, ...state.links] : [link]
+          state.links = [newLink, ...(state.links || [])]
+          state.user.links = [newLink, ...(state.user.links || [])]
         })
       ),
     removeLink: (linkId) =>
@@ -69,20 +72,36 @@ const useSetup = createWithEqualityFn<SettingStore>(
             (l: LinkSetupType) => l.id !== linkId
           )
           state.links = newState
+          state.user.links = newState
         })
       ),
-    updateLink: (linkId, newLink) =>
+    updateLink: (linkId, updatedLink) =>
       set(
         produce((state) => {
           const link = state.links?.find((l: LinkSetupType) => l.id === linkId)
-          if (!link || !newLink) return
+          const userLink = state.user?.links?.find(
+            (l: LinkSetupType) => l.id === linkId
+          )
+          if (!link || !updatedLink) return
 
-          if (link) {
-            link.title = newLink.title
-            link.type = newLink.type
-            link.url = newLink.url
-            link.order = newLink.order
-          }
+          const propertiesToUpdate = ['title', 'type', 'url', 'order']
+          propertiesToUpdate.forEach((property) => {
+            link[property] = updatedLink[property]
+            userLink[property] = updatedLink[property]
+          })
+        })
+      ),
+    revertLinks: (oldLinks) =>
+      set(
+        produce((state) => {
+          state.links = oldLinks
+          state.user.links = oldLinks
+        })
+      ),
+    revertUser: (oldUser) =>
+      set(
+        produce((state) => {
+          state.user = oldUser
         })
       )
   }),

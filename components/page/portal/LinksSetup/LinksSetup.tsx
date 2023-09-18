@@ -24,7 +24,7 @@ import { MdDragIndicator } from 'react-icons/md'
 const LinksSetup = () => {
   const user = useSetup((state) => state.user)
   const links = useSetup((state) => state.links)
-  const update = useSetup((state) => state.update)
+  const { update, revertLinks } = useSetup((state) => state)
   const [enabled, setEnabled] = useState(false)
   const [originalOrder] = useState<LinkSetupType[] | null>(links)
   const [linkType, setLinkType] = useState<'' | 'website' | 'social'>('')
@@ -105,7 +105,7 @@ const LinksSetup = () => {
 
   const handleCancelUpdate = () => {
     setIsDragging(false)
-    update({ links: originalOrder })
+    revertLinks(originalOrder)
   }
 
   return (

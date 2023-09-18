@@ -45,7 +45,7 @@ const isValidThemeColor = (
 
 export default async function SettingLayout({ children }: SettingLayoutProps) {
   const currentUser = await getCurrentUser()
-  const linkSetting = await getLinks()
+  const linkSetup = await getLinks()
 
   if (!isValidCurrentUser(currentUser)) {
     return <div>Something went wrong</div>
@@ -54,7 +54,8 @@ export default async function SettingLayout({ children }: SettingLayoutProps) {
   const themeColor = isValidThemeColor(currentUser?.themeColor)
     ? currentUser?.themeColor
     : 'basic'
-  const adminSetting = {
+  const userSetup = {
+    ...currentUser,
     username: currentUser.username || currentUser.name,
     customImage: currentUser.customImage || currentUser.image,
     title: currentUser.title,
@@ -64,11 +65,7 @@ export default async function SettingLayout({ children }: SettingLayoutProps) {
 
   return (
     <section className="w-full h-full flex pt-16 bg-grey-50 overflow-auto">
-      <StoreInitializer
-        adminSetting={adminSetting}
-        linkSetting={linkSetting}
-        user={currentUser}
-      />
+      <StoreInitializer userSetup={userSetup} linkSetup={linkSetup} />
       <Container>
         <div className="flex gap-3 min-h-full max-w-screen-xl mx-auto">
           <div className="w-full min-w-[30rem] flex md:min-w-[40rem] flex-col py-4 gap-3 bg-white rounded shadow-md md:mx-16 my-12">
