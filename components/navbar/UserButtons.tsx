@@ -18,7 +18,7 @@ const UserButtons: React.FC<UserButtonsProps> = ({ currentUser, isAdmin }) => {
   const username = currentUser?.username || currentUser?.name
 
   return (
-    <div className="flex flex-[0_0_auto] min-w-0 items-center gap-4">
+    <div className="hidden sm:flex flex-[0_0_auto] min-w-0 items-center gap-4">
       {currentUser ? (
         <>
           {isAdmin ? <Button label="發佈" onClick={() => {}} /> : null}
@@ -35,7 +35,7 @@ const UserButtons: React.FC<UserButtonsProps> = ({ currentUser, isAdmin }) => {
           transition
           "
           >
-            <div className="hidden md:block">
+            <div className="hidden sm:block">
               <UserMenu avatarImage={avatarImage} username={username} />
             </div>
           </div>

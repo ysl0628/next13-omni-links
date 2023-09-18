@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 const NavLinks = () => {
   return (
-    <div className="flex justify-center items-center gap-16 py-2">
+    <div className="sm:flex justify-center items-center gap-16 py-2 hidden">
       <>
         <Link className="text-grey-500" href="/portal/basic">
           基本設定

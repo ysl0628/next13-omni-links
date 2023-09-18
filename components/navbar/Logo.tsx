@@ -11,7 +11,7 @@ const Logo = () => {
     <Image
       src={logo}
       alt="logo"
-      className="hidden md:block object-cover cursor-pointer"
+      className="block object-cover cursor-pointer"
       onClick={() => router.push('/')}
       priority
     />
