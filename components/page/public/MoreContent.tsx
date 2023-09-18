@@ -40,7 +40,7 @@ const MoreContent: React.FC<MoreContentProps> = ({ username, currentUser }) => {
     <>
       {open && (
         <div
-          className="fixed inset-0 bg-black/30"
+          className="fixed h-full inset-0 bg-black/30"
           aria-hidden="true"
           onClick={toggle}
         />
@@ -49,12 +49,12 @@ const MoreContent: React.FC<MoreContentProps> = ({ username, currentUser }) => {
         as="div"
         show={open}
         enter="transform transition ease-in-out duration-300 sm:duration-500"
-        enterFrom="translate-y-full"
-        enterTo="translate-y-0"
+        enterFrom="opacity-0 translate-y-full"
+        enterTo="opacity-100 translate-y-0"
         leave="transform transition ease-in-out duration-500 sm:duration-700"
-        leaveFrom="translate-y-0"
-        leaveTo="translate-y-full"
-        className="h-[20rem] w-full absolute bottom-0 max-w-[30rem] "
+        leaveFrom="opacity-100 translate-y-0"
+        leaveTo="opacity-0 translate-y-full"
+        className="h-[20rem] overflow-hidden w-full absolute bottom-0 max-w-[30rem]"
       >
         <div className="h-full w-full absolute bottom-0 bg-white rounded-t-lg shadow-md">
           <div className="flex flex-col w-full justify-center p-8 gap-6">
