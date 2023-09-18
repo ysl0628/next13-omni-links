@@ -1,8 +1,9 @@
 import { Metadata } from 'next'
 import { z } from 'zod'
 
-import Container from '@/components/Container'
+import NavBar from '@/components/navbar/NavBar'
 import Preview from '@/components/page/portal/Preview'
+import Container from '@/components/Container'
 import StoreInitializer from '@/components/page/portal/StoreInitializer'
 
 import { getLinks } from '@/actions/getLinks'
@@ -64,16 +65,19 @@ export default async function SettingLayout({ children }: SettingLayoutProps) {
   }
 
   return (
-    <section className="w-full h-full flex pt-16 bg-grey-50 overflow-auto">
-      <StoreInitializer userSetup={userSetup} linkSetup={linkSetup} />
-      <Container>
-        <div className="flex gap-3 min-h-full max-w-screen-xl mx-auto">
-          <div className="w-full min-w-[30rem] flex md:min-w-[40rem] flex-col py-4 gap-3 bg-white rounded shadow-md md:mx-16 my-12">
-            {children}
+    <>
+      <NavBar currentUser={currentUser} />
+      <section className="w-full h-full flex pt-16 bg-grey-50 overflow-auto">
+        <StoreInitializer userSetup={userSetup} linkSetup={linkSetup} />
+        <Container>
+          <div className="flex gap-3 min-h-full max-w-screen-xl mx-auto">
+            <div className="w-full min-w-[30rem] flex md:min-w-[40rem] flex-col py-4 gap-3 bg-white rounded shadow-md md:mx-16 my-12">
+              {children}
+            </div>
+            <Preview />
           </div>
-          <Preview />
-        </div>
-      </Container>
-    </section>
+        </Container>
+      </section>
+    </>
   )
 }

@@ -35,7 +35,6 @@ export default async function RootLayout({ children, auth }: RootLayoutProps) {
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <Providers attribute="class" enableSystem>
-          <NavBar currentUser={currentUser} />
           <main className="h-screen flex justify-center ">
             {children}
             {auth}
