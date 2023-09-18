@@ -60,7 +60,10 @@ const UserMenu: React.FC<UserMenuProps> = ({ avatarImage, username }) => {
                   />
                   <MenuItem label="聯絡我們" onClick={() => {}} />
                   <Divider />
-                  <MenuItem label="Log Out" onClick={() => signOut()} />
+                  <MenuItem
+                    label="Log Out"
+                    onClick={() => signOut({ callbackUrl: '/' })}
+                  />
                 </div>
               </div>
             </Menu.Items>
