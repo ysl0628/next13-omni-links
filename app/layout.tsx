@@ -1,6 +1,8 @@
 import '../styles/globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { headers } from 'next/headers'
+import Script from 'next/script'
 
 import NavBar from '@/components/navbar/NavBar'
 
@@ -26,6 +28,8 @@ interface RootLayoutProps {
 }
 
 export default async function RootLayout({ children, auth }: RootLayoutProps) {
+  const nonce = headers().get('x-nonce')
+
   const currentUser = await getCurrentUser()
   return (
     <html lang="en" suppressHydrationWarning>
@@ -38,6 +42,7 @@ export default async function RootLayout({ children, auth }: RootLayoutProps) {
           </main>
         </Providers>
       </body>
+      <Script strategy="afterInteractive" nonce={nonce || ''} />
     </html>
   )
 }
