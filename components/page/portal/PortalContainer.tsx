@@ -17,7 +17,7 @@ const PortalContainer = async ({
   return (
     <Container>
       <div className="flex gap-3 min-h-full max-w-screen-xl mx-auto">
-        <div className="w-full min-w-[30rem] flex md:min-w-[40rem] flex-col py-4 gap-3 bg-white rounded shadow-md md:mx-16 my-12">
+        <div className="w-full min-w-[20rem] flex md:min-w-[40rem] flex-col py-4 gap-3 bg-white rounded shadow-md md:mx-16 my-12">
           <MainComponent currentUser={currentUser} />
         </div>
         <Preview />

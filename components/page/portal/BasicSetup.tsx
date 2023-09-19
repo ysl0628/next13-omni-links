@@ -122,7 +122,7 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
 
   return (
     <>
-      <div className="text-3xl font-semibold px-6 p-2 text-grey-600 divide-y">
+      <div className="text-xl sm:text-3xl font-semibold px-6 p-2 text-grey-600 divide-y">
         基本設定
       </div>
       <Divider />

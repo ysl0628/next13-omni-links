@@ -71,7 +71,7 @@ export default async function SettingLayout({ children }: SettingLayoutProps) {
         <StoreInitializer userSetup={userSetup} linkSetup={linkSetup} />
         <Container>
           <div className="flex gap-3 min-h-full max-w-screen-xl mx-auto">
-            <div className="w-full min-w-[30rem] flex md:min-w-[40rem] flex-col py-4 gap-3 bg-white rounded shadow-md md:mx-16 my-12">
+            <div className="w-full min-w-[22rem] flex md:min-w-[40rem] sm:min-w-[35rem] xs:min-w-[28rem] flex-col py-4 gap-3 bg-white rounded shadow-md md:mx-16 mx-2 md:my-12 my-6">
               {children}
             </div>
             <Preview />

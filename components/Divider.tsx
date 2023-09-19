@@ -6,7 +6,7 @@ interface DividerProps {
 }
 
 const Divider = ({ vertical, color }: DividerProps) => {
-  const bgColor = color ? `bg-${color}` : 'bg-neutral-100'
+  const bgColor = color || 'bg-neutral-100'
   return vertical ? (
     <div
       className={`h-full min-h-[5rem] flex-grow w-0.5 self-stretch ${bgColor} opacity-100 dark:opacity-50`}
