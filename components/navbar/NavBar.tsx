@@ -12,6 +12,7 @@ import { Disclosure } from '@headlessui/react'
 import Avatar from '../Avatar'
 import MenuButton from './MenuButton'
 import Divider from '../Divider'
+import { useState } from 'react'
 
 // import ThemeSwitcher from '../ThemeSwitcher'
 
@@ -51,90 +52,106 @@ const userLinks = [
 ]
 
 const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
+  const [full, setFull] = useState(false)
   const path = usePathname()
   const isAdmin = path.includes('/portal')
   const avatarImage = currentUser?.customImage || currentUser?.image
 
   return (
-    <Disclosure as="nav" className="bg-gray-400 fixed w-full z-50 shadow-md">
-      {({ open }) => (
-        <div className="mx-auto">
-          <div className="relative flex h-16 items-center justify-between ">
-            <div
-              className={`fixed w-full 
+    <Disclosure
+      id="disclosure"
+      as="nav"
+      className={`fixed w-full z-10 ${full ? 'h-full' : ''}`}
+    >
+      {({ open }) => {
+        return (
+          <div className={`bg-gray-200 mx-auto ${open ? 'h-full' : ''}`}>
+            <div className="relative flex h-16 items-center justify-between ">
+              <div
+                className={`fixed w-full px-4
             ${
               open
-                ? 'bg-gray-400'
+                ? 'bg-gray-200'
                 : isAdmin
                 ? 'bg-white shadow-sm'
                 : 'bg-grey-50'
             }
               min-h-[4.5rem] z-10
               `}
-            >
-              <div
-                className={`py-4 ${isAdmin && !open ? 'border-b-[1px]' : ''} `}
               >
-                <Container>
-                  <div className="flex items-center w-full flex-grow justify-between gap-3 md:gap:0">
-                    <Logo />
-                    {currentUser && isAdmin && <NavLinks />}
-                    {/* <ThemeSwitcher /> */}
-                    <MenuButton open={open} />
-                    <UserButtons currentUser={currentUser} isAdmin={isAdmin} />
-                  </div>
-                </Container>
-              </div>
-            </div>
-          </div>
-
-          <Disclosure.Panel className="sm:hidden pt-2">
-            <div className="space-y-1 px-2 pb-3 pt-2">
-              {navLinks.map((link) => (
-                <Disclosure.Button
-                  key={link.name}
-                  as="a"
-                  href={link.href}
-                  className={`${
-                    path === link.href
-                      ? 'bg-gray-900 text-white'
-                      : 'text-gray-600 hover:bg-gray-700 hover:text-white'
-                  } block px-3 py-2 rounded-md text-base font-medium`}
+                <div
+                  className={`py-4 ${
+                    isAdmin && !open ? 'border-b-[1px]' : ''
+                  } `}
                 >
-                  {link.name}
-                </Disclosure.Button>
-              ))}
-            </div>
-            <Divider color="gray-500" />
-            <div className="px-5 py-3">
-              <div className="flex items-center">
-                <Avatar src={avatarImage} />
-                <div className="ml-3">
-                  <div className="text-lg font-medium text-gray-800">
-                    @{currentUser?.username}
-                  </div>
+                  <Container>
+                    <div className="flex items-center w-full flex-grow justify-between gap-3 md:gap:0">
+                      <Logo />
+                      {currentUser && isAdmin && <NavLinks />}
+                      {/* <ThemeSwitcher /> */}
+                      <MenuButton open={open} setFull={setFull} />
+                      <UserButtons
+                        currentUser={currentUser}
+                        isAdmin={isAdmin}
+                      />
+                    </div>
+                  </Container>
                 </div>
               </div>
             </div>
-            <div className="px-2 py-3">
-              {userLinks.map((link) => (
-                <Disclosure.Button
-                  key={link.name}
-                  as="a"
-                  href={link.href}
-                  className={`${
-                    path === link.href
-                      ? 'bg-gray-900 text-white'
-                      : 'text-gray-600 hover:bg-gray-700 hover:text-white'
-                  } block px-3 py-2 rounded-md text-base font-medium`}
-                >
-                  {link.name}
-                </Disclosure.Button>
-              ))}
-            </div>
-          </Disclosure.Panel>
-        </div>
-      )}
+
+            <Disclosure.Panel className="sm:hidden pt-2 h-full">
+              {isAdmin && (
+                <>
+                  <div className="space-y-1 px-2 pb-3 pt-2">
+                    {navLinks.map((link) => (
+                      <Disclosure.Button
+                        key={link.name}
+                        as="a"
+                        href={link.href}
+                        className={`${
+                          path === link.href
+                            ? 'bg-gray-900 text-white'
+                            : 'text-gray-600 hover:bg-gray-700 hover:text-white'
+                        } block px-3 py-2 rounded-md text-base font-medium`}
+                      >
+                        {link.name}
+                      </Disclosure.Button>
+                    ))}
+                  </div>
+                  <Divider color="bg-gray-500/50" />
+                </>
+              )}
+              <div className="px-5 py-3">
+                <div className="flex items-center">
+                  <Avatar src={avatarImage} />
+                  <div className="ml-3">
+                    <div className="text-lg font-medium text-gray-800">
+                      @{currentUser?.username}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="px-2 py-3">
+                {userLinks.map((link) => (
+                  <Disclosure.Button
+                    key={link.name}
+                    as="a"
+                    href={link.href}
+                    className={`${
+                      path === link.href
+                        ? 'bg-gray-900 text-white'
+                        : 'text-gray-600 hover:bg-gray-700 hover:text-white'
+                    } block px-3 py-2 rounded-md text-base font-medium`}
+                  >
+                    {link.name}
+                  </Disclosure.Button>
+                ))}
+              </div>
+            </Disclosure.Panel>
+          </div>
+        )
+      }}
     </Disclosure>
   )
 }
