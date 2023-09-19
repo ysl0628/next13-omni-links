@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className="h-full w-full pt-16 overflow-hidden">
       <div className="h-[95%] w-full pt-2 flex flex-col items-center relative bg-grey-50">
-        <main className="flex h-full absolute items-center justify-between p-24">
+        <main className="flex h-full absolute items-center justify-between sm:p-24 p-12">
           <Descriptions />
           <div className="hidden lg:block lg:right-[6rem] xl:left-[8rem] relative ">
             <Image alt="cover" src={cover} className="object-cover" priority />
