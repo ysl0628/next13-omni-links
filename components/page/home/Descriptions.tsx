@@ -12,10 +12,10 @@ const Descriptions = () => {
       <div className="rounded-[36px] text-xs self-start bg-[#22C55E] text-white px-2 py-0.5">
         NEW
       </div>
-      <h1 className="text-[60px] font-bold leading-tight text-[#2A3342]">
+      <h1 className=" text-4xl sm:text-5xl md:text-[60px] font-bold leading-tight text-[#2A3342]">
         Branch Out with Link Orchard
       </h1>
-      <p className="text-[#556987] text-[20px] leading-loose">
+      <p className="text-[#556987] text-md sm:text-[20px] leading-loose">
         LinkOrchard，連接的果園。
         <br />
         在這裡種下你的連結，收穫豐富的人脈與機會。

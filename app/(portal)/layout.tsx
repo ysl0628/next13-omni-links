@@ -49,7 +49,7 @@ export default async function SettingLayout({ children }: SettingLayoutProps) {
   const linkSetup = await getLinks()
 
   if (!isValidCurrentUser(currentUser)) {
-    return <div>Something went wrong</div>
+    throw new Error('Invalid User')
   }
 
   const themeColor = isValidThemeColor(currentUser?.themeColor)
