@@ -57,13 +57,7 @@ const LoginClient = () => {
     })
       .then((callback) => {
         setIsLoading(false)
-        if (callback?.ok) {
-          toast.success('登入成功')
-        }
-
-        if (callback?.error) {
-          toast.error('登入失敗')
-        }
+        callback?.ok ? toast.success('登入成功') : toast.error('登入失敗')
       })
       .finally(() => {
         setIsLoading(false)
@@ -76,13 +70,7 @@ const LoginClient = () => {
       callbackUrl: CALLBACK_URL
     })
       .then((callback) => {
-        if (callback?.ok) {
-          toast.success('登入成功')
-        }
-
-        if (callback?.error) {
-          toast.error('登入失敗')
-        }
+        callback?.ok ? toast.success('登入成功') : toast.error('登入失敗')
       })
       .finally(() => {
         setIsLoading(false)

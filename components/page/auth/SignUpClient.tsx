@@ -55,32 +55,25 @@ const SignUpClient = () => {
     resolver: zodResolver(signUpSchema)
   })
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true)
-    axios
-      .post('/api/register', data)
-      .then(() => {
-        router.push('/portal/basic')
-      })
-      .catch((err) => {
-        toast.error('註冊失敗')
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
+
+    try {
+      await axios.post('/api/register', data)
+      toast.success('註冊成功')
+      router.push('/portal/basic')
+    } catch (error) {
+      toast.error('註冊失敗')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleSocialSignUp = (socialType: string) => {
     signIn(socialType, {
       callbackUrl: CALLBACK_URL
     }).then((callback) => {
-      if (callback?.ok) {
-        toast.success('登入成功')
-      }
-
-      if (callback?.error) {
-        toast.error('登入失敗')
-      }
+      callback?.ok ? toast.success('註冊成功') : toast.error('註冊失敗')
     })
   }
 
