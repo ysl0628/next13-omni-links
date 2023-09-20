@@ -17,12 +17,14 @@ interface DisplayLinkItemProps {
     type: LinkType
   }
   isWebsite?: boolean
+  isDragging?: boolean
   onEditMode: () => void
 }
 
 const DisplayLinkItem = ({
   item,
   isWebsite,
+  isDragging,
   onEditMode
 }: DisplayLinkItemProps) => {
   const user = useSetup((state) => state.user)
@@ -57,22 +59,24 @@ const DisplayLinkItem = ({
         </div>
       </div>
 
-      <div className="flex flex-col gap-3">
-        <div
-          className="bg-grey-400 rounded-full p-1.5 hover:bg-slate-800 cursor-pointer"
-          onClick={handleDeleteLink}
-        >
-          <FiTrash className="h-5 w-5 text-white" />
+      {isDragging ? null : (
+        <div className="flex flex-col gap-3">
+          <div
+            className="bg-grey-400 rounded-full p-1.5 hover:bg-slate-800 cursor-pointer"
+            onClick={handleDeleteLink}
+          >
+            <FiTrash className="h-5 w-5 text-white" />
+          </div>
+          <div
+            className={
+              'bg-secondary-500 rounded-full p-1.5 hover:opacity-80 cursor-pointer'
+            }
+            onClick={onEditMode}
+          >
+            <MdEdit className="h-5 w-5 text-white" />
+          </div>
         </div>
-        <div
-          className={
-            'bg-secondary-500 rounded-full p-1.5 hover:opacity-80 cursor-pointer'
-          }
-          onClick={onEditMode}
-        >
-          <MdEdit className="h-5 w-5 text-white" />
-        </div>
-      </div>
+      )}
     </div>
   )
 }
