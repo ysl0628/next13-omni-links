@@ -1,10 +1,14 @@
 'use client'
 
+import { Suspense, useState } from 'react'
+import dynamic from 'next/dynamic'
+import { usePathname } from 'next/navigation'
+import Skeleton from 'react-loading-skeleton'
+
 import Logo from './Logo'
 import Container from '../Container'
 import NavLinks from './NavLinks'
 import UserButtons from './UserButtons'
-import { usePathname } from 'next/navigation'
 
 import { SafeUser } from '@/types/safe'
 import { Disclosure } from '@headlessui/react'
@@ -12,7 +16,12 @@ import { Disclosure } from '@headlessui/react'
 import Avatar from '../Avatar'
 import MenuButton from './MenuButton'
 import Divider from '../Divider'
-import { useState } from 'react'
+import 'react-loading-skeleton/dist/skeleton.css'
+
+// const Logo = dynamic(() => import('./Logo'), {
+//   loading: () => <div>Loading...</div>
+//   // ssr: false
+// })
 
 // import ThemeSwitcher from '../ThemeSwitcher'
 
@@ -86,7 +95,9 @@ const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
                 >
                   <Container>
                     <div className="flex items-center w-full flex-grow justify-between gap-3 md:gap:0">
+                      {/* <Suspense fallback={<p>Loading feed...</p>}> */}
                       <Logo />
+                      {/* </Suspense> */}
                       {currentUser && isAdmin && <NavLinks />}
                       {/* <ThemeSwitcher /> */}
                       <MenuButton open={open} setFull={setFull} />

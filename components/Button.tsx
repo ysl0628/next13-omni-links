@@ -1,11 +1,11 @@
 'use client'
 
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { IconType } from 'react-icons'
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  label?: string
+  label?: string | ReactNode
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
   disabled?: boolean
   fullWidth?: boolean

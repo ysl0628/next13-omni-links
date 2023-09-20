@@ -3,6 +3,8 @@
 import React from 'react'
 import Image from 'next/image'
 
+import 'react-loading-skeleton/dist/skeleton.css'
+
 interface AvatarProps {
   src?: string | null
   size?: number

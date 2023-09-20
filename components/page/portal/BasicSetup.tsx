@@ -4,6 +4,7 @@ import { z } from 'zod'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { useState } from 'react'
+import { ClipLoader } from 'react-spinners'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, useWatch } from 'react-hook-form'
 
@@ -49,6 +50,7 @@ const unionSchema = z.union([schema, genericFieldsSchema])
 type FormValues = z.infer<typeof unionSchema>
 
 const BasicSetup: React.FC<BasicSetupProps> = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const { update } = useSetup((state) => state)
   const user = useSetup((state) => state.user)
   const [oldUser] = useState(user)
@@ -109,12 +111,15 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
   }
 
   const onSubmit = async (values: FormValues) => {
+    setIsLoading(true)
     try {
       const { data: res } = await axios.put(`/api/user/${user?.id}`, values)
       update({ user: res.data })
       toast.success('更新成功')
     } catch (error: any) {
       notifyError(error, '更新失敗')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -136,6 +141,7 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
               size="large"
               className="w-full"
               type="button"
+              disabled={isLoading}
               onChange={(url) => handleUpload(url)}
             />
             <Button
@@ -145,6 +151,7 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
               size="large"
               rounded="full"
               type="button"
+              disabled={isLoading}
               onClick={handleResetImg}
             />
           </div>
@@ -187,7 +194,15 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
             onClick={handlePreview}
           />
           <Button
-            label="儲存"
+            label={
+              isSubmitting ? (
+                <div className="flex justify-center items-center">
+                  <ClipLoader size={20} color="#14532D" />
+                </div>
+              ) : (
+                '儲存'
+              )
+            }
             size="large"
             className="w-full md:w-1/4"
             type="submit"
