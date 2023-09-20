@@ -11,6 +11,7 @@ import { LinkSetupType } from '@/types'
 import { Link, LinkType } from '@prisma/client'
 
 import useSetup from '@/hooks/useSetup'
+import { notifyError } from '@/utils/notify'
 import { linkList } from '@/constants/linkMapping'
 
 import { MdClose, MdCheck } from 'react-icons/md'
@@ -105,22 +106,17 @@ const EditLinkItem = ({
 
   const handleAddLink = async (values: FormValues) => {
     try {
-      const result = {
-        url: values.url,
-        type: values.type,
-        title: values.title,
-        order: values.order
-      }
+      const { id, ...rest } = values
       const { data: res } = await axios.post<AxiosResponse<Link>>(
         `/api/user/${user?.id}/links`,
-        result
+        rest
       )
 
       addLink(res.data)
 
       toast.success('新增成功')
-    } catch (error) {
-      toast.error('新增失敗')
+    } catch (error: any) {
+      notifyError(error, '新增失敗')
       console.log(error)
     }
   }
@@ -133,11 +129,14 @@ const EditLinkItem = ({
       order: values.order
     }
     try {
-      await axios.put(`/api/user/${user?.id}/links/${values.id}`, result)
+      const { data: res } = await axios.put<AxiosResponse<Link>>(
+        `/api/user/${user?.id}/links/${values.id}`,
+        result
+      )
       toast.success('更新成功')
-      updateLink(values?.id, result as LinkSetupType)
-    } catch (error) {
-      toast.error('更新失敗')
+      updateLink(res.data?.id, res.data)
+    } catch (error: any) {
+      notifyError(error, '更新失敗')
       console.log(error)
     }
   }

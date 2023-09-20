@@ -2,12 +2,10 @@ import axios, { AxiosError } from 'axios'
 import { FC } from 'react'
 import toast from 'react-hot-toast'
 
-interface NotifyError {
-  error: Error | AxiosError
+export const notifyError = (
+  error: Error | AxiosError,
   defaultMessage?: string
-}
-
-export const notifyError = ({ error, defaultMessage }: NotifyError) => {
+) => {
   let errorMessage
 
   if (axios.isAxiosError(error)) {

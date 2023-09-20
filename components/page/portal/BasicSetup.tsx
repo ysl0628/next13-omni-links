@@ -14,8 +14,9 @@ import LabelInput from '@/components/input/LabelInput'
 import ButtonGroup from '@/components/ButtonGroup'
 import ImageUpload from '@/components/input/ImageUpload'
 
-import { SafeUser } from '@/types/safe'
 import useSetup from '@/hooks/useSetup'
+import { SafeUser } from '@/types/safe'
+import { notifyError } from '@/utils/notify'
 
 const themeList = [
   {
@@ -110,13 +111,8 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
       const { data: res } = await axios.put(`/api/user/${user?.id}`, values)
       update({ user: res.data })
       toast.success('更新成功')
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const message = error?.response?.data
-        toast.error(message)
-        return
-      }
-      toast.error('更新失敗')
+    } catch (error: any) {
+      notifyError(error, '更新失敗')
     }
   }
 

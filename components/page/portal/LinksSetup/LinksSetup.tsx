@@ -17,6 +17,7 @@ import EditLinkItem from './EditLinkItem'
 import DisplayLinkItem from './DisplayLinkItem'
 
 import useSetup from '@/hooks/useSetup'
+import { notifyError } from '@/utils/notify'
 import { LinkSetupType } from '@/types'
 
 import { MdDragIndicator } from 'react-icons/md'
@@ -92,13 +93,8 @@ const LinksSetup = () => {
       update({ links: res.data })
       toast.success('更新成功')
       setIsDragging(false)
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const message = error?.response?.data
-        toast.error(message)
-        return
-      }
-      toast.error('更新失敗')
+    } catch (error: any) {
+      notifyError(error, '更新失敗')
       console.log(error)
     }
   }

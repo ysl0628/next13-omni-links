@@ -3,10 +3,11 @@ import axios, { AxiosResponse } from 'axios'
 import toast from 'react-hot-toast'
 
 import useSetup from '@/hooks/useSetup'
+import { notifyError } from '@/utils/notify'
+import { Link, LinkType } from '@prisma/client'
 
 import { FiTrash } from 'react-icons/fi'
 import { MdEdit } from 'react-icons/md'
-import { Link, LinkType } from '@prisma/client'
 
 interface DisplayLinkItemProps {
   item: {
@@ -34,8 +35,8 @@ const DisplayLinkItem = ({
       )
       removeLink(res.data.id)
       toast.success('刪除成功')
-    } catch (error) {
-      toast.error('刪除失敗')
+    } catch (error: any) {
+      notifyError(error, '刪除失敗')
     }
   }
   return (
