@@ -60,7 +60,8 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
     control,
     setValue,
     getValues,
-    trigger
+    trigger,
+    resetField
   } = useForm<FormValues>({
     defaultValues: {
       customImage: user?.customImage || '',
@@ -96,6 +97,7 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
 
   const handleResetImg = () => {
     setCustomValue('customImage', user?.customImage)
+    // resetField('customImage')
   }
 
   const setCustomValue = (id: keyof FormValues, value: any) => {
@@ -124,7 +126,9 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
       <Divider />
       <form className="contents" onSubmit={handleSubmit(onSubmit)}>
         <div className="px-6 pt-6 pb-4 w-full flex justify-between flex-grow items-center md:flex-row flex-col gap-12">
-          <Avatar size={150} src={avatarImage} />
+          <div className="w-[150px] h-[150px] rounded-full relative">
+            <Avatar src={avatarImage} />
+          </div>
           <div className="flex justify-between items-center flex-auto gap-6">
             <ImageUpload
               label="上傳圖片"

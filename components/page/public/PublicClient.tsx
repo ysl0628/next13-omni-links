@@ -37,7 +37,9 @@ const PublicClient: React.FC<PublicClientProps> = ({ user, currentUser }) => {
         >
           <CgMoreVerticalO size={28} />
         </div>
-        <Avatar size={120} src={avatarImage} />
+        <div className="w-[120px] h-[120px] rounded-full relative">
+          <Avatar src={avatarImage} />
+        </div>
         <div className="text-2xl font-semibold text-gray-700 dark:text-gray-100">
           {user?.title || `我是${user?.username}`}
         </div>

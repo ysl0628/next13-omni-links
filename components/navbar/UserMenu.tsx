@@ -29,7 +29,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ avatarImage, username }) => {
                 group inline-flex items-center text-base font-medium text-white 
                 hover:shadow-md hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
           >
-            <Avatar src={avatarImage} />
+            <div className="w-[40px] h-[40px] rounded-full relative">
+              <Avatar src={avatarImage} />
+            </div>
           </Menu.Button>
           <Transition
             as={Fragment}

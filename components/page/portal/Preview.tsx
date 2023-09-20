@@ -31,7 +31,9 @@ const Preview = () => {
         <div
           className={`flex flex-col gap-4 justify-start items-center py-12 px-6 h-full `}
         >
-          <Avatar size={90} src={avatarImage} />
+          <div className="w-[90px] h-[90px] rounded-full relative">
+            <Avatar src={avatarImage} />
+          </div>
           <div className="text-lg font-semibold text-gray-700 dark:text-gray-100">
             {user?.title || `我是${user?.username}`}
           </div>

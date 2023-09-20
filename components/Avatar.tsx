@@ -6,16 +6,17 @@ import Image from 'next/image'
 interface AvatarProps {
   src?: string | null
   size?: number
+  fill?: boolean
 }
 
-const Avatar: React.FC<AvatarProps> = ({ src, size }) => {
+const Avatar: React.FC<AvatarProps> = ({ src, size, fill }) => {
   return (
     <Image
       alt="avatar"
-      className="rounded-full"
-      height={size || 40}
-      width={size || 40}
+      className="rounded-full object-cover"
       src={src || '/images/placeholder.jpg'}
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+      fill
       priority
     />
   )
