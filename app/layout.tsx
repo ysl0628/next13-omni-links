@@ -1,15 +1,22 @@
 import '../styles/globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Oswald, Inter } from 'next/font/google'
 import { headers } from 'next/headers'
 import Script from 'next/script'
-
-import NavBar from '@/components/navbar/NavBar'
 
 import Providers from '@/providers/Providers'
 import { getCurrentUser } from '@/actions/getCurrentUser'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  weight: '100'
+})
+const oswald = Oswald({
+  subsets: ['latin'],
+  variable: '--font-oswald',
+  weight: '400'
+})
 
 // https://github.com/vercel/next.js/pull/53525
 
@@ -33,7 +40,7 @@ export default async function RootLayout({ children, auth }: RootLayoutProps) {
   const currentUser = await getCurrentUser()
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${oswald.variable}`}>
         <Providers attribute="class" enableSystem>
           <main className="h-screen flex justify-center ">
             {children}

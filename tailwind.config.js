@@ -16,6 +16,10 @@ module.exports = {
       screens: {
         xs: '475px'
       },
+      fontFamily: {
+        inter: ['var(--font-inter)'],
+        oswald: ['var(--font-oswald)']
+      },
       colors: {
         grey: {
           50: '#F7F8F9',
