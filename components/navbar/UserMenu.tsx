@@ -5,9 +5,9 @@ import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Menu, Transition } from '@headlessui/react'
 
-import Avatar from '../Avatar'
+import Avatar from '../ui/Avatar'
 import MenuItem from './MenuItem'
-import Divider from '../Divider'
+import Divider from '../ui/Divider'
 
 interface UserMenuProps {
   avatarImage?: string | null

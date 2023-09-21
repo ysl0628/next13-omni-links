@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import Button from '@/components/Button'
+import Button from '@/components/ui/Button'
 import Input from '@/components/input/Input'
 
 import { AiFillGithub } from 'react-icons/ai'

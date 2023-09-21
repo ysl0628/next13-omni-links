@@ -2,7 +2,7 @@ import React from 'react'
 import { getCurrentUser } from '@/actions/getCurrentUser'
 
 import Preview from './Preview'
-import Container from '../../Container'
+import Container from '../../ui/Container'
 import EmptyState from '../../EmptyState'
 
 const PortalContainer = async ({

@@ -1,4 +1,4 @@
-import Container from '@/components/Container'
+import Container from '@/components/ui/Container'
 import SignUpClient from '@/components/page/auth/SignUpClient'
 
 export default function SignUpPage() {

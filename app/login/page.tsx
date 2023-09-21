@@ -1,4 +1,4 @@
-import Container from '@/components/Container'
+import Container from '@/components/ui/Container'
 import LoginClient from '@/components/page/auth/LoginClient'
 
 export default function LoginPage() {

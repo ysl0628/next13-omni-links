@@ -3,7 +3,7 @@ import React from 'react'
 
 import { useMore } from '@/hooks/useMore'
 
-import Avatar from '@/components/Avatar'
+import Avatar from '@/components/ui/Avatar'
 import SocialLink from '@/components/page/portal/LinksSetup/SocialLink'
 import MoreContent from './MoreContent'
 

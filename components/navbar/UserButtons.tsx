@@ -3,7 +3,7 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
 
-import Button from '../Button'
+import Button from '../ui/Button'
 import UserMenu from './UserMenu'
 import { SafeUser } from '@/types/safe'
 

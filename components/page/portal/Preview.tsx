@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import Avatar from '../../Avatar'
+import Avatar from '../../ui/Avatar'
 import SocialLink from './LinksSetup/SocialLink'
 
 import useSetup from '@/hooks/useSetup'

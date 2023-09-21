@@ -2,7 +2,7 @@
 
 import React, { useCallback } from 'react'
 import { CldUploadWidget } from 'next-cloudinary'
-import Button, { ButtonProps } from '../Button'
+import Button, { ButtonProps } from '../ui/Button'
 
 declare global {
   var cloudinary: any

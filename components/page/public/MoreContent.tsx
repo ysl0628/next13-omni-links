@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { Transition } from '@headlessui/react'
 import { toast } from 'react-hot-toast'
 
-import Button from '../../Button'
+import Button from '../../ui/Button'
 import { useMore } from '@/hooks/useMore'
 
 import { SafeUser } from '@/types/safe'

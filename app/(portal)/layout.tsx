@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 import NavBar from '@/components/navbar/NavBar'
 import Preview from '@/components/page/portal/Preview'
-import Container from '@/components/Container'
+import Container from '@/components/ui/Container'
 import StoreInitializer from '@/components/page/portal/StoreInitializer'
 
 import { getLinks } from '@/actions/getLinks'

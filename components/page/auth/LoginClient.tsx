@@ -7,7 +7,7 @@ import { signIn } from 'next-auth/react'
 import { toast } from 'react-hot-toast'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import Button from '@/components/Button'
+import Button from '@/components/ui/Button'
 import Input from '@/components/input/Input'
 
 import { AiFillGithub } from 'react-icons/ai'

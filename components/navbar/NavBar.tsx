@@ -6,16 +6,16 @@ import { usePathname } from 'next/navigation'
 import Skeleton from 'react-loading-skeleton'
 
 import Logo from './Logo'
-import Container from '../Container'
+import Container from '../ui/Container'
 import NavLinks from './NavLinks'
 import UserButtons from './UserButtons'
 
 import { SafeUser } from '@/types/safe'
 import { Disclosure } from '@headlessui/react'
 
-import Avatar from '../Avatar'
+import Avatar from '../ui/Avatar'
 import MenuButton from './MenuButton'
-import Divider from '../Divider'
+import Divider from '../ui/Divider'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 // const Logo = dynamic(() => import('./Logo'), {
