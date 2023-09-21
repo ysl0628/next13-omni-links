@@ -2,12 +2,15 @@
 
 import axios from 'axios'
 import toast from 'react-hot-toast'
-import { useCallback, useState } from 'react'
+import Skeleton from 'react-loading-skeleton'
+import { Suspense, lazy, useCallback, useState } from 'react'
 import { Transition } from '@headlessui/react'
 import { DropResult } from '@hello-pangea/dnd'
 
 import Button from '../../../ui/Button'
 import Divider from '../../../ui/Divider'
+// import AddButtons from './AddButtons'
+import ButtonLoader from '@/components/ButtonLoader'
 import EditLinkItem from './EditLinkItem'
 import DisplayLinkItem from './DisplayLinkItem'
 import DragDropLinkList from './DragDropLinkList'
@@ -15,6 +18,8 @@ import DragDropLinkList from './DragDropLinkList'
 import useSetup from '@/hooks/useSetup'
 import { notifyError } from '@/utils/notify'
 import { LinkSetupType } from '@/types'
+
+const AddButtons = lazy(() => import('./AddButtons'))
 
 const LinksSetup = () => {
   const user = useSetup((state) => state.user)
@@ -24,6 +29,7 @@ const LinksSetup = () => {
   const [linkType, setLinkType] = useState<'' | 'website' | 'social'>('')
   const [isEditingId, setIsEditingId] = useState<string>('')
   const [isDragging, setIsDragging] = useState(false)
+  const [isUpdating, setIsUpdating] = useState(false)
 
   const reorder = (
     list: LinkSetupType[] | null,
@@ -59,6 +65,7 @@ const LinksSetup = () => {
   }
 
   const handleUpdateLinks = async () => {
+    setIsUpdating(true)
     try {
       const updateLinks = links?.map((item, index) => {
         return {
@@ -76,6 +83,8 @@ const LinksSetup = () => {
     } catch (error: any) {
       notifyError(error, '更新失敗')
       console.log(error)
+    } finally {
+      setIsUpdating(false)
     }
   }
 
@@ -108,36 +117,29 @@ const LinksSetup = () => {
 
   return (
     <>
-      <div className="text-3xl font-semibold flex items-center px-6 p-2 gap-3 text-grey-600 ">
-        <p>連結設定</p>
-        <p className="text-sm font-light text-grey-400 ">最多可新增 8 筆連結</p>
+      <div className="text-3xl font-semibold flex items-center px-6 p-2 gap-3 text-grey-600">
+        <p className="font-inter">連結設定 Link Setup</p>
+        <p className="text-sm font-light text-grey-400 font-oswald">
+          最多可新增 8 筆連結 Limit 8 links
+        </p>
       </div>
       <Divider />
-      <div className="px-6 pb-4  flex flex-col gap-4">
+      <div className="px-6 pb-4 flex flex-col gap-4">
         <Transition
           appear={true}
           show={linkType === ''}
           enter="transition ease duration-500 transform"
-          enterFrom="hidden -translate-y-12"
-          enterTo="block translate-y-0"
+          enterFrom="opacity-0 -translate-y-12"
+          enterTo="opacity-100 translate-y-0"
           className="flex flex-col items-center w-full md:flex-row gap-4 h-28"
         >
-          <Button
-            onClick={() => setLinkType('social')}
-            label="新增社群連結"
-            rounded="full"
-            size="large"
-            className="w-full"
-          />
-          <Button
-            onClick={() => setLinkType('website')}
-            label="新增自訂連結"
-            color="secondary"
-            rounded="full"
-            size="large"
-            className="w-full"
-          />
+          <Suspense
+            fallback={<Skeleton width={288} height={42} count={2} inline />}
+          >
+            <AddButtons setLinkType={setLinkType} />
+          </Suspense>
         </Transition>
+
         <Transition
           appear={true}
           show={linkType !== ''}
@@ -152,6 +154,7 @@ const LinksSetup = () => {
             lastItemOrder={links ? links.length - 1 : -1}
           />
         </Transition>
+
         {isDragging ? (
           <DragDropLinkList
             links={links}
@@ -171,13 +174,15 @@ const LinksSetup = () => {
               variant="outline"
               className="w-full"
               onClick={handleCancelUpdate}
+              disabled={isUpdating}
             />
             <Button
-              label="更新"
+              label={isUpdating ? <ButtonLoader /> : '更新'}
               rounded="full"
               color="info"
               className="w-full"
               onClick={handleUpdateLinks}
+              disabled={isUpdating}
             />
           </div>
         ) : (
