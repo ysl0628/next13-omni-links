@@ -3,7 +3,7 @@
 import React from 'react'
 import Image from 'next/image'
 
-import 'react-loading-skeleton/dist/skeleton.css'
+import { rgbDataURL, staticBlurDataUrl } from '@/utils/staticBlurDataUrl'
 
 interface AvatarProps {
   src?: string | null
@@ -19,6 +19,8 @@ const Avatar: React.FC<AvatarProps> = ({ src, size, fill }) => {
       src={src || '/images/placeholder.jpg'}
       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       fill
+      placeholder="blur"
+      blurDataURL={staticBlurDataUrl()}
       priority
     />
   )
