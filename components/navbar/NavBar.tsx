@@ -1,14 +1,13 @@
 'use client'
 
-import { Suspense, useState } from 'react'
-import dynamic from 'next/dynamic'
+import { PropsWithChildren, Suspense, lazy, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Skeleton from 'react-loading-skeleton'
 
 import Logo from './Logo'
 import Container from '../ui/Container'
-import NavLinks from './NavLinks'
-import UserButtons from './UserButtons'
+// import NavLinks from './NavLinks'
+// import UserButtons from './UserButtons'
 
 import { SafeUser } from '@/types/safe'
 import { Disclosure } from '@headlessui/react'
@@ -18,10 +17,8 @@ import MenuButton from './MenuButton'
 import Divider from '../ui/Divider'
 import 'react-loading-skeleton/dist/skeleton.css'
 
-// const Logo = dynamic(() => import('./Logo'), {
-//   loading: () => <div>Loading...</div>
-//   // ssr: false
-// })
+const UserButtons = lazy(() => import('./UserButtons'))
+const NavLinks = lazy(() => import('./NavLinks'))
 
 // import ThemeSwitcher from '../ThemeSwitcher'
 
@@ -95,16 +92,28 @@ const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
                 >
                   <Container>
                     <div className="flex items-center w-full flex-grow justify-between gap-3 md:gap:0">
-                      {/* <Suspense fallback={<p>Loading feed...</p>}> */}
                       <Logo />
-                      {/* </Suspense> */}
-                      {currentUser && isAdmin && <NavLinks />}
+                      <Suspense
+                        fallback={
+                          <Skeleton
+                            height={32}
+                            width={64}
+                            count={2}
+                            inline
+                            wrapper={SuspenseWrapper}
+                          />
+                        }
+                      >
+                        {currentUser && isAdmin && <NavLinks />}
+                      </Suspense>
                       {/* <ThemeSwitcher /> */}
                       <MenuButton open={open} setFull={setFull} />
-                      <UserButtons
-                        currentUser={currentUser}
-                        isAdmin={isAdmin}
-                      />
+                      <Suspense fallback={<Skeleton width={125} height={40} />}>
+                        <UserButtons
+                          currentUser={currentUser}
+                          isAdmin={isAdmin}
+                        />
+                      </Suspense>
                     </div>
                   </Container>
                 </div>
@@ -165,6 +174,10 @@ const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
       }}
     </Disclosure>
   )
+}
+
+const SuspenseWrapper = ({ children }: PropsWithChildren<unknown>) => {
+  return <span className=" mr-4 ">{children}</span>
 }
 
 export default NavBar

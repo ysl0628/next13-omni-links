@@ -13,6 +13,7 @@ import Button from '@/components/ui/Button'
 import Divider from '@/components/ui/Divider'
 import LabelInput from '@/components/input/LabelInput'
 import ButtonGroup from '@/components/ui/ButtonGroup'
+import ButtonLoader from '@/components/ButtonLoader'
 import ImageUpload from '@/components/input/ImageUpload'
 
 import useSetup from '@/hooks/useSetup'
@@ -194,15 +195,7 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
             onClick={handlePreview}
           />
           <Button
-            label={
-              isSubmitting ? (
-                <div className="flex justify-center items-center">
-                  <ClipLoader size={20} color="#14532D" />
-                </div>
-              ) : (
-                '儲存'
-              )
-            }
+            label={isSubmitting ? <ButtonLoader /> : '儲存'}
             size="large"
             className="w-full md:w-1/4"
             type="submit"
