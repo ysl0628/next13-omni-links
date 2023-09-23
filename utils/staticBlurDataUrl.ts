@@ -1,11 +1,11 @@
 export function staticBlurDataUrl() {
   const blurSvg = `
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 5'>
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 6'>
         <filter id='b' color-interpolation-filters='srgb'> 
             <feGaussianBlur stdDeviation='1'/>
         </filter>
 
-        <rect preserveAspectRatio='none' filter='url(#b)' x='0' y='0' height='100%' width='100%' stroke-width="3" stroke="#BBF7D0"  fill="#15803D" />
+        <rect preserveAspectRatio='none' filter='url(#b)' x='0' y='0' height='100%' width='100%' stroke-width="3" stroke="#BBC3CF"  fill="#404F65" />
     </svg>
 `
 

@@ -1,6 +1,7 @@
 'use client'
 
 import axios from 'axios'
+import dynamic from 'next/dynamic'
 import toast from 'react-hot-toast'
 import Skeleton from 'react-loading-skeleton'
 import { Suspense, lazy, useCallback, useState } from 'react'
@@ -11,7 +12,7 @@ import Button from '../../../ui/Button'
 import Divider from '../../../ui/Divider'
 // import AddButtons from './AddButtons'
 import ButtonLoader from '@/components/ButtonLoader'
-import EditLinkItem from './EditLinkItem'
+// import EditLinkItem from './EditLinkItem'
 import DisplayLinkItem from './DisplayLinkItem'
 import DragDropLinkList from './DragDropLinkList'
 
@@ -20,6 +21,7 @@ import { notifyError } from '@/utils/notify'
 import { LinkSetupType } from '@/types'
 
 const AddButtons = lazy(() => import('./AddButtons'))
+const EditLinkItem = dynamic(() => import('./EditLinkItem'))
 
 const LinksSetup = () => {
   const user = useSetup((state) => state.user)
@@ -140,20 +142,22 @@ const LinksSetup = () => {
           </Suspense>
         </Transition>
 
-        <Transition
+        {/* <Transition
           appear={true}
           show={linkType !== ''}
           enter="transition ease duration-300 transform"
           enterFrom="opacity-0 -translate-y-20"
           enterTo="opacity-100 translate-y-0"
           className="flex w-full"
-        >
+        > */}
+        {linkType !== '' && (
           <EditLinkItem
             isWebsite={linkType === 'website'}
             onClose={() => setLinkType('')}
             lastItemOrder={links ? links.length - 1 : -1}
           />
-        </Transition>
+        )}
+        {/* </Transition> */}
 
         {isDragging ? (
           <DragDropLinkList
