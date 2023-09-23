@@ -3,8 +3,9 @@ import NavBar from '@/components/navbar/NavBar'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Link Orchard',
-  description: 'Branch Out with LinkOrchard'
+  title: {
+    absolute: 'Link Orchard'
+  }
 }
 
 export default async function UserLayout({

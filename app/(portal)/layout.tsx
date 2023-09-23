@@ -15,8 +15,11 @@ interface SettingLayoutProps {
 }
 
 export const metadata: Metadata = {
-  title: 'Admin',
-  description: 'Setting Your LinkOrchard'
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true
+  }
 }
 
 const themeColorSchema = z.enum(['basic', 'blue-rose', 'lime']).catch('basic')

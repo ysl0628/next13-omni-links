@@ -26,9 +26,11 @@ export const getUserByUsername = cache(async (username: string) => {
       username: user.username,
       title: user.title,
       themeColor: user.themeColor,
-      customImage: user.customImage,
+      customImage: user.customImage || user.image,
       description: user.description,
-      links: links
+      links: links,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt
     }
   } catch (error) {
     return null
