@@ -64,17 +64,18 @@ const LoginClient = () => {
       })
   }
 
-  const handleSocialLogIn = (socialType: string) => {
+  const handleSocialLogIn = async (socialType: string) => {
     setIsLoading(true)
-    signIn(socialType, {
-      callbackUrl: CALLBACK_URL
-    })
-      .then((callback) => {
-        callback?.ok ? toast.success('登入成功') : toast.error('登入失敗')
+    try {
+      await signIn(socialType, {
+        callbackUrl: CALLBACK_URL
       })
-      .finally(() => {
-        setIsLoading(false)
-      })
+      toast.success('登入成功')
+    } catch (error) {
+      toast.error('登入失敗')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -130,12 +131,6 @@ const LoginClient = () => {
             onClick={() => handleSocialLogIn('github')}
             className="w-full"
             color="dark"
-          />
-          <Button
-            icon={BiLogoTwitter}
-            onClick={() => handleSocialLogIn('twitter')}
-            color="info"
-            className="w-full bg-blue-400"
           />
         </div>
         <div className="text-md text-center text-gray-300 font-light">
