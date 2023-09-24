@@ -60,7 +60,10 @@ const UserMenu: React.FC<UserMenuProps> = ({ avatarImage, username }) => {
                       close()
                     }}
                   />
-                  <MenuItem label="聯絡我們" onClick={() => {}} />
+                  <MenuItem
+                    label="聯絡我們"
+                    onClick={() => router.push('/contact-us')}
+                  />
                   <Divider />
                   <MenuItem
                     label="Log Out"
