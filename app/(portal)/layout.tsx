@@ -11,7 +11,6 @@ import { getCurrentUser } from '@/actions/getCurrentUser'
 
 interface PortalLayoutProps {
   children: React.ReactNode
-  preview: React.ReactNode
 }
 
 export const metadata: Metadata = {
