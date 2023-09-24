@@ -21,7 +21,9 @@ import { notifyError } from '@/utils/notify'
 import { LinkSetupType } from '@/types'
 
 const AddButtons = lazy(() => import('./AddButtons'))
-const EditLinkItem = dynamic(() => import('./EditLinkItem'))
+const EditLinkItem = dynamic(() => import('./EditLinkItem'), {
+  loading: () => <Skeleton width={592} height={112} />
+})
 
 const LinksSetup = () => {
   const user = useSetup((state) => state.user)

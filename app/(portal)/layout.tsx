@@ -9,7 +9,7 @@ import StoreInitializer from '@/components/page/portal/StoreInitializer'
 import { getLinks } from '@/actions/getLinks'
 import { getCurrentUser } from '@/actions/getCurrentUser'
 
-interface SettingLayoutProps {
+interface PortalLayoutProps {
   children: React.ReactNode
   preview: React.ReactNode
 }
@@ -47,7 +47,7 @@ const isValidThemeColor = (
   return themeColorSchema.safeParse(themeColor).success
 }
 
-export default async function SettingLayout({ children }: SettingLayoutProps) {
+export default async function PortalLayout({ children }: PortalLayoutProps) {
   const currentUser = await getCurrentUser()
   const linkSetup = await getLinks()
 

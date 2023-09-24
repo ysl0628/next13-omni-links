@@ -1,13 +1,17 @@
 'use client'
-
-import Button from '@/components/ui/Button'
 import { Dispatch, SetStateAction } from 'react'
+
+import useSetup from '@/hooks/useSetup'
+import Button from '@/components/ui/Button'
 
 interface AddButtonsProps {
   setLinkType: Dispatch<SetStateAction<'' | 'website' | 'social'>>
 }
 
 const AddButtons = ({ setLinkType }: AddButtonsProps) => {
+  const links = useSetup((state) => state.links)
+  const disabled = links?.length === 8
+
   return (
     <>
       <Button
@@ -16,6 +20,7 @@ const AddButtons = ({ setLinkType }: AddButtonsProps) => {
         rounded="full"
         size="large"
         className="w-full"
+        disabled={disabled}
       />
       <Button
         onClick={() => setLinkType('website')}
@@ -24,6 +29,7 @@ const AddButtons = ({ setLinkType }: AddButtonsProps) => {
         rounded="full"
         size="large"
         className="w-full"
+        disabled={disabled}
       />
     </>
   )
