@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: rgb(0, 0, 0);
+  background: rgb(255, 255, 255);
+}
+
+[class='dark'],
+[class='dark'] body {
+  color: rgb(255, 255, 255);
+  background: rgb(0, 0, 0);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 0px;
+  background: rgba(100, 100, 100, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 0px;
+  border-radius: 2em;
+  background: rgba(100, 100, 100, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 100, 100, 0.3);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: rgba(100, 100, 100, 0.8);
+}
+
+.thick-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.input-base {
+  @apply w-full font-light bg-white border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed;
+}
+
+.bg-gradient-basic {
+  @apply bg-gradient-to-tl from-gray-200 to-gray-50;
+}
+
+.bg-gradient-blue-rose {
+  @apply bg-gradient-to-tl from-blue-100 to-rose-100;
+}
+
+.bg-gradient-lime {
+  @apply bg-gradient-to-tl from-teal-100 to-yellow-50;
+}

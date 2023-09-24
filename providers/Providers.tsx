@@ -1,0 +1,18 @@
+'use client'
+
+import React, { FC } from 'react'
+import { ThemeProvider } from 'next-themes'
+
+import { type ThemeProviderProps } from 'next-themes/dist/types'
+import ToasterProvider from './ToastProvider'
+
+const Providers: FC<ThemeProviderProps> = ({ children, ...props }) => {
+  return (
+    <>
+      <ToasterProvider />
+      {children}
+    </>
+  )
+}
+
+export default Providers
