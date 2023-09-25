@@ -9,15 +9,18 @@ import PublicClient from '@/components/page/public/PublicClient'
 
 export const revalidate = 60
 
-export function generateMetadata({
+export async function generateMetadata({
   params
 }: {
   params: { id: string }
-}): Metadata {
+}): Promise<Metadata> {
+  const user = await getUserByUsername(params.id)
+
   return {
     title: `${params.id}`,
+    description: `${user?.description}`,
     alternates: {
-      canonical: `https://linkorchard.com/${params.id}`
+      canonical: `${process.env.NEXT_PUBLIC_BASEURL}/${params.id}`
     }
   }
 }
