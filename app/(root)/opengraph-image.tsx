@@ -11,9 +11,9 @@ export const contentType = 'image/png'
 export const runtime = 'edge'
 
 export default async function Image() {
-  const image = await fetch(
+  const image = (await fetch(
     new URL('public/images/link-orchard-logo.png', import.meta.url)
-  ).then((res) => res.arrayBuffer())
+  ).then((res) => res.arrayBuffer())) as string
 
   return new ImageResponse(
     (
