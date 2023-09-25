@@ -171,7 +171,7 @@ const LinksSetup = () => {
         ) : (
           <LinkList />
         )}
-        {isDragging ? (
+        {isDragging && (
           <div className="flex gap-4">
             <Button
               label="取消"
@@ -191,7 +191,9 @@ const LinksSetup = () => {
               disabled={isUpdating}
             />
           </div>
-        ) : (
+        )}
+
+        {!isDragging && links && links.length >= 2 && (
           <Button
             label="編輯順序"
             color="info"
