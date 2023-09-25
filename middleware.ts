@@ -22,6 +22,7 @@ export async function middleware(request: NextRequestWithAuth) {
     img-src 'self' blob: data: avatars.githubusercontent.com platform-lookaside.fbsbx.com lh3.googleusercontent.com res.cloudinary.com;
     font-src 'self';
     frame-src 'self' https://upload-widget.cloudinary.com/;
+    connect-src 'self' https://vitals.vercel-insights.com/v1/vitals;
 `
 
   const requestHeaders = new Headers()
