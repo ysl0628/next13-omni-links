@@ -21,6 +21,9 @@ const oswald = Oswald({
 // https://github.com/vercel/next.js/pull/53525
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASEURL || 'http://localhost:3000'
+  ),
   title: {
     default: 'Link Orchard',
     template: '%s | Link Orchard'
