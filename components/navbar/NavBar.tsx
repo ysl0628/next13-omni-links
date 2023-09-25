@@ -72,11 +72,28 @@ const userLinks = [
   }
 ]
 
+const publicLinks = [
+  {
+    name: '聯絡我們',
+    href: '/contact-us'
+  },
+  {
+    name: '登入',
+    href: '/login'
+  },
+  {
+    name: '註冊',
+    href: '/signup'
+  }
+]
+
 const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
   const [full, setFull] = useState(false)
   const path = usePathname()
   const isAdmin = path.includes('/portal')
   const avatarImage = currentUser?.customImage || currentUser?.image
+
+  const menuLinks = currentUser ? userLinks : publicLinks
 
   return (
     <Disclosure
@@ -157,20 +174,22 @@ const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
                   <Divider color="bg-gray-500/50" />
                 </>
               )}
-              <div className="px-5 py-3">
-                <div className="flex items-center">
-                  <div className="w-[40px] h-[40px] rounded-full relative">
-                    <Avatar src={avatarImage} />
-                  </div>
-                  <div className="ml-3">
-                    <div className="text-lg font-medium text-gray-800">
-                      @{currentUser?.username}
+              {currentUser && (
+                <div className="px-5 py-3">
+                  <div className="flex items-center">
+                    <div className="w-[40px] h-[40px] rounded-full relative">
+                      <Avatar src={avatarImage} />
+                    </div>
+                    <div className="ml-3">
+                      <div className="text-lg font-medium text-gray-800">
+                        @{currentUser?.username}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
               <div className="px-2 py-3">
-                {userLinks.map((link) => (
+                {menuLinks.map((link) => (
                   <Disclosure.Button
                     key={link.name}
                     as="a"
