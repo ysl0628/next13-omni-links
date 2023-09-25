@@ -21,7 +21,7 @@ const MoreContent: React.FC<MoreContentProps> = ({ username, currentUser }) => {
   const linkUrl =
     process.env.NODE_ENV === 'development'
       ? `localhost:3000/${username}`
-      : `link-orchard.vercel.app/${username}`
+      : `${process.env.NEXT_PUBLIC_BASEURL}/${username}`
 
   const handleCopy = () => {
     navigator.clipboard.writeText(linkUrl)
