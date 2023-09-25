@@ -5,12 +5,13 @@ export const size = {
   width: 900,
   height: 450
 }
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 export const contentType = 'image/png'
 
 export default async function Image({ params }: { params: { id: string } }) {
   const user = await getUserByUsername(params.id)
+
   return new ImageResponse(
     (
       <div tw="relative flex items-center justify-center">
