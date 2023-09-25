@@ -5,6 +5,7 @@ export const size = {
   width: 900,
   height: 450
 }
+export const runtime = 'edge'
 
 export const contentType = 'image/png'
 
