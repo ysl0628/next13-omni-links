@@ -4,7 +4,7 @@ import axios from 'axios'
 import dynamic from 'next/dynamic'
 import toast from 'react-hot-toast'
 import Skeleton from 'react-loading-skeleton'
-import { Suspense, lazy, useCallback, useState } from 'react'
+import { PropsWithChildren, Suspense, lazy, useCallback, useState } from 'react'
 import { Transition } from '@headlessui/react'
 import { DropResult } from '@hello-pangea/dnd'
 
@@ -21,8 +21,11 @@ import { notifyError } from '@/utils/notify'
 import { LinkSetupType } from '@/types'
 
 const AddButtons = lazy(() => import('./AddButtons'))
+
 const EditLinkItem = dynamic(() => import('./EditLinkItem'), {
-  loading: () => <Skeleton width={592} height={112} />
+  loading: () => (
+    <Skeleton width="100%" height={112} wrapper={SuspenseWrapper} />
+  )
 })
 
 const LinksSetup = () => {
@@ -119,23 +122,25 @@ const LinksSetup = () => {
     })
   }
 
+  const lastItemOrder = links?.[links.length - 1].order || 0
+
   return (
     <>
-      <div className="text-3xl font-semibold flex items-center px-6 p-2 gap-3 text-grey-600">
-        <p className="font-inter">連結設定 Link Setup</p>
+      <div className="text-2xl sm:text-3xl font-semibold flex md:flex-row flex-wrap items-center px-5 2xs:px-6 p-2 gap-3 text-grey-600">
+        <p className="font-inter">連結設定</p>
         <p className="text-sm font-light text-grey-400 font-oswald">
-          最多可新增 8 筆連結 Limit 8 links
+          最多可新增 8 筆連結
         </p>
       </div>
       <Divider />
-      <div className="px-6 pb-4 flex flex-col gap-4">
+      <div className="px-5 2xs:px-6 pb-4 flex flex-col gap-4">
         <Transition
           appear={true}
           show={linkType === ''}
           enter="transition ease duration-500 transform"
           enterFrom="opacity-0 -translate-y-12"
           enterTo="opacity-100 translate-y-0"
-          className="flex flex-col items-center w-full md:flex-row gap-4 h-28"
+          className="flex flex-col items-center w-full sm:flex-row gap-4 h-28"
         >
           <Suspense
             fallback={<Skeleton width={288} height={42} count={2} inline />}
@@ -156,7 +161,7 @@ const LinksSetup = () => {
           <EditLinkItem
             isWebsite={linkType === 'website'}
             onClose={() => setLinkType('')}
-            lastItemOrder={links ? links.length - 1 : -1}
+            lastItemOrder={lastItemOrder}
           />
         )}
         {/* </Transition> */}
@@ -204,6 +209,10 @@ const LinksSetup = () => {
       </div>
     </>
   )
+}
+
+const SuspenseWrapper = ({ children }: PropsWithChildren<unknown>) => {
+  return <span className=" md:w-[592px] w-[345px]">{children}</span>
 }
 
 export default LinksSetup

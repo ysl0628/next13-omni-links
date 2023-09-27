@@ -63,7 +63,8 @@ export default async function PortalLayout({ children }: PortalLayoutProps) {
     customImage: currentUser.customImage || currentUser.image,
     title: currentUser.title,
     description: currentUser.description,
-    themeColor: themeColor
+    themeColor: themeColor,
+    links: linkSetup
   }
 
   return (
@@ -72,8 +73,8 @@ export default async function PortalLayout({ children }: PortalLayoutProps) {
       <section className="w-full h-full flex pt-16 bg-grey-50 overflow-auto">
         <StoreInitializer userSetup={userSetup} linkSetup={linkSetup} />
         <Container>
-          <div className="flex gap-3 min-h-full max-w-screen-xl mx-auto">
-            <div className="w-full min-w-[22rem] flex md:min-w-[40rem] sm:min-w-[35rem] xs:min-w-[28rem] flex-col py-4 gap-3 bg-white rounded shadow-md md:mx-16 mx-2 md:my-12 my-6">
+          <div className="flex lg:gap-3 justify-center min-h-full max-w-screen-xl mx-auto">
+            <div className="w-full flex min-w-full lg:min-w-[60%] flex-col py-4 gap-3 bg-white rounded shadow-md xs:mx-16 xs:my-8 md:my-12 my-0 ">
               {children}
             </div>
             <Preview />

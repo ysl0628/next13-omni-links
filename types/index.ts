@@ -1,5 +1,6 @@
 import { LinkType } from '@prisma/client'
 import { IconType } from 'react-icons'
+import { SafeUser } from './safe'
 
 export interface IconTypeProps {
   label?: string | null
@@ -35,4 +36,8 @@ export interface ResponseType {
   url?: string | null
   order?: number | null
   username?: string | null
+}
+
+export interface UserSetup extends SafeUser {
+  links?: LinkSetupType[] | null
 }

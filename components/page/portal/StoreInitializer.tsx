@@ -1,12 +1,11 @@
 'use client'
 
 import useSetup from '@/hooks/useSetup'
-import { LinkSetupType } from '@/types'
-import { SafeUser } from '@/types/safe'
+import { LinkSetupType, UserSetup } from '@/types'
 import { useRef } from 'react'
 
 interface StoreInitializerProps {
-  userSetup: SafeUser | null
+  userSetup: UserSetup | null
   linkSetup: LinkSetupType[] | null
 }
 

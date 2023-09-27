@@ -1,12 +1,11 @@
-import { produce } from 'immer'
+import { current, produce } from 'immer'
 import { shallow } from 'zustand/shallow'
 import { createWithEqualityFn } from 'zustand/traditional'
 
-import { LinkSetupType } from '@/types'
-import { SafeUser } from '@/types/safe'
+import { LinkSetupType, UserSetup } from '@/types'
 
 interface State {
-  user: SafeUser | null | Record<string, string | null>
+  user: UserSetup | null | Record<string, string | null>
   links: LinkSetupType[] | null
 }
 interface NewLink extends Omit<LinkSetupType, 'id'> {
@@ -21,7 +20,7 @@ interface SettingStore {
   removeLink: (linkId: string) => void
   updateLink: (linkId: string | undefined, newLink: NewLink | undefined) => void
   revertLinks: (oldLinks: LinkSetupType[] | null) => void
-  revertUser: (oldUser: SafeUser | null) => void
+  revertUser: (oldUser: UserSetup | null) => void
 }
 
 const useSetup = createWithEqualityFn<SettingStore>(
@@ -79,9 +78,11 @@ const useSetup = createWithEqualityFn<SettingStore>(
       set(
         produce((state) => {
           const link = state.links?.find((l: LinkSetupType) => l.id === linkId)
-          const userLink = state.user?.links?.find(
+
+          const userLink = state.user?.links?.filter(
             (l: LinkSetupType) => l.id === linkId
           )
+
           if (!link || !updatedLink) return
 
           const propertiesToUpdate = ['title', 'type', 'url', 'order']

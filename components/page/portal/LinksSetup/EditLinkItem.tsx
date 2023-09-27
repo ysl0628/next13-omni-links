@@ -6,8 +6,8 @@ import { FieldValues, SubmitHandler, useForm, useWatch } from 'react-hook-form'
 
 import Selector from '../../../input/Selector'
 import LabelInput from '../../../input/LabelInput'
+import ButtonLoader from '@/components/ButtonLoader'
 
-import { LinkSetupType } from '@/types'
 import { Link, LinkType } from '@prisma/client'
 
 import useSetup from '@/hooks/useSetup'
@@ -15,6 +15,7 @@ import { notifyError } from '@/utils/notify'
 import { linkList } from '@/constants/linkMapping'
 
 import { MdClose, MdCheck } from 'react-icons/md'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 interface EditLinkItemProps {
   item?: {
@@ -73,6 +74,7 @@ const EditLinkItem = ({
   const user = useSetup((state) => state.user)
   const addLink = useSetup((state) => state.addLink)
   const updateLink = useSetup((state) => state.updateLink)
+  const [isLoading, setIsLoading] = React.useState(false)
 
   const {
     register,
@@ -87,7 +89,8 @@ const EditLinkItem = ({
       url: item?.url || '',
       type: item?.type || { id: 'default', label: '請選擇' },
       order: item ? index : lastItemOrder + 1
-    }
+    },
+    resolver: zodResolver(schema)
   })
 
   const setCustomValue = (id: string, value: any) => {
@@ -105,6 +108,7 @@ const EditLinkItem = ({
   })
 
   const handleAddLink = async (values: FormValues) => {
+    setIsLoading(true)
     try {
       const { id, ...rest } = values
       const { data: res } = await axios.post<AxiosResponse<Link>>(
@@ -113,21 +117,25 @@ const EditLinkItem = ({
       )
 
       addLink(res.data)
-
       toast.success('新增成功')
     } catch (error: any) {
       notifyError(error, '新增失敗')
       console.log(error)
+    } finally {
+      onClose && onClose()
+      setIsLoading(false)
     }
   }
 
   const handleUpdateLink = async (values: FormValues) => {
+    setIsLoading(true)
     const result = {
       url: values.url || '',
       type: values.type,
       title: values.title || '',
       order: values.order
     }
+
     try {
       const { data: res } = await axios.put<AxiosResponse<Link>>(
         `/api/user/${user?.id}/links/${values.id}`,
@@ -138,6 +146,9 @@ const EditLinkItem = ({
     } catch (error: any) {
       notifyError(error, '更新失敗')
       console.log(error)
+    } finally {
+      onClose && onClose()
+      setIsLoading(false)
     }
   }
 
@@ -152,7 +163,6 @@ const EditLinkItem = ({
     } else {
       handleAddLink(result)
     }
-    onClose && onClose()
   }
 
   return (
@@ -186,7 +196,7 @@ const EditLinkItem = ({
           </div>
           <div className="flex items-center gap-2">
             <div className="w-12 ">連結</div>
-            <div className="flex-auto ">
+            <div className="flex-auto">
               <LabelInput
                 errors={errors}
                 register={register}
@@ -212,7 +222,11 @@ const EditLinkItem = ({
             }
             type="submit"
           >
-            <MdCheck className="h-5 w-5 text-white" />
+            {isLoading ? (
+              <ButtonLoader />
+            ) : (
+              <MdCheck className="h-5 w-5 text-white" />
+            )}
           </button>
         </div>
       </form>
