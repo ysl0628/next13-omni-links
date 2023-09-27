@@ -46,7 +46,7 @@ export default async function RootLayout({ children, auth }: RootLayoutProps) {
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${oswald.variable}`}>
         <Providers attribute="class" enableSystem>
-          <main className="h-screen flex justify-center ">
+          <main className="h-[100dvh] flex justify-center ">
             {children}
             {auth}
           </main>
