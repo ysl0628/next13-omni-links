@@ -57,7 +57,11 @@ const LoginClient = () => {
     })
       .then((callback) => {
         setIsLoading(false)
-        callback?.ok ? toast.success('登入成功') : toast.error('登入失敗')
+        const errorMessage =
+          callback?.error === 'Invalid credentials' && '帳號或密碼錯誤'
+        callback?.error
+          ? toast.error(errorMessage || '登入失敗')
+          : toast.success('登入成功')
       })
       .finally(() => {
         setIsLoading(false)

@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import prisma from '@/libs/prismadb'
-import { link } from 'fs'
 
 const postValidate = z.object({
   title: z.string().max(15, '標題最多可輸入 15 字'),
