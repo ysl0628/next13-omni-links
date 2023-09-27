@@ -126,7 +126,7 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
 
   return (
     <>
-      <div className="text-xl sm:text-3xl font-semibold px-6 p-2 text-grey-600 divide-y">
+      <div className="text-2xl sm:text-3xl font-semibold px-6 p-2 text-grey-600 divide-y">
         基本設定
       </div>
       <Divider />
@@ -157,13 +157,14 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
             />
           </div>
         </div>
-        <div className="px-6 py-4 flex flex-col gap-4">
-          <div className="flex flex-col gap-5">
+        <div className="px-6 py-4 flex flex-col gap-4 w-full">
+          <div className="flex flex-col gap-5 w-full">
             <LabelInput
               id="title"
               register={register}
               errors={errors}
               label="標題"
+              full
               placeholder="請輸入標題"
             />
             <LabelInput

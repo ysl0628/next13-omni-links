@@ -1,6 +1,7 @@
 'use client'
 
-import { PropsWithChildren, Suspense, lazy, useState } from 'react'
+import { signOut } from 'next-auth/react'
+import { PropsWithChildren, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { usePathname } from 'next/navigation'
 import Skeleton from 'react-loading-skeleton'
@@ -65,10 +66,6 @@ const userLinks = [
   {
     name: '聯絡我們',
     href: '/contact-us'
-  },
-  {
-    name: '登出',
-    href: '/logout'
   }
 ]
 
@@ -114,18 +111,14 @@ const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
                 ? 'bg-white shadow-sm'
                 : 'bg-grey-50'
             }
-              min-h-[4.5rem] z-10
+              min-h-[4rem] z-10 p-3.5
+              ${isAdmin && !open ? 'border-b-[1px]' : ''}
               `}
               >
-                <div
-                  className={`py-4 ${
-                    isAdmin && !open ? 'border-b-[1px]' : ''
-                  } `}
-                >
-                  <Container>
-                    <div className="flex items-center w-full flex-grow justify-between gap-3 md:gap:0">
-                      <Logo />
-                      {/* <Suspense
+                <Container>
+                  <div className="flex items-center w-full flex-grow justify-between gap-3 md:gap:0">
+                    <Logo />
+                    {/* <Suspense
                         fallback={
                           <Skeleton
                             height={32}
@@ -136,19 +129,15 @@ const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
                           />
                         }
                       > */}
-                      {currentUser && isAdmin && <NavLinks />}
-                      {/* </Suspense> */}
-                      {/* <ThemeSwitcher /> */}
-                      <MenuButton open={open} setFull={setFull} />
-                      {/* <Suspense fallback={<Skeleton width={125} height={40} />}> */}
-                      <UserButtons
-                        currentUser={currentUser}
-                        isAdmin={isAdmin}
-                      />
-                      {/* </Suspense> */}
-                    </div>
-                  </Container>
-                </div>
+                    {currentUser && isAdmin && <NavLinks />}
+                    {/* </Suspense> */}
+                    {/* <ThemeSwitcher /> */}
+                    <MenuButton open={open} setFull={setFull} />
+                    {/* <Suspense fallback={<Skeleton width={125} height={40} />}> */}
+                    <UserButtons currentUser={currentUser} isAdmin={isAdmin} />
+                    {/* </Suspense> */}
+                  </div>
+                </Container>
               </div>
             </div>
 
@@ -203,6 +192,12 @@ const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
                     {link.name}
                   </Disclosure.Button>
                 ))}
+                <Disclosure.Button
+                  className="text-gray-600 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                  onClick={() => signOut({ callbackUrl: '/' })}
+                >
+                  登出
+                </Disclosure.Button>
               </div>
             </Disclosure.Panel>
           </div>

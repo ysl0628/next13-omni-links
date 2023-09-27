@@ -53,7 +53,10 @@ const DisplayLinkItem = ({
         </div>
         <div className="flex items-center gap-2">
           <div className="w-12 ">連結</div>
-          <div className="py-1.5 text-grey-500 text-clip whitespace-nowrap ">
+          <div
+            className="py-1.5 text-grey-500 overflow-hidden text-ellipsis  2xs:max-w-[190px] xs:max-w-[28rem] sm:max-w-[31.5rem] max-w-[150px] whitespace-nowrap "
+            title={item.url}
+          >
             {item.url}
           </div>
         </div>

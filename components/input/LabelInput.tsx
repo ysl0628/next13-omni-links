@@ -15,6 +15,7 @@ interface LabelInputProps {
   disabled?: boolean
   formatPrice?: boolean
   required?: boolean
+  full?: boolean
   errors: FieldErrors
   register: UseFormRegister<FieldValues>
   onChange?: (
@@ -34,6 +35,7 @@ const LabelInput: React.FC<LabelInputProps> = ({
   formatPrice,
   required,
   errors,
+  full,
   register,
   onChange
 }) => {
@@ -78,6 +80,7 @@ const LabelInput: React.FC<LabelInputProps> = ({
           h-32
           p-4
           input-base
+          ${full ? 'w-full' : ''}
           ${formatPrice ? 'pl-9' : 'pl-4'}
           ${errors[id] ? 'border-rose-500' : ''}
           ${errors[id] ? 'focus:border-rose-500' : 'focus:border-gray-500'}
@@ -94,6 +97,7 @@ const LabelInput: React.FC<LabelInputProps> = ({
           ${small ? 'h-8' : 'h-12'}
           p-4
           input-base
+          ${full ? 'w-full' : ''}
           ${formatPrice ? 'pl-9' : 'pl-4'}
           ${errors[id] ? 'border-rose-500' : ''}
           ${errors[id] ? 'focus:border-rose-500' : 'focus:border-gray-500'}
