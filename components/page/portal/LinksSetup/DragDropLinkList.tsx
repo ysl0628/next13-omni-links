@@ -26,7 +26,7 @@ const DragDropLinkList: FC<DragDropLinkListProps> = ({
 }) => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex w-full justify-between items-center gap-8">
         <Droppable droppableId="droppable-1">
           {(provided, snapshot) => (
             <div
@@ -43,7 +43,7 @@ const DragDropLinkList: FC<DragDropLinkListProps> = ({
                   >
                     {(provided) => (
                       <div
-                        className="flex w-full items-center"
+                        className="flex w-full items-center gap-2"
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                       >

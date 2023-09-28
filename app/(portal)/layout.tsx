@@ -73,8 +73,8 @@ export default async function PortalLayout({ children }: PortalLayoutProps) {
       <section className="w-full h-full flex pt-16 bg-grey-50 overflow-auto">
         <StoreInitializer userSetup={userSetup} linkSetup={linkSetup} />
         <Container>
-          <div className="flex lg:gap-3 justify-center min-h-full max-w-screen-xl mx-auto">
-            <div className="w-full flex min-w-full lg:min-w-[60%] flex-col py-4 gap-3 bg-white rounded shadow-md xs:mx-16 xs:my-8 md:my-12 my-0 ">
+          <div className="flex lg:gap-3 justify-center min-h-full md:max-w-screen-xl w-full mx-auto">
+            <div className="w-full flex min-w-full sm:min-w-[90%] md:min-w-[90%] lg:min-w-[60%] flex-col py-4 gap-3 bg-white rounded shadow-md sm:mx-16 md:mx-12 md:my-12 sm:my-6 ">
               {children}
             </div>
             <Preview />
