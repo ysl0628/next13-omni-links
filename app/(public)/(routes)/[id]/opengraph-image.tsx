@@ -14,21 +14,21 @@ export default async function Image({ params }: { params: { id: string } }) {
 
   return new ImageResponse(
     (
-      <div tw="relative flex items-center justify-center">
+      <div tw="relative flex items-center justify-center h-full w-full">
         <img
           src={user?.customImage || '/images/placeholder.jpg'}
           alt={user?.title || 'cover'}
           tw="object-cover"
         />
         <div tw="absolute flex bg-black opacity-50 inset-0 " />
-        <div tw="absolute flex items-center top-2 w-full ">
-          <p tw="text-white text-4xl flex font-bold m-5">{user?.title}</p>
-          <p tw="text-indigo-200 text-xl flex font-bold m-5">
+        <div tw="absolute flex justify-center items-center inset-0 w-[900px] ">
+          <div tw="text-white text-4xl flex font-bold mr-5 my-5">
             {user?.username}
-          </p>
-          <p tw="text-purple-200 text-xl flex font-bold m-5">
-            {user?.updatedAt?.toDateString()}
-          </p>
+          </div>
+          <div tw="text-green-200 text-4xl flex font-bold mr-5 my-5">|</div>
+          <div tw="text-orange-200 text-4xl flex font-bold my-5">
+            Link Orchard
+          </div>
         </div>
       </div>
     ),
