@@ -57,7 +57,7 @@ const navLinks = [
 const userLinks = [
   {
     name: '個人資料',
-    href: '/portal/account'
+    href: '/account'
   },
   {
     name: '開始我的 Link Orchard',
@@ -87,7 +87,7 @@ const publicLinks = [
 const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
   const [full, setFull] = useState(false)
   const path = usePathname()
-  const isAdmin = path.includes('/portal')
+  const isAdmin = path.includes('/portal') || path.includes('/account')
   const avatarImage = currentUser?.customImage || currentUser?.image
 
   const menuLinks = currentUser ? userLinks : publicLinks
@@ -118,24 +118,11 @@ const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
                 <Container>
                   <div className="flex items-center w-full flex-grow justify-between gap-3 md:gap:0">
                     <Logo />
-                    {/* <Suspense
-                        fallback={
-                          <Skeleton
-                            height={32}
-                            width={64}
-                            count={2}
-                            inline
-                            wrapper={SuspenseWrapper}
-                          />
-                        }
-                      > */}
+
                     {currentUser && isAdmin && <NavLinks />}
-                    {/* </Suspense> */}
                     {/* <ThemeSwitcher /> */}
                     <MenuButton open={open} setFull={setFull} />
-                    {/* <Suspense fallback={<Skeleton width={125} height={40} />}> */}
                     <UserButtons currentUser={currentUser} isAdmin={isAdmin} />
-                    {/* </Suspense> */}
                   </div>
                 </Container>
               </div>

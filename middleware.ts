@@ -43,5 +43,5 @@ export async function middleware(request: NextRequestWithAuth) {
 }
 
 export const config = {
-  matcher: ['/portal/:path*']
+  matcher: ['/portal/:path*', '/account']
 }
