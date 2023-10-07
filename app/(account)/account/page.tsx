@@ -1,10 +1,18 @@
 import { getCurrentUser } from '@/actions/getCurrentUser'
+import BuildingState from '@/components/BuildingState'
 import NavBar from '@/components/navbar/NavBar'
 import Container from '@/components/ui/Container'
 import Divider from '@/components/ui/Divider'
 
+let enable = false
+
 const PageAccount = async () => {
   const currentUser = await getCurrentUser()
+
+  if (!enable) {
+    return <BuildingState />
+  }
+
   return (
     <>
       <NavBar currentUser={currentUser} />
