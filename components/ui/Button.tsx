@@ -95,7 +95,6 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       className={`
         relative
-         ${className ? className : ''}
         disabled:opacity-70
         disabled:cursor-not-allowed
         hover:opacity-80
@@ -106,6 +105,7 @@ const Button: React.FC<ButtonProps> = ({
         ${variant === 'default' ? colors[color] : ''}
         ${variant === 'outline' ? colorsOutline[color] : ''}
         ${buttonRounded[rounded]}
+        ${className ? className : ''}
         `}
       {...props}
     >

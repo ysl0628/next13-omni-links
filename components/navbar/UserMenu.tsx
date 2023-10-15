@@ -51,7 +51,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ avatarImage, username }) => {
                 <div className="flex flex-col gap-1 pt-2">
                   <MenuItem
                     label="個人設定"
-                    onClick={() => router.push('/account')}
+                    onClick={() => router.push('/portal/account')}
                   />
                   <MenuItem
                     label="開始我的 Link Orchard"

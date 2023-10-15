@@ -4,14 +4,14 @@ import React, { FC, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import axios from 'axios'
+import toast from 'react-hot-toast'
 
 import Button from '@/components/ui/Button'
 import LabelText from '@/components/ui/LabelText'
-
 import LabelInput from '@/components/input/LabelInput'
 import DialogComponent from '@/components/ui/Dialog'
-import axios from 'axios'
-import toast from 'react-hot-toast'
+
 import useSetup from '@/hooks/useSetup'
 
 interface EditUsernameProps {
@@ -60,7 +60,7 @@ const EditUsername: FC<EditUsernameProps> = ({ userId, username }) => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      const { data: res } = await axios.put(`api/user/${userId}`, data)
+      const { data: res } = await axios.put(`/api/user/${userId}`, data)
       const updatedUser = { username: res.data.username }
 
       update({ user: updatedUser })
@@ -77,9 +77,10 @@ const EditUsername: FC<EditUsernameProps> = ({ userId, username }) => {
 
   return (
     <div className="flex flex-col gap-3 px-6 py-2">
-      <LabelText label="用戶名" text={user?.username || ''} />
-      <Button onClick={openModal} label="修改" className="w-[6rem]" />
-
+      <LabelText label="用戶名" text={user?.username || username} />
+      <div className="md:w-[6rem] w-full">
+        <Button onClick={openModal} label="修改" fullWidth />
+      </div>
       <DialogComponent
         isOpen={isOpen}
         title="修改用戶名"
@@ -95,7 +96,7 @@ const EditUsername: FC<EditUsernameProps> = ({ userId, username }) => {
               disabled
               placeholder=""
               title="username"
-              value={user?.username || ''}
+              value={user?.username || username}
               className="h-12 p-4 input-base bg-gray-300 border border-gray-300 text-gray-500"
             />
           </div>

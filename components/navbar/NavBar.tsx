@@ -57,7 +57,7 @@ const navLinks = [
 const userLinks = [
   {
     name: '個人資料',
-    href: '/account'
+    href: '/portal/account'
   },
   {
     name: '開始我的 Link Orchard',

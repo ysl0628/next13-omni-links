@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { usePathname } from 'next/navigation'
 
 import Avatar from '../../ui/Avatar'
 import SocialLink from './LinksSetup/SocialLink'
@@ -10,6 +11,8 @@ import useSetup from '@/hooks/useSetup'
 //https:lowbite.com/docs/components/device-mockups/
 
 const Preview = () => {
+  const path = usePathname()
+  const isAccount = path.includes('/account')
   const { user, links } = useSetup((state) => ({
     user: state.user,
     links: state.links
@@ -19,7 +22,12 @@ const Preview = () => {
   const bgClassName = `bg-gradient-${themeColor}`
 
   return (
-    <div className="hidden lg:block self-center mx-16 my-12 relative border-gray-800 dark:border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-[rgba(24,_24,_7,_0.3)_50px_50px_50px_10px]">
+    <div
+      className={` 
+    ${isAccount ? 'hidden' : 'hidden lg:block'}
+    self-center mx-16 my-12 relative border-gray-800 dark:border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-[rgba(24,_24,_7,_0.3)_50px_50px_50px_10px]
+    `}
+    >
       <div className="h-[32px] w-[3px] bg-gray-800 dark:bg-gray-800 absolute -left-[17px] top-[72px] rounded-l-lg"></div>
       <div className="h-[46px] w-[3px] bg-gray-800 dark:bg-gray-800 absolute -left-[17px] top-[124px] rounded-l-lg"></div>
       <div className="h-[46px] w-[3px] bg-gray-800 dark:bg-gray-800 absolute -left-[17px] top-[178px] rounded-l-lg"></div>
