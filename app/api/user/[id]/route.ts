@@ -52,11 +52,16 @@ export async function PUT(
     })
 
     return NextResponse.json({ data, message: 'success' })
-  } catch (error) {
+  } catch (error: any) {
     if (error instanceof z.ZodError) {
       const message = error.errors.map((e) => e.message).join(', ')
       return new NextResponse(message, { status: 400 })
     }
+
+    if (error.code === 'P2002') {
+      return new NextResponse('此使用者名稱已被使用', { status: 400 })
+    }
+
     return new NextResponse('Server Error', { status: 500 })
   }
 }
