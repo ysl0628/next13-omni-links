@@ -17,6 +17,7 @@ interface LabelInputProps {
   required?: boolean
   full?: boolean
   errors: FieldErrors
+  serverError?: string | null
   register: UseFormRegister<FieldValues>
   onChange?: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -36,12 +37,11 @@ const LabelInput: React.FC<LabelInputProps> = ({
   required,
   errors,
   full,
-  register,
-  onChange
+  serverError,
+  register
 }) => {
   const message = errors[id]?.message as string
 
-  // 使用 peer 來達到 placeholder 及 label 的轉換效果
   return (
     <div className="w-full flex flex-col gap-2 relative">
       {formatPrice && (
@@ -59,9 +59,8 @@ const LabelInput: React.FC<LabelInputProps> = ({
         <label
           className={`
           text-md
-          text-gray-600
           ${formatPrice ? 'left-9' : 'left-4'}
-          ${errors[id] ? 'text-rose-500' : 'text-zinc-400'}
+          ${errors[id] ? 'text-rose-500' : 'text-gray-600'}
         `}
         >
           {label}
@@ -80,6 +79,7 @@ const LabelInput: React.FC<LabelInputProps> = ({
           h-32
           p-4
           input-base
+          bg-white
           ${full ? 'w-full' : ''}
           ${formatPrice ? 'pl-9' : 'pl-4'}
           ${errors[id] ? 'border-rose-500' : ''}
@@ -97,16 +97,21 @@ const LabelInput: React.FC<LabelInputProps> = ({
           ${small ? 'h-8' : 'h-12'}
           p-4
           input-base
+          bg-white
           ${full ? 'w-full' : ''}
           ${formatPrice ? 'pl-9' : 'pl-4'}
-          ${errors[id] ? 'border-rose-500' : ''}
-          ${errors[id] ? 'focus:border-rose-500' : 'focus:border-gray-500'}
+          ${errors[id] || serverError ? 'border-rose-500' : ''}
+          ${
+            errors[id] || serverError
+              ? 'focus:border-rose-500'
+              : 'focus:border-gray-500'
+          }
         `}
         />
       )}
-      {errors[id] && (
+      {(errors[id] || serverError) && (
         <span className="absolute text-rose-500 -bottom-5 text-sm">
-          {message}
+          {message || serverError}
         </span>
       )}
     </div>
