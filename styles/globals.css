@@ -48,7 +48,7 @@ body {
 }
 
 .input-base {
-  @apply w-full font-light bg-white border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed;
+  @apply w-full font-light border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed;
 }
 
 .bg-gradient-basic {
