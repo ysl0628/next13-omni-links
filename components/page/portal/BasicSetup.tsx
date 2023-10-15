@@ -4,7 +4,6 @@ import { z } from 'zod'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { useState } from 'react'
-import { ClipLoader } from 'react-spinners'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, useWatch } from 'react-hook-form'
 
@@ -63,8 +62,7 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
     control,
     setValue,
     getValues,
-    trigger,
-    resetField
+    trigger
   } = useForm<FormValues>({
     defaultValues: {
       customImage: user?.customImage || '',
@@ -115,7 +113,14 @@ const BasicSetup: React.FC<BasicSetupProps> = () => {
     setIsLoading(true)
     try {
       const { data: res } = await axios.put(`/api/user/${user?.id}`, values)
-      update({ user: res.data })
+      const updatedUser = {
+        username: res.data.username || res.data.name,
+        customImage: res.data.customImage || res.data.image,
+        title: res.data.title,
+        description: res.data.description,
+        themeColor: res.data.themeColor
+      }
+      update({ user: updatedUser })
       toast.success('更新成功')
     } catch (error: any) {
       notifyError(error, '更新失敗')

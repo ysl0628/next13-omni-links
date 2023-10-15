@@ -5,7 +5,6 @@ import { headers } from 'next/headers'
 import Script from 'next/script'
 
 import Providers from '@/providers/Providers'
-import { getCurrentUser } from '@/actions/getCurrentUser'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -41,7 +40,6 @@ interface RootLayoutProps {
 export default async function RootLayout({ children, auth }: RootLayoutProps) {
   const nonce = headers().get('x-nonce')
 
-  const currentUser = await getCurrentUser()
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${oswald.variable}`}>
