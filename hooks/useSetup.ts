@@ -23,6 +23,15 @@ interface SettingStore {
   revertUser: (oldUser: UserSetup | null) => void
 }
 
+enum UserSetupKeys {
+  username = 'username',
+  customImage = 'customImage',
+  title = 'title',
+  description = 'description',
+  themeColor = 'themeColor',
+  links = 'links'
+}
+
 const useSetup = createWithEqualityFn<SettingStore>(
   (set) => ({
     user: null,
@@ -42,14 +51,7 @@ const useSetup = createWithEqualityFn<SettingStore>(
       set(
         produce((state) => {
           if (partial.user) {
-            state.user.username = partial.user.username ?? state.user.username
-            state.user.customImage =
-              partial.user.customImage ?? state.user.customImage
-            state.user.title = partial.user.title ?? state.user.title
-            state.user.description =
-              partial.user.description ?? state.user.description
-            state.user.themeColor =
-              partial.user.themeColor ?? state.user.themeColor
+            updateUserData(state, partial.user)
           }
           if (partial.links) {
             state.links = partial.links
@@ -108,5 +110,23 @@ const useSetup = createWithEqualityFn<SettingStore>(
   }),
   shallow
 )
+
+const updateUserData = (state: any, userPartial: Partial<State>) => {
+  // 如果 partial.user 的 key 不是 UserSetupKeys 的其中一個，就不要更新
+
+  const userPartialKeys = Object.keys(userPartial)
+  const userSetupKeys = Object.values(UserSetupKeys)
+  const isUserSetupKeys = userPartialKeys.every((key) =>
+    userSetupKeys.includes(key as UserSetupKeys)
+  )
+
+  if (!isUserSetupKeys) return
+
+  state.user = {
+    ...state.user,
+    ...userPartial,
+    links: state.user.links
+  }
+}
 
 export default useSetup
