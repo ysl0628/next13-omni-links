@@ -1,3 +1,5 @@
+'use client'
+
 import { Disclosure } from '@headlessui/react'
 import React, { Dispatch, SetStateAction } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi'

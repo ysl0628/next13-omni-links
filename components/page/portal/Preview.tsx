@@ -6,7 +6,6 @@ import Avatar from '../../ui/Avatar'
 import SocialLink from './LinksSetup/SocialLink'
 
 import useSetup from '@/hooks/useSetup'
-import { bgColors } from '@/constants/themeColors'
 
 //https:lowbite.com/docs/components/device-mockups/
 

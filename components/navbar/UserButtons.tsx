@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 
 import Button from '../ui/Button'
 import UserMenu from './UserMenu'
+import ShareMenu from './ShareMenu'
 import { SafeUser } from '@/types/safe'
 
 interface UserButtonsProps {
@@ -21,7 +22,7 @@ const UserButtons: React.FC<UserButtonsProps> = ({ currentUser, isAdmin }) => {
     <div className="hidden sm:flex flex-[0_0_auto] min-w-0 items-center gap-4">
       {currentUser ? (
         <>
-          {isAdmin ? <Button label="發佈" onClick={() => {}} /> : null}
+          {isAdmin ? <ShareMenu username={username} /> : null}
           <div
             // onClick={toggleOpen}
             className="
