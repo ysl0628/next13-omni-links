@@ -2,6 +2,7 @@ import React, { Fragment, memo } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 
 import { LuChevronsUpDown } from 'react-icons/lu'
+import { Control, FieldValues, useWatch } from 'react-hook-form'
 
 interface Values {
   [x: string]: any
@@ -16,6 +17,7 @@ interface LinkItemProps {
   error: string
   onChange: (value: LinkItemValue) => void
   options: LinkItemValue[]
+  control?: Control<FieldValues>
 }
 
 const defaultValue = {
@@ -28,14 +30,22 @@ const Selector: React.FC<LinkItemProps> = ({
   value,
   error,
   onChange,
-  options
+  options,
+  control
 }) => {
+  const watchedValue = useWatch({
+    control,
+    name: id,
+    defaultValue: value
+  })
+  const selectedValue = control ? watchedValue : value || defaultValue
+
   return (
     <>
-      <Listbox value={value || defaultValue} onChange={onChange}>
+      <Listbox value={selectedValue} onChange={onChange}>
         <div className=" w-full">
           <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left hover:shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-            <span className="block truncate">{value.label}</span>
+            <span className="block truncate">{selectedValue.label}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <LuChevronsUpDown
                 className="h-5 w-5 text-gray-400"

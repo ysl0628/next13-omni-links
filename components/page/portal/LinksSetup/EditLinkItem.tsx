@@ -101,12 +101,6 @@ const EditLinkItem = ({
     })
   }
 
-  const type = useWatch({
-    control,
-    name: 'type',
-    defaultValue: item?.type || { id: 'default', label: '請選擇' }
-  })
-
   const handleAddLink = async (values: FormValues) => {
     setIsLoading(true)
     try {
@@ -186,7 +180,8 @@ const EditLinkItem = ({
               <div className="border-2 rounded-lg w-1/3">
                 <Selector
                   id="type"
-                  value={type}
+                  value={item?.type || { id: 'default', label: '請選擇' }}
+                  control={control}
                   options={linkList}
                   onChange={(value) => setCustomValue('type', value)}
                   error={errors.type?.message as string}
