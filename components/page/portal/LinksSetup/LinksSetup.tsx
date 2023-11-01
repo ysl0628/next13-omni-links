@@ -124,6 +124,9 @@ const LinksSetup = () => {
 
   const lastItemOrder = links?.[links.length - 1].order || 0
 
+  console.log('lastItemOrder', links?.[links.length - 1].order)
+  console.log('newLastItemOrder', links?.[0].order)
+
   return (
     <>
       <div className="text-2xl sm:text-3xl font-semibold flex md:flex-row flex-wrap items-center px-5 2xs:px-6 p-2 gap-3 text-grey-600">
