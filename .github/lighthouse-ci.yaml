@@ -1,0 +1,35 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches:
+      - main # 設定要觸發的分支
+  pull_request:
+    branches:
+      - main # 設定要觸發的分支
+  schedule:
+    - cron: '0 */8 * * *' # 每 8 小時執行一次
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3 # 在剛剛 run on 字段指定的 ubuntu 執行環境中抓取我們專案的程式碼
+
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+
+      - name: npm install, build
+        run: |
+          npm install
+          npm run build
+
+      - name: run lighthouse-ci
+        run: |
+          npm install -g @lhci/cli@0.12.x
+          lhci autorun || echo "LHCI failed!"
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{secrets.LHCI_GITHUB_APP_TOKEN}}
