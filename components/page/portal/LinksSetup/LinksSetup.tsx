@@ -122,7 +122,7 @@ const LinksSetup = () => {
     })
   }
 
-  const lastItemOrder = links?.[0].order || 0
+  const lastItemOrder = links?.[0]?.order || 0
 
   // console.log('lastItemOrder', links?.[links.length - 1].order)
   // console.log('newLastItemOrder', links?.[0].order)
