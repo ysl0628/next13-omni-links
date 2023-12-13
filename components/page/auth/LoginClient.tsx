@@ -52,7 +52,7 @@ const LoginClient = () => {
     signIn('credentials', {
       email: values.email,
       password: values.password,
-      redirect: false,
+      redirect: true,
       callbackUrl: CALLBACK_URL
     })
       .then((callback) => {
