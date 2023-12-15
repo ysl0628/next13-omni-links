@@ -52,16 +52,19 @@ const LoginClient = () => {
     signIn('credentials', {
       email: values.email,
       password: values.password,
-      redirect: true,
+      redirect: false,
       callbackUrl: CALLBACK_URL
     })
       .then((callback) => {
         setIsLoading(false)
-        const errorMessage =
-          callback?.error === 'Invalid credentials' && '帳號或密碼錯誤'
-        callback?.error
-          ? toast.error(errorMessage || '登入失敗')
-          : toast.success('登入成功')
+        if (callback?.error) {
+          const errorMessage =
+            callback.error === 'Invalid credentials' && '帳號或密碼錯誤'
+          toast.error(errorMessage || '登入失敗')
+        } else {
+          toast.success('登入成功')
+          window.location.href = CALLBACK_URL
+        }
       })
       .finally(() => {
         setIsLoading(false)
