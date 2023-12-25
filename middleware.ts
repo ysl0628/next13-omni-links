@@ -22,7 +22,7 @@ export async function middleware(request: NextRequestWithAuth) {
     img-src 'self' blob: data: avatars.githubusercontent.com platform-lookaside.fbsbx.com lh3.googleusercontent.com res.cloudinary.com;
     font-src 'self';
     frame-src 'self' https://upload-widget.cloudinary.com/;
-    connect-src 'self' https://vitals.vercel-insights.com/v1/vitals;
+    connect-src 'self' https://vitals.vercel-insights.com/v1/vitals https://faro-collector-prod-ap-southeast-1.grafana.net/collect/211d4c70d3ffbc4147c59c2e4631ea84;
 `
 
   const requestHeaders = new Headers()

@@ -6,18 +6,18 @@ services:
         ports:
             - "4000:3000"
         # 將本機根目錄的資料夾掛載至 container 的工作目錄 app 資料夾中
-        volumes:
-            - ./:/app
-        profiles: ["dev"]
-    link-orchard-prod:
-        build: 
-            context: .
-            dockerfile: dockerfile.prod 
-        ports:
-            - "80:80"
-        profiles: ["prod"]
-    link-orchard:
-        image: ysl0628/link-orchard
-        ports:
-            - "3300:80"
-        profiles: ["prod"]
+        # volumes:
+        #     - ./:/app
+        # profiles: ["dev"]
+    # link-orchard-prod:
+    #     build: 
+    #         context: .
+    #         dockerfile: dockerfile.prod 
+    #     ports:
+    #         - "80:80"
+    #     profiles: ["prod"]
+    # link-orchard:
+    #     image: ysl0628/link-orchard
+    #     ports:
+    #         - "3300:80"
+    #     profiles: ["prod"]
