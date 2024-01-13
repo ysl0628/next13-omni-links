@@ -1,34 +1,46 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# LinkOrchard - Branch out with your links
 
-## Getting Started
+This project is the winning entry of the 2023 iTHome Ironman Contest, sideProject category, titled : [營養師不開菜單要用 Next.js 13 寫全端](https://ithelp.ithome.com.tw/users/20152073/ironman/6676) as a sample project.
 
-First, run the development server:
+![cover](https://ithelp.ithome.com.tw/upload/images/20231001/20152073yNDW8n5OpX.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## What is LinkOrchard?
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+LinkOrchard is a link in bio tool that helps you to create your profile page with your links. You can share your profile page with others and they can see all your links in one place
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Sign in with your account and manage your profile page
+- Manage your links
+- Create your own link in bio page
+- Share your link in bio page with others
 
-## Learn More
+## Demo
 
-To learn more about Next.js, take a look at the following resources:
+[https://link-orchard.vercel.app/](https://link-orchard.vercel.app/)
+![demo](https://ithelp.ithome.com.tw/upload/images/20231001/20152073JM0NtLcxEC.png)
+![demo](https://ithelp.ithome.com.tw/upload/images/20231001/20152073pEbs1hPMmL.png)
+![demo](https://ithelp.ithome.com.tw/upload/images/20231001/20152073ez0KEl76Ek.png)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Tech Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Prisma](https://www.prisma.io/)
+- [mongoDB](https://www.mongodb.com/)
+- [NextAuth.js](https://next-auth.js.org/)
+- [Zustand](https://docs.pmnd.rs/zustand/getting-started/introduction)
+- [React-Hook-Form](https://react-hook-form.com/)
+- [Zod](https://zod.dev/)
+- [Docker](https://www.docker.com/)
+- [grafana-faro](https://grafana.com/oss/faro/)
 
-## Deploy on Vercel
+## Author
+藍奕欣 (Renee Lan)<br>
+[Github](https://github.com/ysl0628)<br>
+LinkedIn: [藍奕欣](https://www.linkedin.com/in/ysl0628/)<br>
+LinkOrchard: [ysl0628](https://link-orchard.vercel.app/ysl0628)<br>
+Email: yihsinlan@gmail.com
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+ 
