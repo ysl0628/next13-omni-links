@@ -4,9 +4,9 @@ import axios from 'axios'
 import dynamic from 'next/dynamic'
 import toast from 'react-hot-toast'
 import Skeleton from 'react-loading-skeleton'
-import { PropsWithChildren, Suspense, lazy, useCallback, useState } from 'react'
+import { PropsWithChildren, Suspense, lazy, useEffect, useState } from 'react'
 import { Transition } from '@headlessui/react'
-import { DropResult } from '@hello-pangea/dnd'
+// import { DropResult } from '@hello-pangea/dnd'
 
 import Button from '../../../ui/Button'
 import Divider from '../../../ui/Divider'
@@ -14,11 +14,12 @@ import Divider from '../../../ui/Divider'
 import ButtonLoader from '@/components/ButtonLoader'
 // import EditLinkItem from './EditLinkItem'
 import DisplayLinkItem from './DisplayLinkItem'
-import DragDropLinkList from './DragDropLinkList'
+// import DragDropLinkList from './DragDropLinkList'
 
 import useSetup from '@/hooks/useSetup'
 import { notifyError } from '@/utils/notify'
 import { LinkSetupType } from '@/types'
+import DndLinkList from './DndLinkList'
 
 const AddButtons = lazy(() => import('./AddButtons'))
 
@@ -32,40 +33,25 @@ const LinksSetup = () => {
   const user = useSetup((state) => state.user)
   const links = useSetup((state) => state.links)
   const { update, revertLinks } = useSetup((state) => state)
-  const [originalOrder] = useState<LinkSetupType[] | null>(links)
+  const [originalOrder, setOriginalOrder] = useState<LinkSetupType[] | null>(
+    links
+  )
   const [linkType, setLinkType] = useState<'' | 'website' | 'social'>('')
   const [isEditingId, setIsEditingId] = useState<string>('')
   const [isDragging, setIsDragging] = useState(false)
   const [isUpdating, setIsUpdating] = useState(false)
 
-  const reorder = (
-    list: LinkSetupType[] | null,
-    startIndex: number,
-    endIndex: number
-  ) => {
-    const result = Array.from(list || [])
-    const [removed] = result.splice(startIndex, 1)
-    result.splice(endIndex, 0, removed)
+  // const reorder = (
+  //   list: LinkSetupType[] | null,
+  //   startIndex: number,
+  //   endIndex: number
+  // ) => {
+  //   const result = Array.from(list || [])
+  //   const [removed] = result.splice(startIndex, 1)
+  //   result.splice(endIndex, 0, removed)
 
-    return result
-  }
-
-  const onDragEnd = useCallback(
-    (result: DropResult) => {
-      if (!result.destination) {
-        return
-      }
-
-      const items = reorder(
-        links,
-        result.source.index,
-        result.destination.index
-      )
-
-      update({ links: items })
-    },
-    [links, update]
-  )
+  //   return result
+  // }
 
   const handleToggleDraggable = () => {
     setIsDragging((prev) => !prev)
@@ -95,8 +81,10 @@ const LinksSetup = () => {
     }
   }
 
+  // console.log(links)
   const handleCancelUpdate = () => {
     setIsDragging(false)
+
     revertLinks(originalOrder)
   }
 
@@ -124,8 +112,11 @@ const LinksSetup = () => {
 
   const lastItemOrder = links?.[0]?.order || 0
 
-  // console.log('lastItemOrder', links?.[links.length - 1].order)
-  // console.log('newLastItemOrder', links?.[0].order)
+  useEffect(() => {
+    if (links && !originalOrder) {
+      setOriginalOrder(links)
+    }
+  }, [links, originalOrder])
 
   return (
     <>
@@ -170,10 +161,10 @@ const LinksSetup = () => {
         {/* </Transition> */}
 
         {isDragging ? (
-          <DragDropLinkList
+          <DndLinkList
             links={links}
             isDragging={isDragging}
-            onDragEnd={onDragEnd}
+            // onDragEnd={onDragEnd}
             setIsEditingId={setIsEditingId}
           />
         ) : (
