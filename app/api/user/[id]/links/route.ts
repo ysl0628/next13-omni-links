@@ -3,6 +3,9 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import prisma from '@/libs/prismadb'
+import { checkUrlSafety, checkUrlValidity } from '@/app/api/utils'
+
+const SAFE_BROWSING_API_KEY = 'AIzaSyD6zN5oo1l7u632iYTxpvP9dOM3NFiGLKo'
 
 const postValidate = z.object({
   title: z.string().max(15, '標題最多可輸入 15 字'),
@@ -32,6 +35,20 @@ export async function POST(
     if (!result.success) {
       throw new z.ZodError(result.error.issues)
     }
+
+    const isUrlSafe = await checkUrlSafety(url, SAFE_BROWSING_API_KEY)
+    const isUrlValid = await checkUrlValidity(url)
+
+    if (!isUrlValid)
+      return NextResponse.json(
+        { type: 'invalid', message: '非有效的 URL' },
+        { status: 400 }
+      )
+    if (!isUrlSafe)
+      return NextResponse.json(
+        { type: 'invalid', message: '非安全的 URL' },
+        { status: 400 }
+      )
 
     // 檢查 order 有沒有重複
     const checkOrder = await prisma.link.findFirst({
