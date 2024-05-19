@@ -24,15 +24,13 @@ import { LinkSetupType } from '@/types'
 
 interface DragDropLinkListProps {
   links: LinkSetupType[] | null
-  isDragging: boolean
-  setIsEditingId: React.Dispatch<React.SetStateAction<string>>
+  isDragMode: boolean
 }
 
 interface DndItemProps {
   item: LinkSetupType
   index: number
-  isDragging: boolean
-  setIsEditingId: React.Dispatch<React.SetStateAction<string>>
+  isDragMode: boolean
 }
 
 type DraggableState =
@@ -43,7 +41,21 @@ type DraggableState =
 const idleState: DraggableState = { type: 'idle' }
 const draggingState: DraggableState = { type: 'dragging' }
 
-const DndItem = ({ item, index, isDragging, setIsEditingId }: DndItemProps) => {
+const checkIsCorrectEdge = (
+  closestEdge: Edge | null,
+  sourceIndex: number,
+  targetIndex: number
+) => {
+  const isItemBeforeSource = targetIndex < sourceIndex
+  const isItemAfterSource = targetIndex > sourceIndex
+  const shouldNotReorder =
+    (isItemBeforeSource && closestEdge === 'bottom') ||
+    (isItemAfterSource && closestEdge === 'top')
+
+  return shouldNotReorder
+}
+
+const DndItem = ({ item, index, isDragMode }: DndItemProps) => {
   const itemRef = useRef<HTMLDivElement>(null)
   const dragHandleRef = useRef<HTMLDivElement>(null)
   const [draggableState, setDraggableState] =
@@ -118,12 +130,11 @@ const DndItem = ({ item, index, isDragging, setIsEditingId }: DndItemProps) => {
           const closestEdge = extractClosestEdge(self.data)
           // 回傳 allowedEdges 設定的 top or bottom
           const sourceIndex = source.data.index as number
-          const isItemBeforeSource = index < sourceIndex
-          const isItemAfterSource = index > sourceIndex
-
-          const isDropIndicatorHidden =
-            (isItemBeforeSource && closestEdge === 'bottom') ||
-            (isItemAfterSource && closestEdge === 'top')
+          const isDropIndicatorHidden = checkIsCorrectEdge(
+            closestEdge,
+            sourceIndex,
+            index
+          )
 
           if (isDropIndicatorHidden) {
             setClosestEdge(null)
@@ -140,7 +151,7 @@ const DndItem = ({ item, index, isDragging, setIsEditingId }: DndItemProps) => {
         }
       })
     )
-  }, [index, isDragging, item])
+  }, [index, item])
   return (
     <>
       <div className="flex w-full relative" key={item?.id} ref={itemRef}>
@@ -155,10 +166,9 @@ const DndItem = ({ item, index, isDragging, setIsEditingId }: DndItemProps) => {
 
           <DisplayLinkItem
             item={item}
-            dragMode={isDragging}
+            dragMode={isDragMode}
             isDragging={draggableState.type === 'dragging'}
             isWebsite={item?.type?.id === 'website'}
-            onEditMode={() => setIsEditingId(item?.id)}
           />
         </div>
         {closestEdge && <DropIndicator edge={closestEdge} gap="1px" />}
@@ -172,12 +182,7 @@ const DndItem = ({ item, index, isDragging, setIsEditingId }: DndItemProps) => {
   )
 }
 
-const DndLinkList: FC<DragDropLinkListProps> = ({
-  links,
-  isDragging,
-  setIsEditingId
-  //   onDragEnd
-}) => {
+const DndLinkList: FC<DragDropLinkListProps> = ({ links, isDragMode }) => {
   const { update } = useSetup((state) => state)
 
   useEffect(() => {
@@ -186,7 +191,7 @@ const DndLinkList: FC<DragDropLinkListProps> = ({
         // source 有 element, data, dragHandle
         // data 則是 getInitialData 的結果
 
-        return isDragging
+        return isDragMode
       },
       onDrop({ location, source }) {
         const target = location.current.dropTargets[0]
@@ -203,11 +208,11 @@ const DndLinkList: FC<DragDropLinkListProps> = ({
         const closestEdgeOfTarget = extractClosestEdge(targetData)
         const startIndex = (sourceData.index as number) || 0
         const finishIndex = (targetData.index as number) || 0
-        const isItemBeforeSource = finishIndex < startIndex
-        const isItemAfterSource = finishIndex > startIndex
-        const shouldNotReorder =
-          (isItemBeforeSource && closestEdgeOfTarget === 'bottom') ||
-          (isItemAfterSource && closestEdgeOfTarget === 'top')
+        const shouldNotReorder = checkIsCorrectEdge(
+          closestEdgeOfTarget,
+          startIndex,
+          finishIndex
+        )
 
         if (shouldNotReorder) {
           return
@@ -222,27 +227,21 @@ const DndLinkList: FC<DragDropLinkListProps> = ({
         update({ links: reorderItems })
       }
     })
-  }, [isDragging, links, update])
+  }, [isDragMode, links, update])
 
   return (
     <div className="flex w-full justify-between items-center gap-8">
-      <div
-        // ref={provided.innerRef}
-        className="flex flex-col items-center gap-2 w-full"
-        // {...provided.droppableProps}
-      >
+      <div className="flex flex-col items-center gap-2 w-full">
         {links?.map((item, index) => {
           return (
             <DndItem
               key={item?.id}
               index={index}
               item={item}
-              isDragging={isDragging}
-              setIsEditingId={setIsEditingId}
+              isDragMode={isDragMode}
             />
           )
         })}
-        {/* {provided.placeholder} */}
       </div>
     </div>
   )

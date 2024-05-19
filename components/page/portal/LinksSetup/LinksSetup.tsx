@@ -6,20 +6,16 @@ import toast from 'react-hot-toast'
 import Skeleton from 'react-loading-skeleton'
 import { PropsWithChildren, Suspense, lazy, useEffect, useState } from 'react'
 import { Transition } from '@headlessui/react'
-// import { DropResult } from '@hello-pangea/dnd'
 
 import Button from '../../../ui/Button'
 import Divider from '../../../ui/Divider'
-// import AddButtons from './AddButtons'
+import DndLinkList from './DndLinkList'
 import ButtonLoader from '@/components/ButtonLoader'
-// import EditLinkItem from './EditLinkItem'
 import DisplayLinkItem from './DisplayLinkItem'
-// import DragDropLinkList from './DragDropLinkList'
 
 import useSetup from '@/hooks/useSetup'
 import { notifyError } from '@/utils/notify'
 import { LinkSetupType } from '@/types'
-import DndLinkList from './DndLinkList'
 
 const AddButtons = lazy(() => import('./AddButtons'))
 
@@ -38,23 +34,11 @@ const LinksSetup = () => {
   )
   const [linkType, setLinkType] = useState<'' | 'website' | 'social'>('')
   const [isEditingId, setIsEditingId] = useState<string>('')
-  const [isDragging, setIsDragging] = useState(false)
+  const [isDragMode, setIsDragMode] = useState(false)
   const [isUpdating, setIsUpdating] = useState(false)
 
-  // const reorder = (
-  //   list: LinkSetupType[] | null,
-  //   startIndex: number,
-  //   endIndex: number
-  // ) => {
-  //   const result = Array.from(list || [])
-  //   const [removed] = result.splice(startIndex, 1)
-  //   result.splice(endIndex, 0, removed)
-
-  //   return result
-  // }
-
   const handleToggleDraggable = () => {
-    setIsDragging((prev) => !prev)
+    setIsDragMode((prev) => !prev)
   }
 
   const handleUpdateLinks = async () => {
@@ -72,7 +56,7 @@ const LinksSetup = () => {
 
       update({ links: res.data })
       toast.success('更新成功')
-      setIsDragging(false)
+      setIsDragMode(false)
     } catch (error: any) {
       notifyError(error, '更新失敗')
       console.log(error)
@@ -81,10 +65,8 @@ const LinksSetup = () => {
     }
   }
 
-  // console.log(links)
   const handleCancelUpdate = () => {
-    setIsDragging(false)
-
+    setIsDragMode(false)
     revertLinks(originalOrder)
   }
 
@@ -143,14 +125,6 @@ const LinksSetup = () => {
           </Suspense>
         </Transition>
 
-        {/* <Transition
-          appear={true}
-          show={linkType !== ''}
-          enter="transition ease duration-300 transform"
-          enterFrom="opacity-0 -translate-y-20"
-          enterTo="opacity-100 translate-y-0"
-          className="flex w-full"
-        > */}
         {linkType !== '' && (
           <EditLinkItem
             isWebsite={linkType === 'website'}
@@ -158,19 +132,14 @@ const LinksSetup = () => {
             lastItemOrder={lastItemOrder}
           />
         )}
-        {/* </Transition> */}
 
-        {isDragging ? (
-          <DndLinkList
-            links={links}
-            isDragging={isDragging}
-            // onDragEnd={onDragEnd}
-            setIsEditingId={setIsEditingId}
-          />
+        {isDragMode ? (
+          <DndLinkList links={links} isDragMode={isDragMode} />
         ) : (
           <LinkList />
         )}
-        {isDragging && (
+
+        {isDragMode && (
           <div className="flex gap-4">
             <Button
               label="取消"
@@ -192,7 +161,7 @@ const LinksSetup = () => {
           </div>
         )}
 
-        {!isDragging && links && links.length >= 2 && (
+        {!isDragMode && links && links.length >= 2 && (
           <Button
             label="編輯順序"
             color="info"

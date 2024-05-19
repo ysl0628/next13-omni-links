@@ -1,4 +1,5 @@
 'use client'
+import { useState } from 'react'
 import axios, { AxiosResponse } from 'axios'
 import toast from 'react-hot-toast'
 
@@ -8,6 +9,7 @@ import { Link, LinkType } from '@prisma/client'
 
 import { FiTrash } from 'react-icons/fi'
 import { MdEdit } from 'react-icons/md'
+import ButtonLoader from '@/components/ButtonLoader'
 
 interface DisplayLinkItemProps {
   item: {
@@ -19,7 +21,7 @@ interface DisplayLinkItemProps {
   isWebsite?: boolean
   isDragging?: boolean
   dragMode?: boolean
-  onEditMode: () => void
+  onEditMode?: () => void
 }
 
 const DisplayLinkItem = ({
@@ -29,10 +31,12 @@ const DisplayLinkItem = ({
   dragMode,
   onEditMode
 }: DisplayLinkItemProps) => {
+  const [isLoading, setIsLoading] = useState(false)
   const user = useSetup((state) => state.user)
   const removeLink = useSetup((state) => state.removeLink)
 
   const handleDeleteLink = async () => {
+    setIsLoading(true)
     try {
       const { data: res } = await axios.delete<AxiosResponse<Link>>(
         `/api/user/${user?.id}/links/${item?.id}`
@@ -41,6 +45,8 @@ const DisplayLinkItem = ({
       toast.success('刪除成功')
     } catch (error: any) {
       notifyError(error, '刪除失敗')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -76,7 +82,11 @@ const DisplayLinkItem = ({
               className="bg-grey-400 rounded-full p-1.5 hover:bg-slate-800 cursor-pointer"
               onClick={handleDeleteLink}
             >
-              <FiTrash className="h-5 w-5 text-white" />
+              {isLoading ? (
+                <ButtonLoader />
+              ) : (
+                <FiTrash className="h-5 w-5 text-white" />
+              )}
             </div>
             <div
               className={
