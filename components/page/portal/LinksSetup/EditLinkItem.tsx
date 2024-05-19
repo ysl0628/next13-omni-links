@@ -4,7 +4,7 @@ import React from 'react'
 import { z } from 'zod'
 import axios, { AxiosResponse } from 'axios'
 import { toast } from 'react-hot-toast'
-import { FieldValues, SubmitHandler, useForm, useWatch } from 'react-hook-form'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 
 import Selector from '../../../input/Selector'
 import LabelInput from '../../../input/LabelInput'
@@ -52,17 +52,21 @@ const schema = z
   .object({
     id: z.string().nullable(),
     title: z.string().nullable(),
-    url: z.string().url().nullable(),
+    url: z.string().url('請輸入正確 url 格式').nullable(),
     type: typeSchema,
     order: z.number().int().nullable()
   })
-  .superRefine((val, ctx) => {
+  .superRefine(async (val, ctx) => {
     if (val.type.id === 'website') {
-      if (!val.title)
-        return ctx.addIssue({
+      if (!Boolean(val.title)) {
+        ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: '請輸入連結名稱'
+          message: '',
+          path: ['title'],
+          fatal: true
         })
+        return z.NEVER
+      }
     }
   })
 
@@ -83,13 +87,18 @@ const EditLinkItem = ({
     handleSubmit,
     formState: { errors },
     control,
-    setValue
+    setValue,
+    setError
   } = useForm<FieldValues>({
     defaultValues: {
       id: item?.id || '',
       title: item?.title || '',
       url: item?.url || '',
-      type: item?.type || { id: 'default', label: '請選擇' },
+      type:
+        item?.type ||
+        (isWebsite
+          ? { id: 'website', label: '自訂連結' }
+          : { id: 'default', label: '請選擇' }),
       order: item ? index : lastItemOrder + 1
     },
     resolver: zodResolver(schema)
@@ -114,11 +123,26 @@ const EditLinkItem = ({
 
       addLink(res.data)
       toast.success('新增成功')
+      onClose && onClose()
     } catch (error: any) {
+      if (error.response?.data?.type === 'invalid') {
+        toast.error(error.response?.data?.message)
+        setError(
+          'url',
+          {
+            type: 'custom',
+            message: ''
+          },
+          {
+            shouldFocus: true
+          }
+        )
+        return
+      }
       notifyError(error, '新增失敗')
       console.log(error)
-    } finally {
       onClose && onClose()
+    } finally {
       setIsLoading(false)
     }
   }
@@ -139,11 +163,26 @@ const EditLinkItem = ({
       )
       toast.success('更新成功')
       updateLink(res.data?.id, res.data)
-    } catch (error: any) {
-      notifyError(error, '更新失敗')
-      console.log(error)
-    } finally {
       onClose && onClose()
+    } catch (error: any) {
+      if (error.response?.data?.type === 'invalid') {
+        toast.error(error.response?.data?.message)
+        setError(
+          'url',
+          {
+            type: 'custom',
+            message: ''
+          },
+          {
+            shouldFocus: true
+          }
+        )
+        return
+      }
+      notifyError(error, '新增失敗')
+      console.log(error)
+      onClose && onClose()
+    } finally {
       setIsLoading(false)
     }
   }
@@ -196,6 +235,7 @@ const EditLinkItem = ({
             <div className="flex-auto">
               <LabelInput
                 errors={errors}
+                serverError={errors['url']?.message as string}
                 register={register}
                 id="url"
                 small

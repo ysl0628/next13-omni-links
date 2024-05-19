@@ -1,5 +1,4 @@
 import axios, { AxiosError } from 'axios'
-import { FC } from 'react'
 import toast from 'react-hot-toast'
 
 export const notifyError = (
