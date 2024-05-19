@@ -1,5 +1,3 @@
-'use client'
-
 import { Dispatch, FC, SetStateAction } from 'react'
 import {
   DragDropContext,
@@ -61,7 +59,6 @@ const DragDropLinkList: FC<DragDropLinkListProps> = ({
 
                         <DisplayLinkItem
                           item={item}
-                          isDragging={isDragging}
                           isWebsite={item?.type?.id === 'website'}
                           onEditMode={() => setIsEditingId(item?.id)}
                         />
