@@ -18,6 +18,7 @@ interface DisplayLinkItemProps {
   }
   isWebsite?: boolean
   isDragging?: boolean
+  dragMode?: boolean
   onEditMode: () => void
 }
 
@@ -25,6 +26,7 @@ const DisplayLinkItem = ({
   item,
   isWebsite,
   isDragging,
+  dragMode,
   onEditMode
 }: DisplayLinkItemProps) => {
   const user = useSetup((state) => state.user)
@@ -41,8 +43,13 @@ const DisplayLinkItem = ({
       notifyError(error, '刪除失敗')
     }
   }
+
   return (
-    <div className="flex w-full justify-between items-center gap-8 shadow-lg p-4 rounded-xl bg-white max-w-full">
+    <div
+      className={`flex w-full justify-between items-center gap-8 shadow-lg p-4 rounded-xl bg-white max-w-full ${
+        isDragging ? 'opacity-30' : ''
+      }`}
+    >
       <div className="flex flex-col gap-2 w-full">
         <div className="flex items-center gap-2">
           <div className="w-12">{isWebsite ? '名稱' : '類型'}</div>
@@ -63,7 +70,7 @@ const DisplayLinkItem = ({
       </div>
 
       <div className="flex flex-col gap-3">
-        {isDragging ? null : (
+        {dragMode ? null : (
           <>
             <div
               className="bg-grey-400 rounded-full p-1.5 hover:bg-slate-800 cursor-pointer"
