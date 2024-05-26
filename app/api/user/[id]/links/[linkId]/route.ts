@@ -68,19 +68,20 @@ export async function PUT(
     if (!result.success) {
       throw new z.ZodError(result.error.issues)
     }
-    const isUrlValid = await checkUrlValidity(url)
     const isUrlSafe = await checkUrlSafety(url, SAFE_BROWSING_API_KEY)
-
-    if (!isUrlValid)
-      return NextResponse.json(
-        { type: 'invalid', message: '非有效的 URL' },
-        { status: 400 }
-      )
     if (!isUrlSafe)
       return NextResponse.json(
         { type: 'invalid', message: '非安全的 URL' },
         { status: 400 }
       )
+
+    const isUrlValid = await checkUrlValidity(url)
+    if (!isUrlValid)
+      return NextResponse.json(
+        { type: 'invalid', message: '非有效的 URL' },
+        { status: 400 }
+      )
+
     const data = await prisma.link.update({
       where: {
         id: linkId
